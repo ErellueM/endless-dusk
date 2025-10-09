@@ -11,5 +11,6 @@ config_version=5
 [application]
 
 config/name="endless-dusk"
+run/main_scene="uid://5cih2bjmt6fs"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
