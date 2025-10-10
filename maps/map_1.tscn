@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=8 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
 [ext_resource type="PackedScene" uid="uid://c0mcgac7knbxt" path="res://main/entities/player.tscn" id="2_bbd8t"]
+[ext_resource type="PackedScene" uid="uid://cycdm305tvfx5" path="res://main/environments/lightSources/candle_1.tscn" id="3_ae8pb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -1106,3 +1107,6 @@ tile_set = SubResource("TileSet_bbd8t")
 rendering_quadrant_size = 32
 
 [node name="Player" parent="." instance=ExtResource("2_bbd8t")]
+
+[node name="candle_1" parent="." instance=ExtResource("3_ae8pb")]
+position = Vector2(405, 324)
