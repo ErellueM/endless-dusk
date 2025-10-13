@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://bd6b54asmqcgu"]
+
+[ext_resource type="Texture2D" uid="uid://ckogx5jltyk70" path="res://assets/art/decoration/lightSources/candle/candleB_01.png" id="1_8rx1o"]
+[ext_resource type="Script" uid="uid://dkqgccqhgurs8" path="res://main/environments/lightSources/candle_2.gd" id="1_togld"]
+[ext_resource type="Texture2D" uid="uid://dtey7kwn7m0wj" path="res://assets/art/decoration/lightSources/candle/candleB_02.png" id="2_togld"]
+[ext_resource type="Texture2D" uid="uid://cpm5oiapi54ky" path="res://assets/art/decoration/lightSources/candle/candleB_03.png" id="3_bvc5m"]
+[ext_resource type="Texture2D" uid="uid://cvd8anmkpydao" path="res://assets/art/decoration/lightSources/candle/candleB_04.png" id="4_0qcdw"]
+[ext_resource type="Texture2D" uid="uid://bfg2vry3yxcrl" path="res://assets/art/decoration/lightSources/gradiant/128x128 textures (81).png" id="5_iqqgo"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_trdnd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_8rx1o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_togld")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bvc5m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_0qcdw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="candle_2" type="Node2D"]
+script = ExtResource("1_togld")
+
+[node name="CandleFrames" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_trdnd")
+autoplay = "default"
+frame = 1
+frame_progress = 0.11308753
+
+[node name="Flame" type="PointLight2D" parent="."]
+color = Color(1, 1, 0, 1)
+energy = 1.5
+texture = ExtResource("5_iqqgo")
+texture_scale = 4.0

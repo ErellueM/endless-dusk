@@ -24,7 +24,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 8.0
+"speed": 5.0
 }]
 
 [node name="candle_1" type="Node2D"]
@@ -33,8 +33,7 @@ script = ExtResource("1_38ot0")
 [node name="CandleFrames" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_pper1")
 autoplay = "default"
-frame = 1
-frame_progress = 0.8885601
+frame_progress = 0.39806956
 
 [node name="Flame" type="PointLight2D" parent="."]
 position = Vector2(0, -1)
