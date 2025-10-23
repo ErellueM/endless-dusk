@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://yd6amcmsh8in"]
+
+[ext_resource type="Script" uid="uid://b6csilx3gglyp" path="res://main/ui/CharacterSelection/ChoseableCharacters/choseable_character_01.gd" id="1_ppt4t"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2g43r"]
+animations = []
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 3
+anchor_right = 0.087000005
+anchor_bottom = 0.15400001
+offset_right = -0.22400665
+offset_bottom = 0.20799255
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ppt4t")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_top = 64.0
+offset_right = 100.0
+offset_bottom = 87.0
+horizontal_alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.033
+anchor_top = 0.032
+anchor_right = 0.033
+anchor_bottom = 0.032
+offset_left = 26.699997
+offset_top = 27.8
+offset_right = 66.69999
+offset_bottom = 67.8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureButton"]
+position = Vector2(20, 19)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_2g43r")
+animation = &""

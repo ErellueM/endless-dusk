@@ -1,0 +1,147 @@
+[gd_scene load_steps=20 format=3 uid="uid://yiugqchqnyuh"]
+
+[ext_resource type="PackedScene" uid="uid://yd6amcmsh8in" path="res://main/ui/CharacterSelection/ChoseableCharacters/ChoseableCharacter_01.tscn" id="1_r6mht"]
+[ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="2_oardr"]
+[ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="3_tgso6"]
+[ext_resource type="PackedScene" uid="uid://bk8p1tcioxxce" path="res://main/entities/Characters/PlayableCharacter_02.tscn" id="4_5ltq3"]
+[ext_resource type="Texture2D" uid="uid://c55wcqqjsap3r" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="5_t6acf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ltq3"]
+atlas = ExtResource("3_tgso6")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6acf"]
+atlas = ExtResource("3_tgso6")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxdn1"]
+atlas = ExtResource("3_tgso6")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_atvyr"]
+atlas = ExtResource("3_tgso6")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eclxw"]
+atlas = ExtResource("3_tgso6")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxpqh"]
+atlas = ExtResource("3_tgso6")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tgso6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ltq3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6acf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxdn1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_atvyr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eclxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxpqh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8bcl"]
+atlas = ExtResource("5_t6acf")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8du83"]
+atlas = ExtResource("5_t6acf")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cfg8"]
+atlas = ExtResource("5_t6acf")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw7g4"]
+atlas = ExtResource("5_t6acf")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mji4m"]
+atlas = ExtResource("5_t6acf")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lctbe"]
+atlas = ExtResource("5_t6acf")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t6acf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8bcl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8du83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cfg8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw7g4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mji4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lctbe")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 487.0
+offset_top = 30.0
+offset_right = 654.0
+offset_bottom = 53.0
+text = "Chose your Character"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 192.0
+offset_top = 112.0
+offset_right = -201.0
+offset_bottom = -64.0
+columns = 4
+
+[node name="Soilder" parent="GridContainer" instance=ExtResource("1_r6mht")]
+layout_mode = 2
+character_name = "Soilder"
+character_scene = ExtResource("2_oardr")
+sprite_frames = SubResource("SpriteFrames_tgso6")
+
+[node name="Orc" parent="GridContainer" instance=ExtResource("1_r6mht")]
+layout_mode = 2
+character_name = "Orc"
+character_scene = ExtResource("4_5ltq3")
+sprite_frames = SubResource("SpriteFrames_t6acf")

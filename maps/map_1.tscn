@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=4 uid="uid://coyy300hfesg2"]
 
+[ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
 [ext_resource type="PackedScene" uid="uid://cycdm305tvfx5" path="res://main/environments/lightSources/candle_1.tscn" id="3_ae8pb"]
-[ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="4_hm8ck"]
 [ext_resource type="PackedScene" uid="uid://bd6b54asmqcgu" path="res://main/environments/lightSources/candle_2.tscn" id="4_nli1r"]
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_hm8ck"]
 
@@ -1092,6 +1092,7 @@ texture = ExtResource("1_p5fey")
 sources/0 = SubResource("TileSetAtlasSource_ae8pb")
 
 [node name="Map1" type="Node2D"]
+script = ExtResource("1_hm8ck")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_bbd8t")
@@ -1114,11 +1115,10 @@ position = Vector2(405, 324)
 [node name="candle_2" parent="." instance=ExtResource("4_nli1r")]
 position = Vector2(828, 321)
 
-[node name="Player" parent="." instance=ExtResource("4_hm8ck")]
-position = Vector2(597, 321)
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(597, 321)
 zoom = Vector2(2, 2)
 script = ExtResource("5_hm8ck")
-target_path = NodePath("../Player")
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(597, 322)
