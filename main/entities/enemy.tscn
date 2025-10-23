@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://depboypv02px1"]
+
+[ext_resource type="Script" uid="uid://0f4fdk8vq742" path="res://main/entities/enemy.gd" id="1_njyqj"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mm1a5"]
+size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_njyqj"]
+size = Vector2(10, 10)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+slide_on_ceiling = false
+script = ExtResource("1_njyqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(3.46821, 0, 0, 1)
+texture = SubResource("PlaceholderTexture2D_mm1a5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_njyqj")

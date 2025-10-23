@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=11 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
 [ext_resource type="PackedScene" uid="uid://cycdm305tvfx5" path="res://main/environments/lightSources/candle_1.tscn" id="3_ae8pb"]
 [ext_resource type="PackedScene" uid="uid://bd6b54asmqcgu" path="res://main/environments/lightSources/candle_2.tscn" id="4_nli1r"]
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_hm8ck"]
+[ext_resource type="PackedScene" uid="uid://depboypv02px1" path="res://main/entities/enemy.tscn" id="6_5565n"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -1092,6 +1093,7 @@ texture = ExtResource("1_p5fey")
 sources/0 = SubResource("TileSetAtlasSource_ae8pb")
 
 [node name="Map1" type="Node2D"]
+position = Vector2(-37, 5)
 script = ExtResource("1_hm8ck")
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -1122,3 +1124,6 @@ script = ExtResource("5_hm8ck")
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(597, 322)
+
+[node name="Enemy" parent="." instance=ExtResource("6_5565n")]
+position = Vector2(506, 316)

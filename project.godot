@@ -23,6 +23,10 @@ Global="*res://Global.gd"
 
 window/stretch/mode="viewport"
 
+[global_group]
+
+player=""
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
