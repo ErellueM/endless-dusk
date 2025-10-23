@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://yd6amcmsh8in"]
+[gd_scene load_steps=4 format=3 uid="uid://yd6amcmsh8in"]
 
 [ext_resource type="Script" uid="uid://b6csilx3gglyp" path="res://main/ui/CharacterSelection/ChoseableCharacters/choseable_character_01.gd" id="1_ppt4t"]
+[ext_resource type="FontFile" uid="uid://jcvw8kw2elqc" path="res://assets/fonts/fs-pixel-sans-unicode-regular/fs-pixel-sans-unicode-regular.ttf" id="2_8xtfn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2g43r"]
 animations = []
@@ -21,6 +22,8 @@ layout_mode = 0
 offset_top = 64.0
 offset_right = 100.0
 offset_bottom = 87.0
+theme_override_fonts/font = ExtResource("2_8xtfn")
+theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
 [node name="TextureButton" type="TextureButton" parent="."]
