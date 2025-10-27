@@ -1,5 +1,5 @@
 # endless-dusk
-A game for SWE lecture at DHBW Stuttgart Informatik
+A game for SWE lecture at DHBW Stuttgart Informatik 2025/26
 
 # Contributors
 ## Teamname: Bugisoft
@@ -11,3 +11,4 @@ Müller Erik - ErellueM
 Stoetter Mika - Mika1011
 Tillmann Felix - Sh4d0wnight
 Tarta Maximilian Robin - maxitaxi27
+
