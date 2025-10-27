@@ -148,3 +148,14 @@ layout_mode = 2
 character_name = "Orc"
 character_scene = ExtResource("4_5ltq3")
 sprite_frames = SubResource("SpriteFrames_t6acf")
+
+[node name="Button_back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 83.0
+offset_right = 100.0
+offset_bottom = 114.0
+scale = Vector2(1.203466, 1.4418832)
+text = "go back"
+
+[connection signal="pressed" from="Button_back" to="GridContainer/Soilder" method="_on_button_back_pressed"]

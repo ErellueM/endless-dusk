@@ -1,0 +1,54 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfvax0wddpvrs"]
+
+[ext_resource type="Script" uid="uid://ctd6my708cadd" path="res://main/ui/general_menu/credits_menu/credits.gd" id="1_junm0"]
+
+[node name="Credits" type="Node2D"]
+script = ExtResource("1_junm0")
+
+[node name="Button_back" type="Button" parent="."]
+offset_left = 48.0
+offset_top = 43.999996
+offset_right = 116.0
+offset_bottom = 75.0
+scale = Vector2(1.203466, 1.4418832)
+text = "go back"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 452.0
+offset_top = 73.0
+offset_right = 618.0
+offset_bottom = 128.0
+theme_override_font_sizes/font_size = 40
+text = "Creators"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+offset_left = 408.0
+offset_top = 160.0
+offset_right = 686.0
+offset_bottom = 318.0
+
+[node name="Label_timo" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Wagner Timo - timopromotive"
+
+[node name="Label_mika" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Stoetter Mika - Mika1011"
+
+[node name="Label_erik" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Müller Erik - ErellueM"
+
+[node name="Label_till" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Tillmann Felix - Sh4d0wnight"
+
+[node name="Label_beric" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Bayrakal Beric - Beric-61"
+
+[node name="Label_maxi" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Tarta Maximilian Robin - maxitaxi27"
+
+[connection signal="pressed" from="Button_back" to="." method="_on_button_back_pressed"]
