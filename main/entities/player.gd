@@ -13,6 +13,8 @@ func _process(delta):
 		direction.y += 1
 	if Input.is_action_pressed("ui_up"):
 		direction.y -= 1
+	if Input.is_action_pressed("ui_accept"):
+		print("Attack!")
 
 	# Bewegung
 	position += direction.normalized() * speed * delta

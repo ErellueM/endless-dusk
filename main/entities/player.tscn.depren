@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0mcgac7knbxt"]
+[gd_scene load_steps=4 format=3 uid="uid://c0mcgac7knbxt"]
 
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
 [ext_resource type="PackedScene" uid="uid://cjqnpihotiedc" path="res://main/entities/entity.tscn" id="2_yewv4"]
-[ext_resource type="Script" uid="uid://d076f2glpk5k8" path="res://main/weapons/player_weapons.gd" id="3_v2iwy"]
-[ext_resource type="PackedScene" uid="uid://css7swwgss460" path="res://main/weapons/items/sword_weapon.tscn" id="4_k1fg7"]
+[ext_resource type="Script" uid="uid://cixg0vbjt2jiv" path="res://main/weapons/character_weapons.gd" id="3_v2iwy"]
 
 [node name="Player" type="Node2D" groups=["player"]]
 script = ExtResource("1_rp718")
@@ -11,6 +10,4 @@ script = ExtResource("1_rp718")
 [node name="Entity" parent="." instance=ExtResource("2_yewv4")]
 
 [node name="Equipped_weapons" type="Node2D" parent="."]
-position = Vector2(0, 2)
 script = ExtResource("3_v2iwy")
-weapon_to_equip = ExtResource("4_k1fg7")
