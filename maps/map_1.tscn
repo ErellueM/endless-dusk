@@ -1112,7 +1112,7 @@ tile_set = SubResource("TileSet_bbd8t")
 rendering_quadrant_size = 32
 
 [node name="candle_1" parent="." instance=ExtResource("3_ae8pb")]
-position = Vector2(405, 324)
+position = Vector2(405, 321)
 
 [node name="candle_2" parent="." instance=ExtResource("4_nli1r")]
 position = Vector2(828, 321)
