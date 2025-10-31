@@ -1,7 +1,7 @@
 extends Node2D
 class_name EquipItem
 
-@export var fire_rate : float = 0.5
+@export var fire_rate : float = 0.2
 var last_fired_time : float
 var aim_angle : float
 func _ready() -> void:
