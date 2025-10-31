@@ -1,10 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://css7swwgss460"]
+[gd_scene load_steps=6 format=3 uid="uid://css7swwgss460"]
 
-[ext_resource type="Texture2D" uid="uid://drlh3ekhxsknx" path="res://main/weapons/skins/New Piskel.png" id="1_gas22"]
-[ext_resource type="Script" uid="uid://l0yxv8qxcqyd" path="res://main/weapons/melee_weapon.gd" id="1_v373l"]
+[ext_resource type="Script" uid="uid://l0yxv8qxcqyd" path="res://main/weapons/range_weapon.gd" id="1_v373l"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v373l"]
-size = Vector2(14, 6)
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gas22"]
 
 [sub_resource type="Animation" id="Animation_5rs3s"]
 length = 0.001
@@ -43,19 +41,12 @@ _data = {
 &"attack": SubResource("Animation_2ko8m")
 }
 
-[node name="Sword_weapon" type="Node2D"]
+[node name="staff" type="Node2D"]
 script = ExtResource("1_v373l")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5740966
-texture = ExtResource("1_gas22")
-
-[node name="Hitbox" type="Area2D" parent="."]
-position = Vector2(10, 0)
-
-[node name="Hitbox" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(-9, -1)
-shape = SubResource("RectangleShape2D_v373l")
+texture = SubResource("CompressedTexture2D_gas22")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
