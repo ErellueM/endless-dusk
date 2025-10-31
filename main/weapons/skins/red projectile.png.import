@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drlh3ekhxsknx"
-path="res://.godot/imported/New Piskel.png-aee70ff632c01477f1eab177c742653a.ctex"
+uid="uid://b50jo7lsusn5"
+path="res://.godot/imported/red projectile.png-489370de6ab48dcde4b53fe286f789b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://main/weapons/skins/New Piskel.png"
-dest_files=["res://.godot/imported/New Piskel.png-aee70ff632c01477f1eab177c742653a.ctex"]
+source_file="res://main/weapons/skins/red projectile.png"
+dest_files=["res://.godot/imported/red projectile.png-489370de6ab48dcde4b53fe286f789b6.ctex"]
 
 [params]
 

@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2ntvkwwx46ua"]
+
+[ext_resource type="Script" uid="uid://pb4l8e5oysef" path="res://main/environments/Weapons/projectile.gd" id="1_ugqwe"]
+[ext_resource type="Texture2D" uid="uid://b50jo7lsusn5" path="res://main/weapons/skins/red projectile.png" id="2_4ngax"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iuwy8"]
+size = Vector2(14.002523, 13.997375)
+
+[node name="projectile" type="Node2D"]
+top_level = true
+script = ExtResource("1_ugqwe")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(5.722046e-06, -1.1920929e-07)
+rotation = 1.5733731
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("2_4ngax")
+
+[node name="Hitbox" type="Area2D" parent="."]
+position = Vector2(5.722046e-06, -1.1920929e-07)
+rotation = 1.5733731
+scale = Vector2(0.9999999, 0.9999999)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(1.1920929e-07, 5.6028366e-06)
+scale = Vector2(1.0000008, 1.0000008)
+shape = SubResource("RectangleShape2D_iuwy8")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
