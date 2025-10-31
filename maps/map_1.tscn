@@ -1125,5 +1125,10 @@ script = ExtResource("5_hm8ck")
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(597, 322)
 
-[node name="Enemy" parent="." instance=ExtResource("6_5565n")]
-position = Vector2(506, 316)
+[node name="Enemygroup" type="Node2D" parent="."]
+
+[node name="Enemy" parent="Enemygroup" instance=ExtResource("6_5565n")]
+position = Vector2(538, 366)
+
+[node name="Enemy2" parent="Enemygroup" instance=ExtResource("6_5565n")]
+position = Vector2(658, 364)
