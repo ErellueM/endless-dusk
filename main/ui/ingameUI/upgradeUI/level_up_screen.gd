@@ -9,7 +9,7 @@ func _ready():
 	# Am Anfang verstecken
 	visible = false
 
-# Input-Check für die T-Taste
+# Input-Check für die T-Taste (Lösche diese FUnktion wenn nicht mehr am testen)
 func _unhandled_input(event):
 	if event.is_action_pressed("test"):
 		if not visible:
@@ -19,6 +19,11 @@ func _unhandled_input(event):
 			visible = false
 			get_tree().paused = false
 
+# Diese Funktion wird vom Signal aufgerufen
+func on_level_up():
+	show_levelup() # Deine existierende Logik aufrufen
+	
+	
 # Diese Funktion baut das Menü auf und zeigt es an
 func show_levelup():
 	visible = true

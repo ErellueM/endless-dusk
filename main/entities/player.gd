@@ -1,5 +1,13 @@
 extends CharacterBody2D
 
+signal xp_changed(current, max_val)
+signal leveled_up()
+
+# Level System Variablen
+var level: int = 1
+var current_xp: float = 9.0
+var max_xp: float = 10.0 # Startwert für Level 1
+
 # --- STATS FÜR DEN GAME DESIGNER (im Inspector editierbar) ---
 
 @export_group("Movement")
@@ -69,6 +77,39 @@ func _physics_process(delta):
 	# 4. TEST-ANGRIFF (Nur zum Debuggen)
 	if Input.is_action_just_pressed("ui_accept"):
 		print("Angriff mit ", might * 100, "% Schaden!")
+		
+
+# Wird aufgerufen, wenn du einen XP-Stein (Soul Gem) aufsammelst
+func gain_xp(amount: float):
+	# Growth Stat einberechnen (Mehr XP wenn Growth höher ist)
+	var real_amount = amount * growth
+	current_xp += real_amount
+	
+	# Checken, ob wir aufsteigen
+	if current_xp >= max_xp:
+		_handle_levelup()
+		
+	# UI benachrichtigen
+	xp_changed.emit(current_xp, max_xp)
+
+func _handle_levelup():
+	# 1. Überschüssige XP berechnen (damit nichts verloren geht)
+	var overflow = current_xp - max_xp
+	
+	# 2. Level erhöhen
+	level += 1
+	current_xp = 0.0
+	
+	# 3. Nächstes Level schwerer machen (Kurve)
+	# Formel: Jedes Level braucht 20% mehr XP + fix 10
+	max_xp = int(max_xp * 1.2) + 10
+	
+	# 4. Signal senden (Damit das Spiel pausiert und Menü aufgeht)
+	leveled_up.emit()
+	
+	# 5. Rekursion: Falls der Overflow so groß war, dass wir NOCHMAL aufsteigen
+	if overflow > 0:
+		gain_xp(overflow)
 
 # --- FUNKTIONEN FÜR SCHADEN & HEILUNG ---
 

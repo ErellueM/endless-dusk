@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://ic3hmfvhlxmq"]
+
+[ext_resource type="Script" uid="uid://c31o37fby64g" path="res://main/ui/ingameUI/game_ui.gd" id="1_bwhdv"]
+[ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="2_727k7"]
+[ext_resource type="PackedScene" uid="uid://mwaha8q4dlkd" path="res://main/ui/ingameUI/upgradeUI/LevelUpScreen.tscn" id="3_727k7"]
+
+[sub_resource type="Gradient" id="Gradient_727k7"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tat2n"]
+gradient = SubResource("Gradient_727k7")
+width = 400
+height = 20
+fill_to = Vector2(0.9207921, 0.74455446)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tat2n"]
+font = ExtResource("2_727k7")
+font_size = 30
+
+[node name="GameUI" type="CanvasLayer"]
+script = ExtResource("1_bwhdv")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="ExpBar" type="TextureProgressBar" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.09900001
+offset_bottom = -44.152008
+value = 100.0
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture2D_tat2n")
+tint_under = Color(0, 1, 1, 1)
+tint_progress = Color(1, 1, 0.19215687, 1)
+
+[node name="TimerLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 46.0
+offset_right = 1152.0
+offset_bottom = 77.0
+theme_override_font_sizes/font_size = 30
+label_settings = SubResource("LabelSettings_tat2n")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealthContainer" type="Container" parent="HUD"]
+layout_mode = 0
+offset_top = 593.0
+offset_right = 56.0
+offset_bottom = 648.0
+
+[node name="LevelUpScreen" parent="." instance=ExtResource("3_727k7")]
+visible = false
