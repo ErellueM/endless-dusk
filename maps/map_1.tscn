@@ -1098,6 +1098,8 @@ sources/0 = SubResource("TileSetAtlasSource_ae8pb")
 position = Vector2(-37, 5)
 script = ExtResource("1_hm8ck")
 
+[node name="LevelUpScreen" parent="." instance=ExtResource("8_063jp")]
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_bbd8t")
 format = 2
@@ -1139,5 +1141,3 @@ position = Vector2(538, 366)
 position = Vector2(658, 364)
 
 [node name="PauseMenu" parent="." instance=ExtResource("7_fwcsg")]
-
-[node name="LevelUpScreen" parent="." instance=ExtResource("8_063jp")]

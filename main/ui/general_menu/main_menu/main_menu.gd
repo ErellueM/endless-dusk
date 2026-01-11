@@ -6,6 +6,9 @@ const SCENE_SETTINGS = "res://main/ui/general_menu/settings_menu/settings.tscn"
 const SCENE_CREDITS = "res://main/ui/general_menu/credits_menu/credits.tscn"
 const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
 
+func _ready():
+	MusicManager.play_music(preload("res://assets/audio/soundtracks/Endless_Dusk_Main_Theme.ogg"))
+
 # wenn  Start-Button geklickt wird.
 func _on_button_start_game_pressed():
 	if ResourceLoader.exists(SCENE_CHARACTER_SELECTION):

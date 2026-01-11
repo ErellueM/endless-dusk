@@ -36,16 +36,17 @@ func show_levelup():
 	]
 	
 	# 3. Karten instanziieren
-	for option in options:
+	for i in options.size(): # Wir nutzen i als Index (0, 1, 2)
+		var option = options[i]
 		var card_instance = card_scene.instantiate()
 		card_container.add_child(card_instance)
 		
-		# Daten in die Karte füllen
+		# Daten setzen
 		card_instance.set_item_data(option["name"], option["desc"], option["rarity"])
-		
-		# Signal verbinden: Wenn Karte geklickt wird -> upgrade_selected aufrufen
-		# .bind(option) gibt die Daten der Karte an die Funktion weiter
 		card_instance.selected.connect(_on_upgrade_selected.bind(option))
+		
+		# Der Index 'i' ist 0, 1, 2
+		card_instance.appear(i * 0.2)
 
 func _on_upgrade_selected(option_data):
 	print("Spieler hat gewählt: ", option_data["name"])
