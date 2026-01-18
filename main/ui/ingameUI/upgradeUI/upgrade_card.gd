@@ -2,10 +2,10 @@ extends PanelContainer
 
 signal selected()
 
-@onready var title_label = $MarginContainer/VBoxContainer/TitleLabel
-@onready var desc_label = $MarginContainer/VBoxContainer/DescriptionLabel
-@onready var rarity_label = $MarginContainer/VBoxContainer/RarityLabel
-@onready var icon_rect = $MarginContainer/VBoxContainer/Icon
+@onready var title_label = $MarginContainer/MarginContainer/VBoxContainer/TitleLabel
+@onready var desc_label = $MarginContainer/MarginContainer/VBoxContainer/DescriptionLabel
+@onready var rarity_label = $MarginContainer/MarginContainer/VBoxContainer/RarityLabel
+@onready var icon_rect = $MarginContainer/MarginContainer/VBoxContainer/Icon
 @onready var background_style = get_theme_stylebox("panel").duplicate()
 
 var rarity_colors = {
@@ -80,3 +80,8 @@ func appear(delay_time: float):
 		.set_ease(Tween.EASE_OUT)\
 		.set_delay(delay_time)\
 		.from(Vector2.ZERO)
+
+func _on_button_pressed():
+	# Wenn geklickt, Animation abspielen oder direkt Signal senden
+	emit_signal("selected")
+	print("ausgewählt")
