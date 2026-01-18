@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=15 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://depboypv02px1" path="res://main/entities/enemy.tscn" id="6_5565n"]
 [ext_resource type="PackedScene" uid="uid://bbc8dgjm6omy7" path="res://main/ui/ingameUI/pauseMenu.tscn" id="7_fwcsg"]
 [ext_resource type="PackedScene" uid="uid://ic3hmfvhlxmq" path="res://main/ui/ingameUI/game_ui.tscn" id="8_063jp"]
+[ext_resource type="PackedScene" uid="uid://cxocihfwlim8c" path="res://main/systems/wave_handler.tscn" id="9_gdq6d"]
+[ext_resource type="PackedScene" uid="uid://qidhjxhe8p6f" path="res://main/systems/enemy_spawner.tscn" id="10_tiqm4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -1141,3 +1143,12 @@ position = Vector2(658, 364)
 [node name="PauseMenu" parent="." instance=ExtResource("7_fwcsg")]
 
 [node name="GameUI" parent="." instance=ExtResource("8_063jp")]
+
+[node name="WaveHandler" parent="." instance=ExtResource("9_gdq6d")]
+
+[node name="EnemySpawner" parent="WaveHandler" instance=ExtResource("10_tiqm4")]
+
+[node name="SpawnTimer" type="Timer" parent="WaveHandler"]
+
+[node name="Enemy" parent="WaveHandler" instance=ExtResource("6_5565n")]
+position = Vector2(538, 366)
