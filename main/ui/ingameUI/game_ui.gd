@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var timer_label = %TimerLabel
 @onready var exp_bar = %ExpBar # Deine TextureProgressBar (Unique Name!)
+@onready var health_bar = %HealthBar
 @onready var upgrade_popup = $LevelUpScreen # Pfad zur Popup-Node in dieser Szene
 
 var time_elapsed: float = 0.0
@@ -24,6 +25,11 @@ func _on_player_xp_changed(curr, max_val):
 	# Balken updaten
 	exp_bar.max_value = max_val
 	exp_bar.value = curr
+	
+func _on_player_health_changed(curr, max_val):
+	# TODO: Es soll hier vllt was geändert werden, weil nichtfunktional
+	health_bar.max_value = max_val
+	health_bar.value = curr
 
 func _on_player_leveled_up():
 	# Upgrade Menü öffnen

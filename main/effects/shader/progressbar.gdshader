@@ -3,8 +3,6 @@ shader_type canvas_item;
 // --- EINSTELLUNGEN ---
 uniform sampler2D noise_texture : repeat_enable, filter_nearest;
 
-// HIER IST DIE ÄNDERUNG:
-// Wir fügen eine eigene Zeit-Variable hinzu, die wir per Script steuern.
 uniform float custom_time; 
 
 uniform vec2 speed1 = vec2(0.05, 0.02);

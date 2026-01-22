@@ -54,6 +54,7 @@ seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4hafd"]
 shader = ExtResource("8_sbcx4")
+shader_parameter/custom_time = 0.0
 shader_parameter/color_fill = Color(0.58480245, 0.049940437, 0.049940437, 1)
 shader_parameter/color_empty = Color(0.4, 0, 0, 1)
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_sbcx4")

@@ -6,9 +6,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_andkh"]
 shader = ExtResource("2_fa58d")
-shader_parameter/darkening = 0.6
+shader_parameter/darkening = 0.2250000106875
 shader_parameter/saturation = 1.0
-shader_parameter/aberration_amount = 2.5
+shader_parameter/aberration_amount = 5.6710002693725
 shader_parameter/tint_color = Color(1, 1, 1, 1)
 
 [node name="PauseMenu" type="CanvasLayer"]
@@ -29,7 +29,7 @@ material = SubResource("ShaderMaterial_andkh")
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-color = Color(0, 0, 0, 0.59607846)
+color = Color(0.49747366, 0.49747372, 0.49747354, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1

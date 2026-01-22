@@ -1,5 +1,7 @@
 shader_type canvas_item;
 
+uniform float custom_time; 
+
 // --- FARBEN ---
 uniform vec4 color_fill : source_color = vec4(0.9, 0.1, 0.1, 1.0); // Helles Rot (die "Brocken")
 uniform vec4 color_empty : source_color = vec4(0.4, 0.0, 0.0, 1.0); // Dunkles Rot (der Zwischenraum)
@@ -21,7 +23,7 @@ void fragment() {
 	vec2 pixel_uv = floor(UV * chunk_size) / chunk_size;
 
 	// 2. Bewegung
-	vec2 moving_uv = pixel_uv + vec2(TIME * speed_x, TIME * speed_y);
+	vec2 moving_uv = pixel_uv + vec2(custom_time * speed_x, custom_time * speed_y);
 
 	// 3. Noise sampeln
 	// Wir holen den Wert aus der Textur an der verpixelten Stelle.

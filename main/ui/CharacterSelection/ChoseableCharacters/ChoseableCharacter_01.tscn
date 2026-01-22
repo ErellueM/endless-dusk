@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://yd6amcmsh8in"]
 
 [ext_resource type="Script" uid="uid://b6csilx3gglyp" path="res://main/ui/CharacterSelection/ChoseableCharacters/choseable_character_01.gd" id="1_ppt4t"]
-[ext_resource type="FontFile" uid="uid://jcvw8kw2elqc" path="res://assets/fonts/fs-pixel-sans-unicode-regular/fs-pixel-sans-unicode-regular.ttf" id="2_8xtfn"]
+[ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="2_8xtfn"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2g43r"]
 animations = []
@@ -19,12 +19,12 @@ script = ExtResource("1_ppt4t")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_top = 64.0
+offset_top = 74.0
 offset_right = 100.0
-offset_bottom = 87.0
+offset_bottom = 97.0
 theme_override_constants/line_spacing = 6
 theme_override_fonts/font = ExtResource("2_8xtfn")
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 
 [node name="TextureButton" type="TextureButton" parent="."]
@@ -40,7 +40,7 @@ offset_right = 66.69999
 offset_bottom = 67.8
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureButton"]
-position = Vector2(20, 19)
+position = Vector2(21, 19)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_2g43r")
 animation = &""

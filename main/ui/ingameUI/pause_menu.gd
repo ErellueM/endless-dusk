@@ -152,19 +152,14 @@ func add_weapon_entry(w_name, w_info):
 # --- BUTTON SIGNALE ---
 
 func _on_resume_button_pressed():
-	# Wir sagen dem GameManager: Zustand ändern!
-	# (Anpassen: "../GameManager" funktioniert, wenn UI und Manager Geschwister sind)
-	var manager = get_node_or_null("../GameManager") 
+	var manager = get_tree().get_first_node_in_group("Managers")
 	
 	# Fallback, falls der Pfad anders ist (z.B. absolute Pfade)
 	if not manager:
-		manager = get_node_or_null("/root/Main/GameManager")
+		print("FEHLER: GameManager nicht gefunden! Pfad im Script prüfen.")
 		
 	if manager:
-		# Hier nutzen wir den Enum vom Manager
 		manager.change_state(manager.GameState.PLAYING)
-	else:
-		print("FEHLER: GameManager nicht gefunden! Pfad im Script prüfen.")
 
 func _on_quit_button_pressed():
 	get_tree().quit()
