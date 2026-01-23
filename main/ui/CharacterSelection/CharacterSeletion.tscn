@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://yiugqchqnyuh"]
+[gd_scene load_steps=39 format=3 uid="uid://yiugqchqnyuh"]
 
 [ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="1_hxdn1"]
 [ext_resource type="PackedScene" uid="uid://yd6amcmsh8in" path="res://main/ui/CharacterSelection/ChoseableCharacters/ChoseableCharacter_01.tscn" id="1_r6mht"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="3_tgso6"]
 [ext_resource type="PackedScene" uid="uid://bk8p1tcioxxce" path="res://main/entities/Characters/PlayableCharacter_02.tscn" id="4_5ltq3"]
 [ext_resource type="Texture2D" uid="uid://c55wcqqjsap3r" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="5_t6acf"]
+[ext_resource type="PackedScene" uid="uid://vq8qmvmk1bbj" path="res://main/entities/Characters/PlayableCharacter_03.tscn" id="7_eclxw"]
+[ext_resource type="Texture2D" uid="uid://b0u5anfvql282" path="res://assets/art/characters/Crusader/Crusader-Idle.png" id="8_nxpqh"]
+[ext_resource type="Texture2D" uid="uid://c7758oaoelgk1" path="res://assets/art/characters/Crusader/Crusader-Walk.png" id="9_w8bcl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5ltq3"]
 atlas = ExtResource("3_tgso6")
@@ -107,6 +110,117 @@ animations = [{
 "speed": 7.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxaws"]
+atlas = ExtResource("8_nxpqh")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjtgd"]
+atlas = ExtResource("8_nxpqh")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wb3i4"]
+atlas = ExtResource("8_nxpqh")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cuwi"]
+atlas = ExtResource("8_nxpqh")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bs84k"]
+atlas = ExtResource("8_nxpqh")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qep86"]
+atlas = ExtResource("8_nxpqh")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wnni"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bt83l"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sp01w"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrb1g"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dtyh"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7u14q"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqeul"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruirv"]
+atlas = ExtResource("9_w8bcl")
+region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8du83"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxaws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjtgd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wb3i4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cuwi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bs84k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qep86")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6wnni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bt83l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sp01w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrb1g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dtyh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7u14q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqeul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ruirv")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 9.0
+}]
+
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -148,6 +262,13 @@ layout_mode = 2
 character_name = "Orc"
 character_scene = ExtResource("4_5ltq3")
 sprite_frames = SubResource("SpriteFrames_t6acf")
+
+[node name="Crusader" parent="GridContainer" instance=ExtResource("1_r6mht")]
+layout_mode = 2
+character_name = "Crusader"
+character_scene = ExtResource("7_eclxw")
+sprite_frames = SubResource("SpriteFrames_8du83")
+unlocked = false
 
 [node name="Button_back" type="Button" parent="."]
 layout_mode = 0
