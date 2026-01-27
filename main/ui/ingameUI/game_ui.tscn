@@ -1,20 +1,74 @@
-[gd_scene load_steps=7 format=3 uid="uid://ic3hmfvhlxmq"]
+[gd_scene load_steps=23 format=3 uid="uid://ic3hmfvhlxmq"]
 
 [ext_resource type="Script" uid="uid://c31o37fby64g" path="res://main/ui/ingameUI/game_ui.gd" id="1_bwhdv"]
 [ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="2_727k7"]
+[ext_resource type="Shader" uid="uid://dayx3on5e73ce" path="res://main/effects/shader/progressbar.gdshader" id="2_acanw"]
+[ext_resource type="Texture2D" uid="uid://t6u5javdh4nc" path="res://assets/art/progressbar/2025-11-01-12-44-29-1344x896.jpg" id="3_82qab"]
 [ext_resource type="PackedScene" uid="uid://mwaha8q4dlkd" path="res://main/ui/ingameUI/upgradeUI/LevelUpScreen.tscn" id="3_727k7"]
+[ext_resource type="Texture2D" uid="uid://oj4j3d1mygto" path="res://assets/art/progressbar/canvas1.png" id="4_82qab"]
+[ext_resource type="Script" uid="uid://dpdkdoekm1u27" path="res://main/ui/ingameUI/progress.gd" id="5_abjjk"]
+[ext_resource type="Texture2D" uid="uid://cddftf4squsd0" path="res://assets/art/progressbar/Unbenannt.png" id="5_h3nmv"]
+[ext_resource type="PackedScene" uid="uid://bbc8dgjm6omy7" path="res://main/ui/ingameUI/pauseMenu.tscn" id="8_7k6wb"]
+[ext_resource type="Texture2D" uid="uid://tq0eql2ynnij" path="res://assets/art/HUD/flask2.png" id="8_c6rn7"]
+[ext_resource type="Shader" uid="uid://duitpm02107wg" path="res://main/effects/shader/bubbles.gdshader" id="8_sbcx4"]
 
-[sub_resource type="Gradient" id="Gradient_727k7"]
+[sub_resource type="Gradient" id="Gradient_acanw"]
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_tat2n"]
-gradient = SubResource("Gradient_727k7")
-width = 400
-height = 20
-fill_to = Vector2(0.9207921, 0.74455446)
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_82qab"]
+gradient = SubResource("Gradient_acanw")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h3nmv"]
+shader = ExtResource("2_acanw")
+shader_parameter/noise_texture = ExtResource("3_82qab")
+shader_parameter/custom_time = 0.0
+shader_parameter/speed1 = Vector2(-0.04, 0.02)
+shader_parameter/speed2 = Vector2(0.17, 0.04)
+shader_parameter/pixel_size = 0.01600000076
+shader_parameter/water_color = Color(0, 0.1, 0.3, 1)
+shader_parameter/light_color = Color(0, 0.077249356, 0.2664212, 1)
+shader_parameter/sharpness = 0.0800000038
+shader_parameter/rotation_angle = 0.7
 
 [sub_resource type="LabelSettings" id="LabelSettings_tat2n"]
 font = ExtResource("2_727k7")
-font_size = 30
+font_size = 20
+
+[sub_resource type="Gradient" id="Gradient_wnhhx"]
+offsets = PackedFloat32Array(0, 0.010238886, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xinmh"]
+gradient = SubResource("Gradient_wnhhx")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iwkmk"]
+noise_type = 4
+seed = 10
+frequency = 0.0164
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sbcx4"]
+noise = SubResource("FastNoiseLite_iwkmk")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4hafd"]
+shader = ExtResource("8_sbcx4")
+shader_parameter/custom_time = 0.0
+shader_parameter/color_fill = Color(0.58480245, 0.049940437, 0.049940437, 1)
+shader_parameter/color_empty = Color(0.4, 0, 0, 1)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_sbcx4")
+shader_parameter/speed_x = 0.07500009856250012
+shader_parameter/speed_y = 0.05700009770749981
+shader_parameter/chunk_size = 20.0
+shader_parameter/density = 0.70400003344
+
+[sub_resource type="Gradient" id="Gradient_egmng"]
+offsets = PackedFloat32Array(0, 0.0032786885, 0.029508196, 0.039344262)
+colors = PackedColorArray(0, 0, 0, 1, 0.54659647, 0.54659647, 0.54659647, 1, 0.652459, 0.652459, 0.652459, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j0dfh"]
+gradient = SubResource("Gradient_egmng")
 
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource("1_bwhdv")
@@ -25,35 +79,117 @@ anchors_preset = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 
+[node name="Under" type="ColorRect" parent="HUD"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1147.0
+offset_bottom = 25.0
+color = Color(0, 0, 0, 1)
+
 [node name="ExpBar" type="TextureProgressBar" parent="HUD"]
 unique_name_in_owner = true
+clip_children = 1
+texture_repeat = 2
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.09900001
-offset_bottom = -44.152008
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -39.152008
 value = 100.0
 nine_patch_stretch = true
-texture_progress = SubResource("GradientTexture2D_tat2n")
+texture_progress = SubResource("GradientTexture1D_82qab")
 tint_under = Color(0, 1, 1, 1)
-tint_progress = Color(1, 1, 0.19215687, 1)
+
+[node name="Progress" type="TextureRect" parent="HUD/ExpBar"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_h3nmv")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -7.0
+offset_right = 1506.2759
+offset_bottom = 473.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.435, 0.435)
+texture = ExtResource("4_82qab")
+stretch_mode = 1
+script = ExtResource("5_abjjk")
+
+[node name="Over" type="NinePatchRect" parent="HUD"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 30.0
+texture = ExtResource("5_h3nmv")
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="TimerLabel" type="Label" parent="HUD"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_top = 46.0
-offset_right = 1152.0
-offset_bottom = 77.0
+offset_left = 2.0
+offset_top = 42.0
+offset_right = 1154.0
+offset_bottom = 73.0
 theme_override_font_sizes/font_size = 30
 label_settings = SubResource("LabelSettings_tat2n")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HealthContainer" type="Container" parent="HUD"]
+[node name="Under2" type="ColorRect" parent="HUD"]
 layout_mode = 0
-offset_top = 593.0
-offset_right = 56.0
-offset_bottom = 648.0
+offset_left = 41.0
+offset_top = 553.0
+offset_right = 109.0
+offset_bottom = 616.0
+color = Color(0, 0, 0, 0.43529412)
+
+[node name="HealthBar" type="TextureProgressBar" parent="HUD"]
+unique_name_in_owner = true
+clip_children = 1
+texture_filter = 1
+layout_mode = 0
+offset_left = 42.0
+offset_top = 555.0
+offset_right = 106.0
+offset_bottom = 619.0
+value = 70.0
+fill_mode = 3
+texture_progress = SubResource("GradientTexture2D_xinmh")
+
+[node name="ProgressHealth" type="TextureRect" parent="HUD/HealthBar"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_4hafd")
+layout_mode = 0
+offset_left = -3.0
+offset_top = 2.0
+offset_right = 66.0
+offset_bottom = 71.0
+texture = SubResource("GradientTexture2D_j0dfh")
+script = ExtResource("5_abjjk")
+
+[node name="TextureRect" type="TextureRect" parent="HUD"]
+layout_mode = 0
+offset_left = -54.000008
+offset_top = 467.0
+offset_right = 1098.0
+offset_bottom = 1363.0
+scale = Vector2(0.215, 0.215)
+texture = ExtResource("8_c6rn7")
 
 [node name="LevelUpScreen" parent="." instance=ExtResource("3_727k7")]
+layer = 4
+visible = false
+
+[node name="PauseMenu" parent="." instance=ExtResource("8_7k6wb")]
+layer = 10
 visible = false

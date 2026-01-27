@@ -1,14 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbc8dgjm6omy7"]
+[gd_scene load_steps=5 format=3 uid="uid://bbc8dgjm6omy7"]
 
 [ext_resource type="Script" uid="uid://tqb3o5nvw220" path="res://main/ui/ingameUI/pause_menu.gd" id="1_kacna"]
+[ext_resource type="Shader" uid="uid://skaojwxi8vj" path="res://main/effects/shader/blur.gdshader" id="2_fa58d"]
+[ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="2_fhrtm"]
 
-[node name="PauseMenu" type="CanvasLayer" node_paths=PackedStringArray("stats_grid", "weapons_grid")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_andkh"]
+shader = ExtResource("2_fa58d")
+shader_parameter/darkening = 0.2250000106875
+shader_parameter/saturation = 1.0
+shader_parameter/aberration_amount = 5.6710002693725
+shader_parameter/tint_color = Color(1, 1, 1, 1)
+
+[node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
 script = ExtResource("1_kacna")
-stats_grid = NodePath("Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/StatsGrid")
-weapons_grid = NodePath("Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/WeaponsGrid")
 
 [node name="Control" type="Control" parent="."]
+unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,10 +25,11 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_andkh")
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 648.0
-color = Color(0, 0, 0, 0.5882353)
+color = Color(0.49747366, 0.49747372, 0.49747354, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
@@ -39,6 +48,7 @@ layout_mode = 2
 
 [node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fhrtm")
 theme_override_font_sizes/font_size = 53
 text = "Pause"
 horizontal_alignment = 1
@@ -54,12 +64,14 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fhrtm")
 theme_override_font_sizes/font_size = 30
 text = "Stats"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StatsGrid" type="GridContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 20
@@ -72,12 +84,14 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fhrtm")
 theme_override_font_sizes/font_size = 30
 text = "Weapons"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="WeaponsGrid" type="GridContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 20
@@ -90,6 +104,8 @@ layout_mode = 2
 [node name="ResumeButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_fhrtm")
+theme_override_font_sizes/font_size = 16
 text = "Resume"
 
 [node name="Control" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
@@ -99,6 +115,7 @@ size_flags_horizontal = 3
 [node name="SettingsButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_fhrtm")
 text = "Settings"
 
 [node name="Control2" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
@@ -108,6 +125,7 @@ size_flags_horizontal = 3
 [node name="QuitButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_fhrtm")
 text = "Quit"
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer2/ResumeButton" to="." method="_on_resume_button_pressed"]
