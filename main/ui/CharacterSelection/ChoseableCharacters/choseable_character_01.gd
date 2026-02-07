@@ -10,10 +10,10 @@ func _ready():
 	$TextureButton.connect("pressed", Callable(self, "_on_pressed"))
 	
 	if sprite_frames:
-		$TextureButton/AnimatedSprite2D.sprite_frames = sprite_frames
+		$TextureButton/CenterContainer/AnimatedSprite2D.sprite_frames = sprite_frames
 		var anims = sprite_frames.get_animation_names()
 		if anims.size() > 0:
-			$TextureButton/AnimatedSprite2D.play(anims[0])  # erste Animation automatisch abspielen
+			$TextureButton/CenterContainer/AnimatedSprite2D.play(anims[0])  # erste Animation automatisch abspielen
 
 	if not unlocked:
 		make_locked_visual()

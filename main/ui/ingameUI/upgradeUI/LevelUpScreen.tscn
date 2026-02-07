@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dyaajs1lvmg6g" path="res://main/ui/ingameUI/upgradeUI/UpgradeCard.tscn" id="1_8epuf"]
 [ext_resource type="Script" uid="uid://bh0tagwgqkv43" path="res://main/ui/ingameUI/upgradeUI/level_up_screen.gd" id="1_ndms1"]
 [ext_resource type="Shader" uid="uid://skaojwxi8vj" path="res://main/effects/shader/blur.gdshader" id="2_yda51"]
-[ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="3_0jnsf"]
+[ext_resource type="FontFile" uid="uid://bi8yhuhuvn611" path="res://assets/fonts/Bitmgothic/Bitmgothic.ttf" id="3_0jnsf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0jnsf"]
 shader = ExtResource("2_yda51")
@@ -13,11 +13,15 @@ shader_parameter/aberration_amount = 2.5
 shader_parameter/tint_color = Color(1, 1, 1, 1)
 
 [sub_resource type="FontVariation" id="FontVariation_0jnsf"]
-spacing_glyph = 45
+base_font = ExtResource("3_0jnsf")
+spacing_glyph = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_2j2hb"]
 font = SubResource("FontVariation_0jnsf")
 font_size = 56
+font_color = Color(0.7738555, 2.23808e-06, 9.62615e-07, 1)
+shadow_size = 16
+shadow_color = Color(0, 0, 0, 1)
 
 [node name="LevelUpScreen" type="CanvasLayer"]
 process_mode = 2
@@ -48,17 +52,22 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
 [node name="Label" type="Label" parent="Control/VBoxContainer"]
+custom_minimum_size = Vector2(100, 70)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_0jnsf")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
 theme_override_font_sizes/font_size = 50
 text = "ASCENSION"
 label_settings = SubResource("LabelSettings_2j2hb")
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Control" type="Control" parent="Control/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)

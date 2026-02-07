@@ -1,6 +1,6 @@
 [gd_scene load_steps=39 format=3 uid="uid://yiugqchqnyuh"]
 
-[ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="1_hxdn1"]
+[ext_resource type="FontFile" uid="uid://bi8yhuhuvn611" path="res://assets/fonts/Bitmgothic/Bitmgothic.ttf" id="1_nxpqh"]
 [ext_resource type="PackedScene" uid="uid://yd6amcmsh8in" path="res://main/ui/CharacterSelection/ChoseableCharacters/ChoseableCharacter_01.tscn" id="1_r6mht"]
 [ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="2_oardr"]
 [ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="3_tgso6"]
@@ -231,12 +231,12 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_left = 149.00003
-offset_top = 31.0
-offset_right = 469.00003
-offset_bottom = 54.0
-scale = Vector2(2.6, 2.6)
-theme_override_fonts/font = ExtResource("1_hxdn1")
+offset_left = 132.0
+offset_top = 12.0
+offset_right = 578.0
+offset_bottom = 59.0
+theme_override_fonts/font = ExtResource("1_nxpqh")
+theme_override_font_sizes/font_size = 46
 text = "Chose your Character"
 horizontal_alignment = 1
 
@@ -268,15 +268,12 @@ layout_mode = 2
 character_name = "Crusader"
 character_scene = ExtResource("7_eclxw")
 sprite_frames = SubResource("SpriteFrames_8du83")
-unlocked = false
 
 [node name="Button_back" type="Button" parent="."]
 layout_mode = 0
-offset_left = 32.0
-offset_top = 83.0
-offset_right = 100.0
-offset_bottom = 114.0
-scale = Vector2(1.203466, 1.4418832)
+offset_top = 25.000011
+offset_right = 120.0
+offset_bottom = 56.209187
 text = "go back"
 
 [connection signal="pressed" from="Button_back" to="GridContainer/Soilder" method="_on_button_back_pressed"]

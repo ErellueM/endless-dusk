@@ -31,7 +31,7 @@ shader_parameter/rotation_angle = 0.7
 
 [sub_resource type="LabelSettings" id="LabelSettings_tat2n"]
 font = ExtResource("2_727k7")
-font_size = 20
+font_size = 10
 
 [sub_resource type="Gradient" id="Gradient_wnhhx"]
 offsets = PackedFloat32Array(0, 0.010238886, 1)
@@ -83,8 +83,8 @@ offset_bottom = 648.0
 layout_mode = 0
 offset_left = 5.0
 offset_top = 5.0
-offset_right = 1147.0
-offset_bottom = 25.0
+offset_right = 635.0
+offset_bottom = 17.0
 color = Color(0, 0, 0, 1)
 
 [node name="ExpBar" type="TextureProgressBar" parent="HUD"]
@@ -97,8 +97,8 @@ anchor_right = 1.0
 anchor_bottom = 0.09900001
 offset_left = 5.0
 offset_top = 5.0
-offset_right = -5.0
-offset_bottom = -39.152008
+offset_right = -517.0
+offset_bottom = -48.152008
 value = 100.0
 nine_patch_stretch = true
 texture_progress = SubResource("GradientTexture1D_82qab")
@@ -112,7 +112,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -7.0
-offset_right = 1506.2759
+offset_right = 834.5747
 offset_bottom = 473.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -123,8 +123,8 @@ script = ExtResource("5_abjjk")
 
 [node name="Over" type="NinePatchRect" parent="HUD"]
 layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 30.0
+offset_right = 640.0
+offset_bottom = 21.0
 texture = ExtResource("5_h3nmv")
 patch_margin_left = 5
 patch_margin_top = 5
@@ -137,20 +137,19 @@ axis_stretch_vertical = 1
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 2.0
-offset_top = 42.0
-offset_right = 1154.0
-offset_bottom = 73.0
-theme_override_font_sizes/font_size = 30
+offset_top = 24.0
+offset_right = 640.0
+offset_bottom = 55.0
 label_settings = SubResource("LabelSettings_tat2n")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Under2" type="ColorRect" parent="HUD"]
 layout_mode = 0
-offset_left = 41.0
-offset_top = 553.0
-offset_right = 109.0
-offset_bottom = 616.0
+offset_left = 34.0
+offset_top = 310.0
+offset_right = 60.0
+offset_bottom = 336.0
 color = Color(0, 0, 0, 0.43529412)
 
 [node name="HealthBar" type="TextureProgressBar" parent="HUD"]
@@ -158,10 +157,11 @@ unique_name_in_owner = true
 clip_children = 1
 texture_filter = 1
 layout_mode = 0
-offset_left = 42.0
-offset_top = 555.0
-offset_right = 106.0
-offset_bottom = 619.0
+offset_left = 34.0
+offset_top = 310.0
+offset_right = 98.0
+offset_bottom = 375.82275
+scale = Vector2(0.395, 0.395)
 value = 70.0
 fill_mode = 3
 texture_progress = SubResource("GradientTexture2D_xinmh")
@@ -170,20 +170,20 @@ texture_progress = SubResource("GradientTexture2D_xinmh")
 texture_filter = 1
 material = SubResource("ShaderMaterial_4hafd")
 layout_mode = 0
-offset_left = -3.0
+offset_left = 2.0
 offset_top = 2.0
 offset_right = 66.0
-offset_bottom = 71.0
+offset_bottom = 66.0
 texture = SubResource("GradientTexture2D_j0dfh")
 script = ExtResource("5_abjjk")
 
 [node name="TextureRect" type="TextureRect" parent="HUD"]
 layout_mode = 0
-offset_left = -54.000008
-offset_top = 467.0
-offset_right = 1098.0
-offset_bottom = 1363.0
-scale = Vector2(0.215, 0.215)
+offset_left = -7.000001
+offset_top = 272.99997
+offset_right = 1145.0
+offset_bottom = 1169.0
+scale = Vector2(0.09, 0.09)
 texture = ExtResource("8_c6rn7")
 
 [node name="LevelUpScreen" parent="." instance=ExtResource("3_727k7")]
