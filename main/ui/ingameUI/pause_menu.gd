@@ -6,27 +6,15 @@ extends CanvasLayer
 @onready var weapons_grid = %WeaponsGrid
 
 func _ready():
-	# FEHLERBEHEBUNG:
-	# Wir verbinden uns mit dem Signal DES CANVAS LAYERS selbst ("self").
-	# Wenn der GameManager .show() aufruft, feuert dieses Signal hier.
 	visibility_changed.connect(_on_visibility_changed)
 	
-	# WICHTIG: Lösche die Zeile "content_control.visible = false"
-	# Der GameManager versteckt ja schon den ganzen CanvasLayer beim Start.
-	# Das Control soll "offen" bleiben, damit es zu sehen ist, sobald der Layer angeht.
-
-# Diese Funktion feuert, wenn der CanvasLayer sichtbar/unsichtbar wird
 func _on_visibility_changed():
-	# Wir prüfen "visible" (das ist die Eigenschaft dieses CanvasLayers)
 	if visible:
-		# Menü ist jetzt sichtbar -> UI updaten!
-		# Optional: Falls das Control im Editor ausgeblendet war, schalten wir es an:
 		content_control.visible = true 
 		update_ui()
 
 # --- HAUPTFUNKTION ---
 func update_ui():
-	# Wir suchen den Spieler
 	var player = get_tree().get_first_node_in_group("player")
 	
 	if player:
@@ -35,7 +23,6 @@ func update_ui():
 
 # --- TEIL A: STATS ---
 func update_stats(player):
-	# Alte Einträge löschen
 	for child in stats_grid.get_children():
 		child.queue_free()
 
@@ -52,7 +39,7 @@ func update_stats(player):
 	var rec_color = Color.GREEN if player.recovery > 0 else Color.WHITE
 	add_stat_row("💖 Recovery", rec_text, rec_color)
 	
-	add_separator(stats_grid)
+	#add_separator(stats_grid)
 	
 	# 4. MIGHT (Schaden)
 	var might_bonus = (player.might - 1.0) * 100
@@ -69,11 +56,11 @@ func update_stats(player):
 	var cd_col = Color.GREEN if cd_diff < 0 else (Color.RED if cd_diff > 0 else Color.WHITE)
 	add_stat_row("⏳ Cooldown", get_clean_text(cd_diff) + "%", cd_col)
 	
-	add_separator(stats_grid)
+	#add_separator(stats_grid)
 	
 	# 7. UTILITY
 	add_stat_row("👟 Speed", str(int(player.speed)))
-	add_stat_row("🧲 Magnet", str(int(player.magnet_range)) + " px")
+	add_stat_row("🧲 Magnet", str(int(player.magnet_range)) + "%")
 	
 	# 8. GROWTH
 	var growth_bonus = (player.growth - 1.0) * 100
@@ -87,12 +74,10 @@ func update_weapons(player):
 	
 	var found_weapons = false
 	
-	# Flexible Suche nach Waffen im Spieler-Node
+
 	for child in player.get_children():
-		# Prüft auf typische Waffeneigenschaften
 		if child.has_method("shoot") or child.get("damage") != null or "Weapon" in child.name:
 			var w_name = child.name
-			# Versucht Schaden auszulesen, sonst "?"
 			var w_dmg = "Dmg: " + str(child.get("damage")) if child.get("damage") else "Dmg: ?"
 			
 			add_weapon_entry(w_name, w_dmg)
@@ -100,7 +85,7 @@ func update_weapons(player):
 	
 	if not found_weapons:
 		var lbl = Label.new()
-		lbl.text = "- Keine Waffen -"
+		lbl.text = "- No Weapons -"
 		lbl.modulate = Color(0.5, 0.5, 0.5)
 		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		weapons_grid.add_child(lbl)
@@ -109,9 +94,9 @@ func update_weapons(player):
 
 func get_clean_text(val: float) -> String:
 	if is_equal_approx(fmod(val, 1.0), 0.0):
-		return str(int(val)) # Ganze Zahl (50)
+		return str(int(val))
 	else:
-		return "%.1f" % val # Kommazahl (12.5)
+		return "%.1f" % val 
 
 func add_stat_row(name_text: String, value_text: String, value_color: Color = Color.WHITE):
 	var lbl_name = Label.new()

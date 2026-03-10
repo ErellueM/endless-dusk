@@ -9,6 +9,9 @@
 size = Vector2(12, 18)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+z_index = 50
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_rp718")
 
 [node name="Entity" parent="." instance=ExtResource("2_yewv4")]

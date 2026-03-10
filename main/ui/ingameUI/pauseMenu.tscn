@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://tqb3o5nvw220" path="res://main/ui/ingameUI/pause_menu.gd" id="1_kacna"]
 [ext_resource type="Shader" uid="uid://skaojwxi8vj" path="res://main/effects/shader/blur.gdshader" id="2_fa58d"]
-[ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="2_fhrtm"]
+[ext_resource type="FontFile" uid="uid://bi8yhuhuvn611" path="res://assets/fonts/Bitmgothic/Bitmgothic.ttf" id="3_fa58d"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_andkh"]
 shader = ExtResource("2_fa58d")
@@ -38,18 +38,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_fhrtm")
-theme_override_font_sizes/font_size = 53
+theme_override_fonts/font = ExtResource("3_fa58d")
+theme_override_font_sizes/font_size = 33
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -64,8 +64,8 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_fhrtm")
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_fa58d")
+theme_override_font_sizes/font_size = 25
 text = "Stats"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -74,8 +74,8 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 4
 columns = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -84,8 +84,8 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_fhrtm")
-theme_override_font_sizes/font_size = 30
+theme_override_fonts/font = ExtResource("3_fa58d")
+theme_override_font_sizes/font_size = 25
 text = "Weapons"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -94,8 +94,8 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 4
 columns = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
@@ -104,7 +104,7 @@ layout_mode = 2
 [node name="ResumeButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_fhrtm")
+theme_override_fonts/font = ExtResource("3_fa58d")
 theme_override_font_sizes/font_size = 16
 text = "Resume"
 
@@ -115,7 +115,7 @@ size_flags_horizontal = 3
 [node name="SettingsButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_fhrtm")
+theme_override_fonts/font = ExtResource("3_fa58d")
 text = "Settings"
 
 [node name="Control2" type="Control" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
@@ -125,7 +125,7 @@ size_flags_horizontal = 3
 [node name="QuitButton" type="Button" parent="Control/MarginContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_fhrtm")
+theme_override_fonts/font = ExtResource("3_fa58d")
 text = "Quit"
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer2/ResumeButton" to="." method="_on_resume_button_pressed"]
