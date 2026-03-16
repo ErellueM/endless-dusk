@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://dnewoqayxh5hp"]
+
+[ext_resource type="Script" uid="uid://dc0ku8fbo88g7" path="res://main/entities/xp/xp.gd" id="1_6r2eh"]
+[ext_resource type="Texture2D" uid="uid://da7vab2jk1kgs" path="res://assets/art/enemys/xp/soul-xp.png" id="2_1o615"]
+
+[sub_resource type="Gradient" id="Gradient_6r2eh"]
+offsets = PackedFloat32Array(0.4, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1o615"]
+gradient = SubResource("Gradient_6r2eh")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1.015, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_6r2eh"]
+blend_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yynql"]
+radius = 5.0
+
+[node name="XP" type="Area2D"]
+script = ExtResource("1_6r2eh")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0, 0.8509804, 1, 1)
+energy = 1.36
+texture = SubResource("GradientTexture2D_1o615")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_6r2eh")
+texture = ExtResource("2_1o615")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yynql")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

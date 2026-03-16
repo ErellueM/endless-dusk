@@ -1,12 +1,15 @@
 extends CharacterBody2D
 
 signal xp_changed(current, max_val)
+signal health_changed(current, max_val)
 signal leveled_up()
 
 # Level System Variablen
 var level: int = 1
-var current_xp: float = 9.0
+var current_xp: float = 0
 var max_xp: float = 10.0 # Startwert für Level 1
+
+@export var damage_number_scene: PackedScene
 
 # --- STATS FÜR DEN GAME DESIGNER (im Inspector editierbar) ---
 
@@ -26,23 +29,28 @@ var max_xp: float = 10.0 # Startwert für Level 1
 @export_group("Utility Stats")
 @export var magnet_range: float = 100.0 # Radius zum Einsammeln von XP
 @export var growth: float = 1.0         # XP Multiplikator (schneller Leveln) [cite: 9]
+@export var luck: float = 1.0
 
 # Interne Variablen (nicht im Inspector sichtbar)
-var current_health: float
+@onready var health_component = $Health
 @onready var anim = $AnimatedSprite2D
 
 func _ready():
 	# Leben beim Start auffüllen
-	current_health = max_health
+	if health_component:
+		health_component.died.connect(die)
+		print("Spieler geladen mit ", health_component.max_health, " HP.")
 	
 	# Optional: Start-Check
 	print("Spieler geladen mit ", max_health, " HP und ", might, "x Schaden.")
 
 func _physics_process(delta):
 	# 1. REGENERATION
-	if current_health < max_health and recovery > 0:
-		current_health += recovery * delta
-		current_health = min(current_health, max_health) # Nicht über Max heilen
+	if health_component and recovery > 0:
+		if health_component.current_health < health_component.max_health:
+			health_component.current_health += recovery * delta
+			health_component.current_health = min(health_component.current_health, health_component.max_health)
+			health_changed.emit(health_component.current_health, health_component.max_health)
 
 	# 2. BEWEGUNG (INPUT)
 	var direction = Vector2.ZERO
@@ -54,21 +62,14 @@ func _physics_process(delta):
 		direction.y += 1
 	if Input.is_action_pressed("ui_up"):
 		direction.y -= 1
-
-	# Input normalisieren (damit man diagonal nicht schneller ist)
+	
 	if direction.length() > 0:
 		direction = direction.normalized()
-	
-	# Velocity setzen (CharacterBody2D Eigenschaft)
 	velocity = direction * speed
-	
-	# Physik-Bewegung ausführen (gleitet an Wänden entlang)
 	move_and_slide()
-
-	# 3. ANIMATIONEN
+	
 	if velocity.length() > 0:
 		anim.play("walk")
-		# Sprite spiegeln je nach Richtung
 		if velocity.x != 0:
 			anim.flip_h = velocity.x < 0
 	else:
@@ -79,62 +80,56 @@ func _physics_process(delta):
 		print("Angriff mit ", might * 100, "% Schaden!")
 		
 
-# Wird aufgerufen, wenn du einen XP-Stein (Soul Gem) aufsammelst
 func gain_xp(amount: float):
-	# Growth Stat einberechnen (Mehr XP wenn Growth höher ist)
 	var real_amount = amount * growth
 	current_xp += real_amount
 	
-	# Checken, ob wir aufsteigen
-	if current_xp >= max_xp:
+	while current_xp >= max_xp:
 		_handle_levelup()
-		
-	# UI benachrichtigen
 	xp_changed.emit(current_xp, max_xp)
 
 func _handle_levelup():
-	# 1. Überschüssige XP berechnen (damit nichts verloren geht)
 	var overflow = current_xp - max_xp
-	
-	# 2. Level erhöhen
 	level += 1
 	current_xp = 0.0
-	
-	# 3. Nächstes Level schwerer machen (Kurve)
-	# Formel: Jedes Level braucht 20% mehr XP + fix 10
-	max_xp = int(max_xp * 1.2) + 10
-	
-	# 4. Signal senden (Damit das Spiel pausiert und Menü aufgeht)
+	max_xp = int(max_xp * 1.2) # +10
 	leveled_up.emit()
-	
-	# 5. Rekursion: Falls der Overflow so groß war, dass wir NOCHMAL aufsteigen
 	if overflow > 0:
 		gain_xp(overflow)
 
-# --- FUNKTIONEN FÜR SCHADEN & HEILUNG ---
-
-# Diese Funktion wird später vom Gegner aufgerufen: player.take_damage(10)
 func take_damage(dmg_amount: float):
-	# Armor berechnen: Schaden minus Rüstung (aber nicht unter 0)
 	var final_damage = max(0, dmg_amount - armor)
 	
-	current_health -= final_damage
-	print("Getroffen! Schaden: ", final_damage, " | Rest-HP: ", current_health)
+	if damage_number_scene:
+		var dmg_num = damage_number_scene.instantiate()
+		var offset = Vector2(+38, -20)
+		var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))
+		dmg_num.global_position = global_position + random_offset + offset
+		get_tree().current_scene.call_deferred("add_child", dmg_num)
+		dmg_num.setup(final_damage, true)
 	
-	# Blink-Effekt (optional, wenn du einen Shader oder Modulate nutzt)
-	anim.modulate = Color(1, 0, 0) # Rot färben
-	await get_tree().create_timer(0.1).timeout
-	anim.modulate = Color(1, 1, 1) # Normal färben
+	if health_component:
+		health_component.take_damage(final_damage)
+		print("Hit! DMG: ", final_damage, " | HP: ", health_component.current_health)
+		health_changed.emit(health_component.current_health, health_component.max_health)
+	
+	anim.modulate = Color(0.7, 0, 0)
+	await get_tree().create_timer(0.2).timeout
+	anim.modulate = Color(1, 1, 1)
 
-	if current_health <= 0:
-		die()
 
 func heal(amount: float):
-	current_health += amount
-	current_health = min(current_health, max_health)
-	print("Geheilt um ", amount)
+	if health_component:
+		health_component.current_health += amount
+		health_component.current_health = min(health_component.current_health, health_component.max_health)
+		print("Healed ", amount, " | HP: ", health_component.current_health)
+		health_changed.emit(health_component.current_health, health_component.max_health)
 
 func die():
-	print("Game Over! Du hast überlebt bis Level...") 
+	print("Game Over!") 
+	var manager = get_tree().get_first_node_in_group("Managers")
+	
+	if manager:
+		manager.change_state(manager.GameState.DEAD)
 	# Hier später: Game Over Screen anzeigen oder Szene neu laden
 	# get_tree().reload_current_scene()

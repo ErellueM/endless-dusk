@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy0s1l0wj007h"]
+
+[ext_resource type="Script" uid="uid://cjjmmogo3xo7h" path="res://main/ui/ingameUI/damage_number.gd" id="1_c8sim"]
+
+[node name="DamageNumber" type="Node2D"]
+z_index = 15
+script = ExtResource("1_c8sim")
+
+[node name="Label" type="Label" parent="."]
+z_index = 2
+offset_left = -20.0
+offset_top = -8.0
+offset_right = 20.0
+offset_bottom = 7.0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "1234"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -236,7 +236,7 @@ offset_top = 12.0
 offset_right = 578.0
 offset_bottom = 59.0
 theme_override_fonts/font = ExtResource("1_nxpqh")
-theme_override_font_sizes/font_size = 46
+theme_override_font_sizes/font_size = 48
 text = "Chose your Character"
 horizontal_alignment = 1
 

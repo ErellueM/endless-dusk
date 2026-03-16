@@ -6,6 +6,7 @@ func spawn_enemy_around_player(
 	min_distance: float,
 	max_distance: float
 ) -> void:
+	
 	var angle := randf() * TAU
 	var distance := randf_range(min_distance, max_distance)
 

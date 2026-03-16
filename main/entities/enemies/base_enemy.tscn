@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cfvgtxf0e1xcw"]
+
+[ext_resource type="Script" uid="uid://bwl2qjucegmej" path="res://main/entities/enemies/base_enemy.gd" id="1_36cyf"]
+[ext_resource type="PackedScene" uid="uid://ou10ghhladl2" path="res://main/entities/health.tscn" id="2_qfhq1"]
+[ext_resource type="PackedScene" uid="uid://dnewoqayxh5hp" path="res://main/entities/xp/xp.tscn" id="2_y3ppr"]
+[ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="3_hon0s"]
+
+[node name="BaseEnemy" type="CharacterBody2D"]
+z_index = 1
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_36cyf")
+xp_gem_scene = ExtResource("2_y3ppr")
+damage_number_scene = ExtResource("3_hon0s")
+
+[node name="Health" parent="." instance=ExtResource("2_qfhq1")]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]

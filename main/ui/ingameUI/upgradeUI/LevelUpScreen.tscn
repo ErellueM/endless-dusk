@@ -18,7 +18,7 @@ spacing_glyph = 20
 
 [sub_resource type="LabelSettings" id="LabelSettings_2j2hb"]
 font = SubResource("FontVariation_0jnsf")
-font_size = 56
+font_size = 54
 font_color = Color(0.7738555, 2.23808e-06, 9.62615e-07, 1)
 shadow_size = 16
 shadow_color = Color(0, 0, 0, 1)
@@ -63,7 +63,6 @@ layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
 theme_override_constants/shadow_offset_x = 6
 theme_override_constants/shadow_offset_y = 6
-theme_override_font_sizes/font_size = 50
 text = "ASCENSION"
 label_settings = SubResource("LabelSettings_2j2hb")
 horizontal_alignment = 1

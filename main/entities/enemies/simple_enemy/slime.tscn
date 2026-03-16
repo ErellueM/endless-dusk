@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bhus8box6pkhd"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_3q5em"]
+[ext_resource type="PackedScene" uid="uid://dnewoqayxh5hp" path="res://main/entities/xp/xp.tscn" id="2_iqmjv"]
+[ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="3_w37c1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j34gi"]
+atlas = ExtResource("3_w37c1")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_73brb"]
+atlas = ExtResource("3_w37c1")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_crnhq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j34gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_73brb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3q5em"]
+size = Vector2(12, 10)
+
+[node name="slime" instance=ExtResource("1_3q5em")]
+speed = 20.0
+damage = 20.0
+xp_gem_scene = ExtResource("2_iqmjv")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+position = Vector2(0, -1)
+sprite_frames = SubResource("SpriteFrames_crnhq")
+frame_progress = 0.32659218
+
+[node name="AttackArea" parent="." index="2"]
+collision_mask = 3
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+shape = SubResource("RectangleShape2D_3q5em")
+
+[node name="CollisionShape2D" parent="." index="3"]
+shape = SubResource("RectangleShape2D_3q5em")

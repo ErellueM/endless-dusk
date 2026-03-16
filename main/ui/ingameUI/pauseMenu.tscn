@@ -49,7 +49,7 @@ layout_mode = 2
 [node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_fa58d")
-theme_override_font_sizes/font_size = 33
+theme_override_font_sizes/font_size = 32
 text = "Pause"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -65,7 +65,7 @@ size_flags_horizontal = 3
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_fa58d")
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 24
 text = "Stats"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -85,7 +85,7 @@ size_flags_horizontal = 3
 [node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_fa58d")
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 24
 text = "Weapons"
 horizontal_alignment = 1
 vertical_alignment = 1

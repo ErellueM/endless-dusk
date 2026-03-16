@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://exg1u33m7mcb"
-path="res://.godot/imported/rainyhearts.ttf-5d9042e88866c0ce375da9d5204c5c38.fontdata"
+uid="uid://6ejtcaxqg1gg"
+path="res://.godot/imported/monogram-extended.ttf-7020988b4fd3fd19695d377c0685b507.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/pixelfonts/rainyhearts.ttf"
-dest_files=["res://.godot/imported/rainyhearts.ttf-5d9042e88866c0ce375da9d5204c5c38.fontdata"]
+source_file="res://assets/fonts/pixelfonts/monogram-extended.ttf"
+dest_files=["res://.godot/imported/monogram-extended.ttf-7020988b4fd3fd19695d377c0685b507.fontdata"]
 
 [params]
 
@@ -34,8 +34,7 @@ preload=[{
 "chars": [],
 "glyphs": [],
 "name": "Neue Konfiguration",
-"size": Vector2i(16, 0),
-&"variation_embolden": 0.0
+"size": Vector2i(16, 0)
 }]
 language_support={}
 script_support={}

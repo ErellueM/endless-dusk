@@ -53,7 +53,7 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
 z_index = 4
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="Icon" type="TextureRect" parent="MarginContainer/MarginContainer/VBoxContainer"]
@@ -67,14 +67,14 @@ size_flags_vertical = 3
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
 z_index = 4
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="RarityLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
 z_index = 4
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 vertical_alignment = 2
 

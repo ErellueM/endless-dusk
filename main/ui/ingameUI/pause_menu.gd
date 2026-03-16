@@ -27,7 +27,9 @@ func update_stats(player):
 		child.queue_free()
 
 	# 1. HEALTH
-	var hp_text = str(int(player.current_health)) + " / " + str(int(player.max_health))
+	var current_hp = player.health_component.current_health
+	var max_hp = player.health_component.max_health
+	var hp_text = str(int(current_hp)) + " / " + str(int(max_hp))
 	add_stat_row("❤ Max Health", hp_text)
 	
 	# 2. ARMOR

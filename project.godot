@@ -35,7 +35,7 @@ player=""
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0
 theme/default_font_subpixel_positioning=0
-theme/custom_font="uid://exg1u33m7mcb"
+theme/custom_font="uid://6ejtcaxqg1gg"
 
 [input]
 
@@ -51,7 +51,16 @@ test={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="player_world"
+2d_physics/layer_2="enemies"
+2d_physics/layer_3="projectiles"
+
+[physics]
+
+common/physics_interpolation=true
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-2d/snap/snap_2d_transforms_to_pixel=true

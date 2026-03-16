@@ -1,20 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0mcgac7knbxt"]
+[gd_scene load_steps=7 format=3 uid="uid://c0mcgac7knbxt"]
 
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
-[ext_resource type="PackedScene" uid="uid://cjqnpihotiedc" path="res://main/entities/entity.tscn" id="2_yewv4"]
+[ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="2_olhwn"]
 [ext_resource type="Script" uid="uid://d076f2glpk5k8" path="res://main/weapons/player_weapons.gd" id="3_v2iwy"]
 [ext_resource type="PackedScene" uid="uid://css7swwgss460" path="res://main/weapons/items/staff.tscn" id="4_k1fg7"]
+[ext_resource type="PackedScene" uid="uid://ou10ghhladl2" path="res://main/entities/health.tscn" id="4_olhwn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1fg7"]
 size = Vector2(12, 18)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 50
-collision_layer = 2
-collision_mask = 2
 script = ExtResource("1_rp718")
-
-[node name="Entity" parent="." instance=ExtResource("2_yewv4")]
+damage_number_scene = ExtResource("2_olhwn")
 
 [node name="Equipped_weapons" type="Node2D" parent="."]
 script = ExtResource("3_v2iwy")
@@ -24,3 +22,5 @@ weapon_to_equip = ExtResource("4_k1fg7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_k1fg7")
+
+[node name="Health" parent="." instance=ExtResource("4_olhwn")]
