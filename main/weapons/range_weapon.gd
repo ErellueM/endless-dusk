@@ -1,5 +1,5 @@
 extends Weapon
-class_name RangeWeapon
+#class_name RangeWeapon
 @export var knockback: int
 var ProjectileScene = preload("res://main/environments/Weapons/projectile.tscn")
 var time_since_last_shot = 0.0

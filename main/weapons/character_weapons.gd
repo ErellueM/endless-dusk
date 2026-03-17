@@ -1,5 +1,5 @@
 extends Node2D
-class_name CharacterWeapons
+#class_name CharacterWeapons
 
 @export var weapon_to_equip : PackedScene
 var weapon : Weapon

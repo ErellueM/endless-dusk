@@ -41,16 +41,14 @@ func update_stats(player):
 	var rec_color = Color.GREEN if player.recovery > 0 else Color.WHITE
 	add_stat_row("💖 Recovery", rec_text, rec_color)
 	
-	#add_separator(stats_grid)
-	
 	# 4. MIGHT (Schaden)
 	var might_bonus = (player.might - 1.0) * 100
-	var might_col = Color.GOLD if might_bonus > 0 else (Color.RED if might_bonus < 0 else Color.WHITE)
+	var might_col = Color.GREEN if might_bonus > 0 else (Color.RED if might_bonus < 0 else Color.WHITE)
 	add_stat_row("⚔ Might", get_clean_text(might_bonus) + "%", might_col)
 	
 	# 5. AREA
 	var area_bonus = (player.area - 1.0) * 100
-	var area_col = Color.GOLD if area_bonus > 0 else Color.WHITE
+	var area_col = Color.GREEN if area_bonus > 0 else (Color.RED if area_bonus < 0 else Color.WHITE)
 	add_stat_row("⭕ Area", get_clean_text(area_bonus) + "%", area_col)
 	
 	# 6. COOLDOWN (Negativ ist gut!)
@@ -58,11 +56,16 @@ func update_stats(player):
 	var cd_col = Color.GREEN if cd_diff < 0 else (Color.RED if cd_diff > 0 else Color.WHITE)
 	add_stat_row("⏳ Cooldown", get_clean_text(cd_diff) + "%", cd_col)
 	
-	#add_separator(stats_grid)
-	
-	# 7. UTILITY
+	# 7. UTILITY: SPEED, LUCK & MAGNET
 	add_stat_row("👟 Speed", str(int(player.speed)))
-	add_stat_row("🧲 Magnet", str(int(player.magnet_range)) + "%")
+	
+	var luck_bonus = (player.luck - 1.0) * 100
+	var luck_col = Color.GREEN if luck_bonus > 0 else Color.WHITE
+	add_stat_row("🍀 Luck", get_clean_text(luck_bonus) + "%", luck_col)
+	
+	var mag_bonus = (player.magnet_mult - 1.0) * 100
+	var mag_col = Color.GREEN if mag_bonus > 0 else Color.WHITE
+	add_stat_row("🧲 Magnet", get_clean_text(mag_bonus) + "%", mag_col)
 	
 	# 8. GROWTH
 	var growth_bonus = (player.growth - 1.0) * 100
@@ -74,31 +77,46 @@ func update_weapons(player):
 	for child in weapons_grid.get_children():
 		child.queue_free()
 	
-	var found_weapons = false
+	var weapons_manager = player.get_node_or_null("WeaponInventory")
 	
-
-	for child in player.get_children():
-		if child.has_method("shoot") or child.get("damage") != null or "Weapon" in child.name:
-			var w_name = child.name
-			var w_dmg = "Dmg: " + str(child.get("damage")) if child.get("damage") else "Dmg: ?"
+	if weapons_manager:
+		var weapon_data_list = [] # Hier sammeln wir alle Waffen zum Sortieren!
+		
+		for weapon in weapons_manager.get_children():
+			if weapon.has_method("get_actual_damage"):
+				var w_name = weapon.name.replace("Weapon", "") 
+				var total_dmg = weapon.get("total_damage_dealt") 
+				if total_dmg == null: total_dmg = 0.0
+				
+				# Wir speichern die Waffe in unserer Liste
+				weapon_data_list.append({
+					"name": w_name,
+					"current": weapon.get_actual_damage(),
+					"total": total_dmg
+				})
+		
+		# 1. NACH SCHADEN SORTIEREN (Die stärkste Waffe kommt nach ganz oben!)
+		weapon_data_list.sort_custom(func(a, b): return a["total"] > b["total"])
+		
+		# 2. LISTE ZEICHNEN
+		for data in weapon_data_list:
+			# Hier nutzen wir unsere neue k/M Formatierung!
+			var formatted_total = format_huge_number(data["total"])
+			var w_info = "Dmg: %.1f | Total: %s" % [data["current"], formatted_total]
 			
-			add_weapon_entry(w_name, w_dmg)
-			found_weapons = true
-	
-	if not found_weapons:
-		var lbl = Label.new()
-		lbl.text = "- No Weapons -"
-		lbl.modulate = Color(0.5, 0.5, 0.5)
-		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		weapons_grid.add_child(lbl)
+			add_weapon_entry(data["name"], w_info)
+			
+		if weapon_data_list.size() == 0:
+			show_empty_weapons_message()
 
 # --- HILFSFUNKTIONEN ---
 
 func get_clean_text(val: float) -> String:
-	if is_equal_approx(fmod(val, 1.0), 0.0):
-		return str(int(val))
+	var rounded_val = snapped(val, 0.1)
+	if is_equal_approx(fmod(rounded_val, 1.0), 0.0):
+		return str(int(rounded_val))
 	else:
-		return "%.1f" % val 
+		return "%.1f" % rounded_val
 
 func add_stat_row(name_text: String, value_text: String, value_color: Color = Color.WHITE):
 	var lbl_name = Label.new()
@@ -136,15 +154,30 @@ func add_weapon_entry(w_name, w_info):
 	
 	weapons_grid.add_child(row)
 
+func show_empty_weapons_message():
+	var lbl = Label.new()
+	lbl.text = "- No Weapons -"
+	lbl.modulate = Color(0.5, 0.5, 0.5)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.custom_minimum_size.y = 40 
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	
+	weapons_grid.add_child(lbl)
+
+func format_huge_number(num: float) -> String:
+	if num >= 1000000:
+		return "%.1fM" % (num / 1000000.0)
+	elif num >= 1000:
+		return "%.1fk" % (num / 1000.0)    
+	else:
+		return str(int(num))              
+
 # --- BUTTON SIGNALE ---
 
 func _on_resume_button_pressed():
 	var manager = get_tree().get_first_node_in_group("Managers")
-	
-	# Fallback, falls der Pfad anders ist (z.B. absolute Pfade)
 	if not manager:
 		print("FEHLER: GameManager nicht gefunden! Pfad im Script prüfen.")
-		
 	if manager:
 		manager.change_state(manager.GameState.PLAYING)
 

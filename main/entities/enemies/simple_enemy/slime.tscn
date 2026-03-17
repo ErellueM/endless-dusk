@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://bhus8box6pkhd"]
+[gd_scene load_steps=7 format=3 uid="uid://bhus8box6pkhd"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_3q5em"]
-[ext_resource type="PackedScene" uid="uid://dnewoqayxh5hp" path="res://main/entities/xp/xp.tscn" id="2_iqmjv"]
 [ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="3_w37c1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j34gi"]
@@ -31,8 +30,9 @@ size = Vector2(12, 10)
 
 [node name="slime" instance=ExtResource("1_3q5em")]
 speed = 20.0
-damage = 20.0
-xp_gem_scene = ExtResource("2_iqmjv")
+
+[node name="Health" parent="." index="0"]
+max_health = 20
 
 [node name="AnimatedSprite2D" parent="." index="1"]
 position = Vector2(0, -1)

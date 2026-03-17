@@ -39,6 +39,8 @@ fill_to = Vector2(0.9358974, 0.96153843)
 [sub_resource type="LabelSettings" id="LabelSettings_tat2n"]
 font = ExtResource("2_727k7")
 font_size = 10
+outline_size = 9
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_wnhhx"]
 offsets = PackedFloat32Array(0, 0.010238886, 1)
