@@ -48,8 +48,8 @@ var stat_upgrades = [
 	{"name": "Haste", "desc": "Attacks 10% Faster", "rarity": "Rare", "type": "stat", "stat_key": "cooldown_mult", "amount": -0.1},
 	
 	# MAGNET RANGE
-	{"name": "Small Magnet", "desc": "+15 Pickup Range", "rarity": "Common", "type": "stat", "stat_key": "magnet_range", "amount": 15.0},
-	{"name": "Attractor", "desc": "+30 Pickup Range", "rarity": "Rare", "type": "stat", "stat_key": "magnet_range", "amount": 30.0},
+	{"name": "Small Magnet", "desc": "+15% Pickup Range", "rarity": "Common", "type": "stat", "stat_key": "magnet_mult", "amount": 0.15},
+	{"name": "Attractor", "desc": "+30% Pickup Range", "rarity": "Rare", "type": "stat", "stat_key": "magnet_mult", "amount": 0.30},
 	
 	# GROWTH 
 	{"name": "Fast Learner", "desc": "+10% XP Gain", "rarity": "Common", "type": "stat", "stat_key": "growth", "amount": 0.1},
@@ -153,8 +153,10 @@ func apply_stat_upgrade(player, data):
 			player.area += amount
 		"cooldown_mult":
 			player.cooldown_mult += amount
-		"magnet_range":
-			player.magnet_range += amount
+		"magnet_mult":
+			player.magnet_mult += amount
+			if player.has_method("update_magnet"):
+				player.update_magnet()
 		"growth":
 			player.growth += amount
 		"max_health":

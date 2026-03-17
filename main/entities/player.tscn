@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0mcgac7knbxt"]
+[gd_scene load_steps=8 format=3 uid="uid://c0mcgac7knbxt"]
 
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
 [ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="2_olhwn"]
@@ -8,6 +8,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k1fg7"]
 size = Vector2(12, 18)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_olhwn"]
+radius = 19.235384
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 50
@@ -24,3 +27,9 @@ weapon_to_equip = ExtResource("4_k1fg7")
 shape = SubResource("RectangleShape2D_k1fg7")
 
 [node name="Health" parent="." instance=ExtResource("4_olhwn")]
+
+[node name="MagnetArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetArea"]
+shape = SubResource("CircleShape2D_olhwn")

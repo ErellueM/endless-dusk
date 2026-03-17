@@ -27,19 +27,27 @@ var max_xp: float = 10.0 # Startwert für Level 1
 @export var cooldown_mult: float = 1.0  # Cooldown Reduktion (0.9 = 10% schneller)
 
 @export_group("Utility Stats")
-@export var magnet_range: float = 100.0 # Radius zum Einsammeln von XP
+@export var magnet_mult: float = 1.0 
 @export var growth: float = 1.0         # XP Multiplikator (schneller Leveln) [cite: 9]
 @export var luck: float = 1.0
 
 # Interne Variablen (nicht im Inspector sichtbar)
 @onready var health_component = $Health
 @onready var anim = $AnimatedSprite2D
+@onready var magnet_shape = $MagnetArea/CollisionShape2D
+
+var base_magnet_radius: float = 0.0
 
 func _ready():
 	# Leben beim Start auffüllen
 	if health_component:
 		health_component.died.connect(die)
 		print("Spieler geladen mit ", health_component.max_health, " HP.")
+		
+	if magnet_shape and magnet_shape.shape:
+		base_magnet_radius = magnet_shape.shape.radius 
+		update_magnet()
+		$MagnetArea.area_entered.connect(_on_magnet_area_entered)
 	
 	# Optional: Start-Check
 	print("Spieler geladen mit ", max_health, " HP und ", might, "x Schaden.")
@@ -96,6 +104,14 @@ func _handle_levelup():
 	leveled_up.emit()
 	if overflow > 0:
 		gain_xp(overflow)
+		
+func update_magnet():
+	if magnet_shape and magnet_shape.shape:
+		magnet_shape.shape.radius = base_magnet_radius * magnet_mult
+
+func _on_magnet_area_entered(area: Area2D):
+	if area.is_in_group("XPGem") and area.has_method("fly_to_player"):
+		area.fly_to_player(self)
 
 func take_damage(dmg_amount: float):
 	var final_damage = max(0, dmg_amount - armor)
