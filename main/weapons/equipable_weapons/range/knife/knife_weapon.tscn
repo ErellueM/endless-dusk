@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjhf4gs2s0w5w"]
+
+[ext_resource type="Script" uid="uid://oomndij6gdfq" path="res://main/weapons/equipable_weapons/range/knife/knife_weapon.gd" id="1_o6rs4"]
+[ext_resource type="PackedScene" uid="uid://xgq2cax10gkr" path="res://main/weapons/equipable_weapons/range/knife/knife_projectile.tscn" id="2_dd4vu"]
+
+[node name="KnifeWeapon" type="Node2D"]
+script = ExtResource("1_o6rs4")
+projectile_scene = ExtResource("2_dd4vu")
+projectile_speed = 300.0
+spawn_offset = null
+weapon_id = "knife"
+max_level = null
+base_damage = 8.0
+base_fire_rate = 0.5
+base_range = null
+base_area = null

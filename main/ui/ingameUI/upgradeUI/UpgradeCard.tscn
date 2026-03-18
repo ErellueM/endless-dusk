@@ -64,12 +64,13 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="DescriptionLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+[node name="DescriptionLabel" type="RichTextLabel" parent="MarginContainer/MarginContainer/VBoxContainer"]
 z_index = 4
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+mouse_filter = 2
+bbcode_enabled = true
+fit_content = true
 horizontal_alignment = 1
-autowrap_mode = 3
 
 [node name="RarityLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
 z_index = 4

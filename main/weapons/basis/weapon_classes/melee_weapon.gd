@@ -5,7 +5,6 @@ class_name MeleeWeapon
 @onready var anim_player = $AnimationPlayer
 
 func _ready():
-	super._ready()
 	hitbox.monitoring = false
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 

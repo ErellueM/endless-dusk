@@ -4,14 +4,12 @@ signal xp_changed(current, max_val)
 signal health_changed(current, max_val)
 signal leveled_up()
 
-# Level System Variablen
 var level: int = 1
 var current_xp: float = 0
-var max_xp: float = 10.0 # Startwert für Level 1
+var max_xp: float = 10.0
 
 @export var damage_number_scene: PackedScene
 
-# --- STATS FÜR DEN GAME DESIGNER (im Inspector editierbar) ---
 
 @export_group("Movement")
 @export var speed: float = 200.0
@@ -31,7 +29,7 @@ var max_xp: float = 10.0 # Startwert für Level 1
 @export var growth: float = 1.0         # XP Multiplikator (schneller Leveln) [cite: 9]
 @export var luck: float = 1.0
 
-# Interne Variablen (nicht im Inspector sichtbar)
+
 @onready var health_component = $Health
 @onready var anim = $AnimatedSprite2D
 @onready var magnet_shape = $MagnetArea/CollisionShape2D
@@ -39,7 +37,6 @@ var max_xp: float = 10.0 # Startwert für Level 1
 var base_magnet_radius: float = 0.0
 
 func _ready():
-	# Leben beim Start auffüllen
 	if health_component:
 		health_component.died.connect(die)
 		print("Spieler geladen mit ", health_component.max_health, " HP.")
@@ -147,5 +144,3 @@ func die():
 	
 	if manager:
 		manager.change_state(manager.GameState.DEAD)
-	# Hier später: Game Over Screen anzeigen oder Szene neu laden
-	# get_tree().reload_current_scene()

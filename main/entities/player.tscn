@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
 [ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="2_olhwn"]
 [ext_resource type="Script" uid="uid://c8ejv85dn5jdc" path="res://main/weapons/basis/character_weapons.gd" id="3_k1fg7"]
-[ext_resource type="PackedScene" uid="uid://cjhf4gs2s0w5w" path="res://main/weapons/equipable_weapons/knife/knife_weapon.tscn" id="4_cpvfl"]
+[ext_resource type="PackedScene" uid="uid://cjhf4gs2s0w5w" path="res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn" id="4_cpvfl"]
 [ext_resource type="PackedScene" uid="uid://ou10ghhladl2" path="res://main/entities/health.tscn" id="4_olhwn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_olhwn"]
@@ -19,7 +19,7 @@ damage_number_scene = ExtResource("2_olhwn")
 
 [node name="WeaponInventory" type="Node2D" parent="."]
 script = ExtResource("3_k1fg7")
-starting_weapon = ExtResource("4_cpvfl")
+starting_weapons = Array[PackedScene]([ExtResource("4_cpvfl")])
 
 [node name="MagnetArea" type="Area2D" parent="."]
 modulate = Color(1, 1, 0, 1)

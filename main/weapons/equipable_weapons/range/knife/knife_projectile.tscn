@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://xgq2cax10gkr"]
 
-[ext_resource type="Texture2D" uid="uid://cwcrmxohl0arq" path="res://main/weapons/equipable_weapons/knife/knife.png" id="1_t6wy8"]
-[ext_resource type="Script" uid="uid://bdwm8jlw0g6g8" path="res://main/weapons/basis/projectile.gd" id="2_rsiq8"]
+[ext_resource type="Texture2D" uid="uid://cwcrmxohl0arq" path="res://main/weapons/equipable_weapons/range/knife/knife.png" id="1_t6wy8"]
+[ext_resource type="Script" uid="uid://bdwm8jlw0g6g8" path="res://main/weapons/basis/weapon_classes/range/projectile.gd" id="2_rsiq8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bgw66"]
 size = Vector2(6, 3)

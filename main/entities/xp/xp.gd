@@ -13,7 +13,6 @@ var is_flying: bool = false
 
 func _ready():
 	add_to_group("XPGem")
-	body_entered.connect(_on_body_entered)
 	
 	scale = base_scale
 	modulate.a = base_transparency
