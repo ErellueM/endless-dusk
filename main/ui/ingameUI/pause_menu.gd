@@ -71,6 +71,12 @@ func update_stats(player):
 	var growth_bonus = (player.growth - 1.0) * 100
 	var growth_col = Color.GREEN if growth_bonus > 0 else Color.WHITE
 	add_stat_row("🌱 Growth", get_clean_text(growth_bonus) + "%", growth_col)
+	
+	# Kills für diesen Run (Rot)
+	add_stat_row("💀 Run Kills", str(Global.run_total_kills), Color(1.0, 0.3, 0.3))
+	
+	# Kills über alle Runs hinweg (Gold)
+	add_stat_row("👑 Total Kills", str(Global.lifetime_total_kills), Color(1.0, 0.8, 0.1))
 
 # --- TEIL B: WAFFEN ---
 func update_weapons(player):
@@ -80,34 +86,143 @@ func update_weapons(player):
 	var weapons_manager = player.get_node_or_null("WeaponInventory")
 	
 	if weapons_manager:
-		var weapon_data_list = [] # Hier sammeln wir alle Waffen zum Sortieren!
+		var weapon_data_list = [] 
 		
 		for weapon in weapons_manager.get_children():
 			if weapon.has_method("get_actual_damage"):
-				var w_name = weapon.name.replace("Weapon", "") 
+				# capitalize() macht aus "PhantomGlaive" -> "Phantom Glaive"
+				var w_name = weapon.name.replace("Weapon", "").capitalize()
 				var total_dmg = weapon.get("total_damage_dealt") 
 				if total_dmg == null: total_dmg = 0.0
 				
-				# Wir speichern die Waffe in unserer Liste
+				# Wir holen uns alle wichtigen Werte von der Waffe
+				var icon = weapon.get("weapon_icon")
+				var is_util = weapon.get("is_utility")
+				if is_util == null: is_util = false
+				
+				var lvl = weapon.get("level")
+				if lvl == null: lvl = 1
+				
+				var max_lvl = weapon.get("max_level")
+				if max_lvl == null: max_lvl = 5 # Standard-Max falls nicht definiert
+				
 				weapon_data_list.append({
 					"name": w_name,
 					"current": weapon.get_actual_damage(),
-					"total": total_dmg
+					"total": total_dmg,
+					"icon": icon,
+					"is_utility": is_util,
+					"level": lvl,
+					"max_level": max_lvl
 				})
 		
-		# 1. NACH SCHADEN SORTIEREN (Die stärkste Waffe kommt nach ganz oben!)
+		# 1. NACH SCHADEN SORTIEREN (Die stärkste ist Index 0)
 		weapon_data_list.sort_custom(func(a, b): return a["total"] > b["total"])
 		
-		# 2. LISTE ZEICHNEN
+		var max_dmg_run = 0.0
+		if weapon_data_list.size() > 0:
+			max_dmg_run = weapon_data_list[0]["total"]
+		
+		# 2. ZEILEN ZEICHNEN
 		for data in weapon_data_list:
-			# Hier nutzen wir unsere neue k/M Formatierung!
-			var formatted_total = format_huge_number(data["total"])
-			var w_info = "Dmg: %.1f | Total: %s" % [data["current"], formatted_total]
+			var info_color = Color(1.0, 0.4, 0.1) 
+			var fill_ratio = 0.0 
+			var level_display = ""
 			
-			add_weapon_entry(data["name"], w_info)
+			# --- NEUES LEVEL-DESIGN (Rank Pips) ---
+			if data["level"] >= data["max_level"]:
+				# Goldenes, welliges MAX wenn fertig
+				level_display = "[color=#ffaa00][wave amp=30 freq=3]MAX[/wave][/color]"
+			else:
+				# Erzeugt Pips: ◆◆◆◇◇
+				for i in range(data["max_level"]):
+					if i < data["level"]:
+						level_display += "◆"
+					else:
+						level_display += "[color=#444444]◇[/color]"
+			
+			# Wir bauen den Namen mit den Pips in kleinerer Schrift dahinter
+			var final_name_bb = "%s  [font_size=12]%s[/font_size]" % [data["name"], level_display]
+			
+			if data["is_utility"]:
+				info_color = Color(0.2, 0.8, 1.0) 
+				_add_sleek_weapon_row(final_name_bb, "Utility Aura", data["icon"], info_color, 0.0, true)
+			else:
+				var formatted_total = format_huge_number(data["total"])
+				var w_info = "%s (%.1f Dmg)" % [formatted_total, data["current"]]
+				
+				if max_dmg_run > 0:
+					fill_ratio = float(data["total"]) / float(max_dmg_run)
+					
+				_add_sleek_weapon_row(final_name_bb, w_info, data["icon"], info_color, fill_ratio, false)
 			
 		if weapon_data_list.size() == 0:
 			show_empty_weapons_message()
+
+# --- DIE VERBESSERTE ZEILE MIT RICHTEXT FÜR BBCODE ---
+func _add_sleek_weapon_row(w_name_bb: String, w_info: String, icon_texture: Texture2D, info_color: Color, fill_ratio: float, is_util: bool):
+	var row = HBoxContainer.new()
+	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	# 1. Das Mini-Icon
+	var icon_rect = TextureRect.new()
+	icon_rect.custom_minimum_size = Vector2(24, 24)
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	if icon_texture:
+		icon_rect.texture = icon_texture
+	else:
+		var fallback = PlaceholderTexture2D.new()
+		fallback.size = Vector2(24, 24)
+		icon_rect.texture = fallback
+		icon_rect.modulate = Color(0.2, 0.1, 0.25) 
+	row.add_child(icon_rect)
+	
+	# 2. Container für Text und Balken
+	var right_vbox = VBoxContainer.new()
+	right_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right_vbox.add_theme_constant_override("separation", 0) 
+	row.add_child(right_vbox)
+	
+	# 2a. Text-Zeile
+	var text_hbox = HBoxContainer.new()
+	right_vbox.add_child(text_hbox)
+	
+	# NAME ALS RICHTEXT (Wichtig für die farbigen Pips/MAX!)
+	var lbl_name = RichTextLabel.new()
+	lbl_name.bbcode_enabled = true
+	lbl_name.text = w_name_bb
+	lbl_name.fit_content = true
+	lbl_name.autowrap_mode = TextServer.AUTOWRAP_OFF
+	lbl_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text_hbox.add_child(lbl_name)
+	
+	var lbl_info = Label.new()
+	lbl_info.text = w_info
+	lbl_info.custom_minimum_size.x = 150 
+	lbl_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	lbl_info.modulate = info_color
+	text_hbox.add_child(lbl_info)
+	
+	# 2b. Der Fortschritts-Balken
+	if not is_util: 
+		var bar = ProgressBar.new()
+		bar.custom_minimum_size.y = 4 
+		bar.show_percentage = false 
+		bar.max_value = 1.0
+		bar.value = fill_ratio
+		
+		var sb_bg = StyleBoxFlat.new()
+		sb_bg.bg_color = Color(0.05, 0.05, 0.05, 0.8) 
+		bar.add_theme_stylebox_override("background", sb_bg)
+		
+		var sb_fill = StyleBoxFlat.new()
+		sb_fill.bg_color = info_color 
+		bar.add_theme_stylebox_override("fill", sb_fill)
+		
+		right_vbox.add_child(bar)
+	
+	weapons_grid.add_child(row)
 
 # --- HILFSFUNKTIONEN ---
 

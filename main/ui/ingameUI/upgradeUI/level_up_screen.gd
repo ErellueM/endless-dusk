@@ -14,11 +14,13 @@ var unowned_weapons_db = {
 	"knife": {
 		"name": "Knife",
 		"desc": "Throws a fast knife.",
+		"rarity": "Common",
 		"scene": preload("res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn") # <--- DEIN PFAD
 	},
 	"ice_aura": {
 		"name": "Ice Aura",
 		"desc": "Creates a freezing zone.",
+		"rarity": "Common",
 		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn") # <--- DEIN PFAD
 	},
 	"chain_lightning": {
@@ -37,8 +39,26 @@ var unowned_weapons_db = {
 		"name": "Void Orb",
 		"desc": "[color=green]New Weapon[/color]\n ...",
 		"rarity": "Legendary",
-		"scene": preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn")
-	}
+		"scene": preload("res://main/weapons/equipable_weapons/melee/void_orbs/void_orbs.tscn")
+	},
+	"blood_trail": {
+		"name": "Blood Trail",
+		"desc": "[color=green]New Weapon[/color]\n ...",
+		"rarity": "Rare",
+		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn")
+	},
+	"phantom_glaive": {
+			"name": "Phantom Glaive",
+			"desc": "[color=green]New Weapon[/color]\nThrows a spectral blade that returns to you.",
+			"rarity": "Rare",
+			"scene": preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn")
+		},
+	"abyssal_impale": {
+			"name": "Abyssal Impale",
+			"desc": "[color=green]New Weapon[/color]\nSpikes outranging the ground.",
+			"rarity": "Rare",
+			"scene": preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn")
+		},
 }
 
 # NEU: "stats" ist jetzt ein Array! So kannst du mehrere Werte gleichzeitig ändern.
@@ -147,7 +167,7 @@ func generate_cards():
 					dynamic_pool.append({
 						"name": "New: " + w_data["name"],
 						"desc": w_data["desc"],
-						"rarity": "Common",
+						"rarity": w_data.get("rarity", "Common"),
 						"type": "new_weapon",
 						"id": w_id,
 						"scene": w_data["scene"]

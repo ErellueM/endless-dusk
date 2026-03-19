@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name BaseEnemy 
 
+@export var enemy_name: String = "Monster"
 @export var speed: float = 100.0
 @export var damage: float = 10.0
 @export var xp_gem_scene: PackedScene 
@@ -48,7 +49,10 @@ func _physics_process(delta):
 			effect["current_tick"] -= delta
 			if effect["current_tick"] <= 0:
 				take_damage(effect["tick_damage"], true) 
-				effect["current_tick"] = effect["tick_rate"] 
+				if effect.has("source") and is_instance_valid(effect["source"]) and effect["source"].has_method("add_damage_stat"):
+					effect["source"].add_damage_stat(effect["tick_damage"])
+					
+				effect["current_tick"] = effect["tick_rate"]
 				
 	for eff in effects_to_remove:
 		remove_status_effect(eff)
@@ -128,8 +132,9 @@ func take_damage(amount: float, is_poison: bool = false):
 func _on_death():
 	is_dead = true
 	$CollisionShape2D.set_deferred("disabled", true) 
+	Global.register_kill(enemy_name)
 	drop_soul()
-	queue_free() 
+	queue_free()
 
 func drop_soul():
 	if xp_gem_scene != null:

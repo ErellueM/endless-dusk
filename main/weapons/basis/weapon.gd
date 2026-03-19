@@ -3,6 +3,8 @@ class_name Weapon
 
 @export_group("Base Weapon Stats")
 @export var weapon_id: String = "unknown"
+@export var weapon_icon: Texture2D
+@export var is_utility: bool = false 
 @export var max_level: int = 5
 @export var base_damage: float = 10.0
 @export var base_fire_rate: float = 1.0 

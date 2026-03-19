@@ -25,6 +25,7 @@ color_ramp = SubResource("GradientTexture1D_26n3t")
 [node name="IceAura" type="Node2D"]
 script = ExtResource("1_4r1xc")
 weapon_id = "ice_aura"
+is_utility = true
 max_level = 3
 base_damage = 0.0
 

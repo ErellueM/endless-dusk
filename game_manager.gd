@@ -8,6 +8,7 @@ var current_state = GameState.PLAYING
 @export var game_over_screen : CanvasLayer
 
 func _ready():
+	Global.reset_run_stats()
 	if pause_menu: pause_menu.hide()
 	if level_up_screen: level_up_screen.hide()
 	if game_over_screen: game_over_screen.hide()
