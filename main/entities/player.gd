@@ -35,6 +35,7 @@ var max_xp: float = 10.0
 @onready var magnet_shape = $MagnetArea/CollisionShape2D
 
 var base_magnet_radius: float = 0.0
+var pending_levelups: int = 0
 
 func _ready():
 	if health_component:
@@ -89,18 +90,22 @@ func gain_xp(amount: float):
 	var real_amount = amount * growth
 	current_xp += real_amount
 	
+	var did_level_up = false
 	while current_xp >= max_xp:
-		_handle_levelup()
+		current_xp -= max_xp
+		level += 1
+		max_xp = int(max_xp * 1.2)
+		pending_levelups += 1
+		did_level_up = true
+		
 	xp_changed.emit(current_xp, max_xp)
+	if did_level_up:
+		check_levelups()
 
-func _handle_levelup():
-	var overflow = current_xp - max_xp
-	level += 1
-	current_xp = 0.0
-	max_xp = int(max_xp * 1.2) # +10
-	leveled_up.emit()
-	if overflow > 0:
-		gain_xp(overflow)
+func check_levelups():
+	if pending_levelups > 0:
+		pending_levelups -= 1
+		leveled_up.emit()
 		
 func update_magnet():
 	if magnet_shape and magnet_shape.shape:
