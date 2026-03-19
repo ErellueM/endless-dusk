@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccoby0f7jw18l"]
+
+[ext_resource type="Script" uid="uid://cb2kdgn801dkl" path="res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.gd" id="1_fasqa"]
+
+[node name="ChainLightning" type="Node2D"]
+script = ExtResource("1_fasqa")
+weapon_id = "chain_lightning"
+base_damage = 5.0
+base_fire_rate = 1.5
+base_range = 250.0
+
+[node name="LightningLine" type="Line2D" parent="."]
+width = 3.0
+default_color = Color(0, 1, 1, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2

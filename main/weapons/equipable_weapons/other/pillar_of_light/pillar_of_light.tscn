@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bup72vdavkhl7"]
+
+[ext_resource type="Script" uid="uid://db17lhqn3l5xp" path="res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.gd" id="1_y6shl"]
+
+[node name="PillarOfLight" type="Node2D"]
+script = ExtResource("1_y6shl")
+strike_radius = 20.0
+weapon_id = "pillar_of_light"
+base_damage = 20.0
+base_range = 300.0

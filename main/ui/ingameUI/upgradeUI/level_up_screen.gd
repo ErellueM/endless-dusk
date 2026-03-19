@@ -20,6 +20,24 @@ var unowned_weapons_db = {
 		"name": "Ice Aura",
 		"desc": "Creates a freezing zone.",
 		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn") # <--- DEIN PFAD
+	},
+	"chain_lightning": {
+		"name": "Chain Lightning",
+		"desc": "[color=green]New Weapon[/color]\nFires a bouncing bolt of energy.",
+		"rarity": "Rare",
+		"scene": preload("res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.tscn")
+	},
+	"pillar_of_light": {
+		"name": "Pillar of Light",
+		"desc": "[color=green]New Weapon[/color]\nGod strikes the souls.",
+		"rarity": "Rare",
+		"scene": preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn")
+	},
+	"void_orbs": {
+		"name": "Void Orb",
+		"desc": "[color=green]New Weapon[/color]\n ...",
+		"rarity": "Legendary",
+		"scene": preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn")
 	}
 }
 
@@ -209,10 +227,17 @@ func apply_stat_upgrade(player, data):
 				if player.has_method("update_magnet"): player.update_magnet()
 			"max_health":
 				if player.health_component:
-					player.health_component.max_health += amount
-					# Heile den Spieler um den Betrag, ziehe ihn bei Minus-Werten ab
-					player.health_component.current_health += amount 
-					# Verhindere, dass Health über Max steigt
+					var old_max = player.health_component.max_health
+					player.health_component.max_health = max(1.0, old_max + amount)
+					
+					if amount > 0:
+						player.health_component.current_health += amount
+						
 					if player.health_component.current_health > player.health_component.max_health:
 						player.health_component.current_health = player.health_component.max_health
-					player.health_changed.emit(player.health_component.current_health, player.health_component.max_health)
+						
+					if player.health_component.current_health < 1.0:
+						player.health_component.current_health = 1.0
+						
+					if player.has_signal("health_changed"):
+						player.health_changed.emit(player.health_component.current_health, player.health_component.max_health)

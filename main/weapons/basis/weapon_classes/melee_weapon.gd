@@ -10,7 +10,10 @@ func _ready():
 
 func attack() -> bool:
 	if anim_player.has_animation("swing"):
+		hitbox.monitoring = true
 		anim_player.play("swing")
+		await anim_player.animation_finished
+		hitbox.monitoring = false
 		return true
 	return false
 

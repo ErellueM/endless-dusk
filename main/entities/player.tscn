@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
 [ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="2_olhwn"]
 [ext_resource type="Script" uid="uid://c8ejv85dn5jdc" path="res://main/weapons/basis/character_weapons.gd" id="3_k1fg7"]
-[ext_resource type="PackedScene" uid="uid://cjhf4gs2s0w5w" path="res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn" id="4_cpvfl"]
+[ext_resource type="PackedScene" uid="uid://rp2r2jydc7fw" path="res://main/weapons/equipable_weapons/melee/void_orbs/void_orbs.tscn" id="4_cpvfl"]
 [ext_resource type="PackedScene" uid="uid://ou10ghhladl2" path="res://main/entities/health.tscn" id="4_olhwn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_olhwn"]
