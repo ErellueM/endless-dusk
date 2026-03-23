@@ -1,290 +1,237 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites id="2026-03-23" name="report_1" tests="34" failures="2" skipped="0" flaky="0" time="0.000">
-	<testsuite id="0" name="test_settings" package="tests/ui/general_menu/settings_menu" timestamp="2026-03-23T14:43:35" hostname="localhost" tests="5" failures="1" errors="0" skipped="0" flaky="0" time="3.534">
-		<testcase name="test_initialization_sets_ui_correctly" classname="test_settings" time="1.164">
+<testsuites id="2026-03-23" name="report_1" tests="33" failures="13" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_entity" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="3" failures="1" errors="1" skipped="0" flaky="0" time="0.037">
+		<testcase name="test_health_node_is_assigned" classname="test_entity" time="0.001">
 		</testcase>
-		<testcase name="test_audio_slider_changes_volume" classname="test_settings" time="0.579">
-			<failure message="FAILED: res://tests/ui/general_menu/settings_menu/test_settings.gd:34" type="FAILURE">
+		<testcase name="test_died_signal_connected" classname="test_entity" time="0.014">
+			<failure message="FAILED: res://tests/entities/test_entity.gd:29" type="FAILURE">
 <![CDATA[
-Expecting:
- '-6.020600'
- but was
- '-6.020600'
+Expecting: 'true' but is 'false'
 ]]>
 			</failure>
 		</testcase>
-		<testcase name="test_audio_slider_low_value_mutes" classname="test_settings" time="0.623">
-		</testcase>
-		<testcase name="test_mute_button_toggles_audio" classname="test_settings" time="0.552">
-		</testcase>
-		<testcase name="test_vsync_toggle" classname="test_settings" time="0.610">
+		<testcase name="test_entity_is_freed_on_death" classname="test_entity" time="0.021">
+			<error message="ERROR: res://tests/entities/test_entity.gd:0" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Cannot call method 'is_queued_for_deletion' on a previously freed instance.'
+	at res://tests/entities/test_entity.gd:37
+]]>
+			</error>
 		</testcase>
 	</testsuite>
-	<testsuite id="1" name="level_up_screen" package="tests/ui/ingameUI/upgradeUI" timestamp="2026-03-23T14:43:39" hostname="localhost" tests="5" failures="1" errors="5" skipped="0" flaky="0" time="3.017">
-		<testcase name="test_get_weight_with_luck_bonus" classname="level_up_screen" time="0.629">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:16" type="ABORT">
+	<testsuite id="1" name="test_health" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="4" failures="1" errors="0" skipped="0" flaky="0" time="0.024">
+		<testcase name="test_initial_health" classname="test_health" time="0.001">
+		</testcase>
+		<testcase name="test_take_damage_reduces_health" classname="test_health" time="0.003">
+		</testcase>
+		<testcase name="test_health_does_not_go_below_zero" classname="test_health" time="0.006">
+		</testcase>
+		<testcase name="test_died_signal_emitted" classname="test_health" time="0.007">
+			<failure message="FAILED: res://tests/entities/test_health.gd:46" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="test_player" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="9" failures="5" errors="7" skipped="0" flaky="0" time="0.146">
+		<testcase name="test_gain_xp_increases_current_xp" classname="test_player" time="0.006">
+		</testcase>
+		<testcase name="test_gain_xp_triggers_level_up" classname="test_player" time="0.013">
+			<failure message="FAILED: res://tests/entities/test_player.gd:28" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_gain_xp_emits_xp_changed" classname="test_player" time="0.014">
+			<error message="ERROR: res://tests/entities/test_player.gd:0" type="ABORT">
 <![CDATA[
 Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:16
+Error: 'Attempt to call function 'play' in base 'null instance' on a null instance.'
+	at res://main/entities/player.gd:82
+]]>
+			</error>
+			<failure message="FAILED: res://tests/entities/test_player.gd:40" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_take_damage_reduces_health" classname="test_player" time="0.021">
+			<error message="ERROR: res://tests/entities/test_player.gd:46" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'modulate' with value of type 'Color' on a base object of type 'null instance'.'
+	at res://main/entities/player.gd:134
+	at res://tests/entities/test_player.gd:46
+]]>
+			</error>
+			<error message="ERROR: res://tests/entities/test_player.gd:46" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'play' in base 'null instance' on a null instance.'
+	at res://main/entities/player.gd:82
 ]]>
 			</error>
 		</testcase>
-		<testcase name="test_debug_force_weapons_weight" classname="level_up_screen" time="0.622">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:30" type="ABORT">
+		<testcase name="test_armor_reduces_damage" classname="test_player" time="0.020">
+			<error message="ERROR: res://tests/entities/test_player.gd:58" type="ABORT">
 <![CDATA[
 Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:30
+Error: 'Invalid assignment of property or key 'modulate' with value of type 'Color' on a base object of type 'null instance'.'
+	at res://main/entities/player.gd:134
+	at res://tests/entities/test_player.gd:58
 ]]>
 			</error>
-		</testcase>
-		<testcase name="test_apply_stat_upgrade_single_and_multiple" classname="level_up_screen" time="0.558">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:45" type="ABORT">
+			<error message="ERROR: res://tests/entities/test_player.gd:58" type="ABORT">
 <![CDATA[
 Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:45
+Error: 'Attempt to call function 'play' in base 'null instance' on a null instance.'
+	at res://main/entities/player.gd:82
 ]]>
 			</error>
-		</testcase>
-		<testcase name="test_card_generation_clears_old_cards" classname="level_up_screen" time="0.621">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:81" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'is_less_than' in base 'RefCounted (GdUnitIntAssertImpl.gd)'.'
-	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:81
-]]>
-			</error>
-			<failure message="FAILED: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:75" type="FAILURE">
+			<failure message="FAILED: res://tests/entities/test_player.gd:62" type="FAILURE">
 <![CDATA[
 Expecting:
- '5'
+ '95'
  but was
+ '95.000000'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_heal_increases_health" classname="test_player" time="0.013">
+			<failure message="FAILED: res://tests/entities/test_player.gd:71" type="FAILURE">
+<![CDATA[
+Expecting:
+ '60'
+ but was
+ '60.000000'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_health_changed_signal_emitted_on_damage" classname="test_player" time="0.021">
+			<error message="ERROR: res://tests/entities/test_player.gd:80" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'modulate' with value of type 'Color' on a base object of type 'null instance'.'
+	at res://main/entities/player.gd:134
+	at res://tests/entities/test_player.gd:80
+]]>
+			</error>
+			<failure message="FAILED: res://tests/entities/test_player.gd:83" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_update_magnet_scales_radius" classname="test_player" time="0.013">
+		</testcase>
+		<testcase name="test_die_changes_game_state" classname="test_player" time="0.015">
+			<error message="ERROR: res://tests/entities/test_player.gd:98" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'GameState' with value of type 'Dictionary' on a base object of type 'Node'.'
+	at res://tests/entities/test_player.gd:98
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="test_xp" package="tests/entities/xp" timestamp="2026-03-23T15:16:43" hostname="localhost" tests="8" failures="3" errors="1" skipped="0" flaky="0" time="0.232">
+		<testcase name="test_gem_initial_values" classname="test_xp" time="0.112">
+			<failure message="FAILED: res://tests/entities/xp/test_xp.gd:18" type="FAILURE">
+<![CDATA[
+Expecting:
+ '(1.0, 1.0)'
+ but was
+ '(0.999883, 0.999883)'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_on_body_entered_grants_xp_and_frees" classname="test_xp" time="0.014">
+			<error message="ERROR: res://tests/entities/xp/test_xp.gd:23" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'gain_xp' with value of type 'Callable' on a base object of type 'Node'.'
+	at res://tests/entities/xp/test_xp.gd:23
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_fly_to_player_starts_flying" classname="test_xp" time="0.014">
+		</testcase>
+		<testcase name="test_absorb_gem_increases_xp" classname="test_xp" time="0.020">
+			<failure message="FAILED: res://tests/entities/xp/test_xp.gd:53" type="FAILURE">
+<![CDATA[
+Expecting:
  '8'
+ but was
+ '8.000000'
 ]]>
 			</failure>
 		</testcase>
-		<testcase name="test_health_upgrade_caps_correctly" classname="level_up_screen" time="0.578">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:85" type="ABORT">
+		<testcase name="test_absorb_gem_frees_other" classname="test_xp" time="0.022">
+			<failure message="FAILED: res://tests/entities/xp/test_xp.gd:64" type="FAILURE">
 <![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:85
+Expecting: 'false' but is 'true'
 ]]>
-			</error>
+			</failure>
+		</testcase>
+		<testcase name="test_update_visuals_changes_scale" classname="test_xp" time="0.013">
+		</testcase>
+		<testcase name="test_high_xp_changes_color" classname="test_xp" time="0.013">
+		</testcase>
+		<testcase name="test_optimization_tick_does_not_crash" classname="test_xp" time="0.014">
 		</testcase>
 	</testsuite>
-	<testsuite id="2" name="upgrade_card" package="tests/ui/ingameUI/upgradeUI" timestamp="2026-03-23T14:43:42" hostname="localhost" tests="4" failures="0" errors="4" skipped="0" flaky="0" time="2.337">
-		<testcase name="test_set_item_data_updates_ui" classname="upgrade_card" time="0.554">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:7" type="ABORT">
+	<testsuite id="4" name="test_base_enemy" package="tests/entities/enemies" timestamp="2026-03-23T15:16:43" hostname="localhost" tests="9" failures="3" errors="2" skipped="0" flaky="0" time="0.154">
+		<testcase name="test_enemy_initializes" classname="test_base_enemy" time="0.007">
+		</testcase>
+		<testcase name="test_take_damage_reduces_health" classname="test_base_enemy" time="0.020">
+		</testcase>
+		<testcase name="test_death_sets_is_dead" classname="test_base_enemy" time="0.021">
+			<error message="ERROR: res://tests/entities/enemies/test_base_enemy.gd:0" type="ABORT">
 <![CDATA[
 Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:7
+Error: 'Invalid access to property or key 'is_dead' on a base object of type 'previously freed'.'
+	at res://tests/entities/enemies/test_base_enemy.gd:34
 ]]>
 			</error>
 		</testcase>
-		<testcase name="test_spam_protection_emits_only_once" classname="upgrade_card" time="0.600">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:32" type="ABORT">
+		<testcase name="test_add_status_effect_slow" classname="test_base_enemy" time="0.013">
+		</testcase>
+		<testcase name="test_remove_status_effect_restores_speed" classname="test_base_enemy" time="0.014">
+		</testcase>
+		<testcase name="test_status_effect_duration_removal" classname="test_base_enemy" time="0.020">
+			<failure message="FAILED: res://tests/entities/enemies/test_base_enemy.gd:69" type="FAILURE">
 <![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:32
+Expecting: 'false' but is 'true'
 ]]>
-			</error>
+			</failure>
 		</testcase>
-		<testcase name="test_appear_animation_sets_visuals" classname="upgrade_card" time="0.572">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:53" type="ABORT">
+		<testcase name="test_enemy_has_player_target" classname="test_base_enemy" time="0.014">
+			<failure message="FAILED: res://tests/entities/enemies/test_base_enemy.gd:72" type="FAILURE">
 <![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:53
+Expecting: not to be '<null>'
 ]]>
-			</error>
+			</failure>
 		</testcase>
-		<testcase name="test_shader_intensity_on_rarity" classname="upgrade_card" time="0.603">
-			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:70" type="ABORT">
+		<testcase name="test_enemy_moves_towards_player" classname="test_base_enemy" time="0.021">
+			<failure message="FAILED: res://tests/entities/enemies/test_base_enemy.gd:80" type="FAILURE">
 <![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:70
+Expecting:
+ '(0.0, 0.0)'
+ not equal to
+ '(0.0, 0.0)'
 ]]>
-			</error>
+			</failure>
 		</testcase>
-	</testsuite>
-	<testsuite id="3" name="test_damage_number" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:45" hostname="localhost" tests="4" failures="0" errors="2" skipped="0" flaky="0" time="3.467">
-		<testcase name="test_setup_and_initial_display" classname="test_damage_number" time="1.169">
-		</testcase>
-		<testcase name="test_color_for_player_damage" classname="test_damage_number" time="0.592">
-		</testcase>
-		<testcase name="test_color_and_travel_for_poison" classname="test_damage_number" time="1.121">
-			<error message="ERROR: res://tests/ui/ingameUI/test_damage_number.gd:0" type="ABORT">
+		<testcase name="test_enemy_can_attack_player" classname="test_base_enemy" time="0.014">
+			<error message="ERROR: res://tests/entities/enemies/test_base_enemy.gd:86" type="ABORT">
 <![CDATA[
 Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'is_less_than' in base 'RefCounted (GdUnitFloatAssertImpl.gd)'.'
-	at res://tests/ui/ingameUI/test_damage_number.gd:53
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_self_destruction_after_animation" classname="test_damage_number" time="0.568">
-			<error message="ERROR: res://tests/ui/ingameUI/test_damage_number.gd:57" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_damage_number.gd:57
-]]>
-			</error>
-		</testcase>
-	</testsuite>
-	<testsuite id="4" name="test_game_over_screen" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:48" hostname="localhost" tests="4" failures="0" errors="4" skipped="0" flaky="0" time="3.029">
-		<testcase name="test_stats_display_calculation" classname="test_game_over_screen" time="1.158">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:18" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_over_screen.gd:18
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_show_trigger_animation" classname="test_game_over_screen" time="0.621">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:36" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_over_screen.gd:36
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_restart_button_unpauses_and_reloads" classname="test_game_over_screen" time="0.599">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:51" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'get_tree' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_over_screen.gd:51
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_quit_button_emits_quit_request" classname="test_game_over_screen" time="0.634">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:66" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_over_screen.gd:66
-]]>
-			</error>
-		</testcase>
-	</testsuite>
-	<testsuite id="5" name="test_game_ui" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:51" hostname="localhost" tests="5" failures="0" errors="5" skipped="0" flaky="0" time="3.147">
-		<testcase name="test_initialization_and_group" classname="test_game_ui" time="0.630">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:7" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_ui.gd:7
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_timer_progression" classname="test_game_ui" time="0.650">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:15" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_ui.gd:15
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_timer_pauses_when_game_is_paused" classname="test_game_ui" time="0.596">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:28" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_ui.gd:28
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_xp_bar_updates_on_signal" classname="test_game_ui" time="0.655">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:44" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_ui.gd:44
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_health_bar_updates_on_signal" classname="test_game_ui" time="0.599">
-			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:55" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_game_ui.gd:55
-]]>
-			</error>
-		</testcase>
-	</testsuite>
-	<testsuite id="6" name="test_pause_menu" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:54" hostname="localhost" tests="4" failures="0" errors="4" skipped="0" flaky="0" time="3.011">
-		<testcase name="test_update_stats_math_and_colors" classname="test_pause_menu" time="1.154">
-			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:35" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_pause_menu.gd:35
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_update_weapons_sorting_and_max_level" classname="test_pause_menu" time="0.624">
-			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:65" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_pause_menu.gd:65
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_format_huge_number" classname="test_pause_menu" time="0.599">
-			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:99" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_pause_menu.gd:99
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_visibility_trigger" classname="test_pause_menu" time="0.618">
-			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:107" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_pause_menu.gd:107
-]]>
-			</error>
-		</testcase>
-	</testsuite>
-	<testsuite id="7" name="test_progress" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:57" hostname="localhost" tests="3" failures="0" errors="3" skipped="0" flaky="0" time="1.884">
-		<testcase name="test_shader_time_updates_over_frames" classname="test_progress" time="0.616">
-			<error message="ERROR: res://tests/ui/ingameUI/test_progress.gd:8" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_progress.gd:8
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_shader_time_pauses_correctly" classname="test_progress" time="0.652">
-			<error message="ERROR: res://tests/ui/ingameUI/test_progress.gd:31" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_progress.gd:31
-]]>
-			</error>
-		</testcase>
-		<testcase name="test_manual_time_reset" classname="test_progress" time="0.601">
-			<error message="ERROR: res://tests/ui/ingameUI/test_progress.gd:51" type="ABORT">
-<![CDATA[
-Godot Runtime Error !
-Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
-	at res://tests/ui/ingameUI/test_progress.gd:51
+Error: 'Invalid assignment of property or key 'take_damage' with value of type 'Callable' on a base object of type 'null instance'.'
+	at res://tests/entities/enemies/test_base_enemy.gd:86
 ]]>
 			</error>
 		</testcase>
