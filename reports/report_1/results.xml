@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-03-23" name="report_1" tests="34" failures="2" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_settings" package="tests/ui/general_menu/settings_menu" timestamp="2026-03-23T14:43:35" hostname="localhost" tests="5" failures="1" errors="0" skipped="0" flaky="0" time="3.534">
+		<testcase name="test_initialization_sets_ui_correctly" classname="test_settings" time="1.164">
+		</testcase>
+		<testcase name="test_audio_slider_changes_volume" classname="test_settings" time="0.579">
+			<failure message="FAILED: res://tests/ui/general_menu/settings_menu/test_settings.gd:34" type="FAILURE">
+<![CDATA[
+Expecting:
+ '-6.020600'
+ but was
+ '-6.020600'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_audio_slider_low_value_mutes" classname="test_settings" time="0.623">
+		</testcase>
+		<testcase name="test_mute_button_toggles_audio" classname="test_settings" time="0.552">
+		</testcase>
+		<testcase name="test_vsync_toggle" classname="test_settings" time="0.610">
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="level_up_screen" package="tests/ui/ingameUI/upgradeUI" timestamp="2026-03-23T14:43:39" hostname="localhost" tests="5" failures="1" errors="5" skipped="0" flaky="0" time="3.017">
+		<testcase name="test_get_weight_with_luck_bonus" classname="level_up_screen" time="0.629">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:16" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:16
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_debug_force_weapons_weight" classname="level_up_screen" time="0.622">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:30" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:30
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_apply_stat_upgrade_single_and_multiple" classname="level_up_screen" time="0.558">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:45" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:45
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_card_generation_clears_old_cards" classname="level_up_screen" time="0.621">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:81" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'is_less_than' in base 'RefCounted (GdUnitIntAssertImpl.gd)'.'
+	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:81
+]]>
+			</error>
+			<failure message="FAILED: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:75" type="FAILURE">
+<![CDATA[
+Expecting:
+ '5'
+ but was
+ '8'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_health_upgrade_caps_correctly" classname="level_up_screen" time="0.578">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:85" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/level_up_screen.gd:85
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="upgrade_card" package="tests/ui/ingameUI/upgradeUI" timestamp="2026-03-23T14:43:42" hostname="localhost" tests="4" failures="0" errors="4" skipped="0" flaky="0" time="2.337">
+		<testcase name="test_set_item_data_updates_ui" classname="upgrade_card" time="0.554">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:7" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:7
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_spam_protection_emits_only_once" classname="upgrade_card" time="0.600">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:32" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:32
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_appear_animation_sets_visuals" classname="upgrade_card" time="0.572">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:53" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:53
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_shader_intensity_on_rarity" classname="upgrade_card" time="0.603">
+			<error message="ERROR: res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:70" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/upgradeUI/upgrade_card.gd:70
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="test_damage_number" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:45" hostname="localhost" tests="4" failures="0" errors="2" skipped="0" flaky="0" time="3.467">
+		<testcase name="test_setup_and_initial_display" classname="test_damage_number" time="1.169">
+		</testcase>
+		<testcase name="test_color_for_player_damage" classname="test_damage_number" time="0.592">
+		</testcase>
+		<testcase name="test_color_and_travel_for_poison" classname="test_damage_number" time="1.121">
+			<error message="ERROR: res://tests/ui/ingameUI/test_damage_number.gd:0" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'is_less_than' in base 'RefCounted (GdUnitFloatAssertImpl.gd)'.'
+	at res://tests/ui/ingameUI/test_damage_number.gd:53
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_self_destruction_after_animation" classname="test_damage_number" time="0.568">
+			<error message="ERROR: res://tests/ui/ingameUI/test_damage_number.gd:57" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_damage_number.gd:57
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="4" name="test_game_over_screen" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:48" hostname="localhost" tests="4" failures="0" errors="4" skipped="0" flaky="0" time="3.029">
+		<testcase name="test_stats_display_calculation" classname="test_game_over_screen" time="1.158">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:18" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_over_screen.gd:18
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_show_trigger_animation" classname="test_game_over_screen" time="0.621">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:36" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_over_screen.gd:36
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_restart_button_unpauses_and_reloads" classname="test_game_over_screen" time="0.599">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:51" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'get_tree' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_over_screen.gd:51
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_quit_button_emits_quit_request" classname="test_game_over_screen" time="0.634">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_over_screen.gd:66" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_over_screen.gd:66
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="5" name="test_game_ui" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:51" hostname="localhost" tests="5" failures="0" errors="5" skipped="0" flaky="0" time="3.147">
+		<testcase name="test_initialization_and_group" classname="test_game_ui" time="0.630">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:7" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_ui.gd:7
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_timer_progression" classname="test_game_ui" time="0.650">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:15" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_ui.gd:15
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_timer_pauses_when_game_is_paused" classname="test_game_ui" time="0.596">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:28" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_ui.gd:28
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_xp_bar_updates_on_signal" classname="test_game_ui" time="0.655">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:44" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_ui.gd:44
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_health_bar_updates_on_signal" classname="test_game_ui" time="0.599">
+			<error message="ERROR: res://tests/ui/ingameUI/test_game_ui.gd:55" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_game_ui.gd:55
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="6" name="test_pause_menu" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:54" hostname="localhost" tests="4" failures="0" errors="4" skipped="0" flaky="0" time="3.011">
+		<testcase name="test_update_stats_math_and_colors" classname="test_pause_menu" time="1.154">
+			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:35" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_pause_menu.gd:35
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_update_weapons_sorting_and_max_level" classname="test_pause_menu" time="0.624">
+			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:65" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_pause_menu.gd:65
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_format_huge_number" classname="test_pause_menu" time="0.599">
+			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:99" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_pause_menu.gd:99
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_visibility_trigger" classname="test_pause_menu" time="0.618">
+			<error message="ERROR: res://tests/ui/ingameUI/test_pause_menu.gd:107" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_pause_menu.gd:107
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="7" name="test_progress" package="tests/ui/ingameUI" timestamp="2026-03-23T14:43:57" hostname="localhost" tests="3" failures="0" errors="3" skipped="0" flaky="0" time="1.884">
+		<testcase name="test_shader_time_updates_over_frames" classname="test_progress" time="0.616">
+			<error message="ERROR: res://tests/ui/ingameUI/test_progress.gd:8" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_progress.gd:8
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_shader_time_pauses_correctly" classname="test_progress" time="0.652">
+			<error message="ERROR: res://tests/ui/ingameUI/test_progress.gd:31" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_progress.gd:31
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_manual_time_reset" classname="test_progress" time="0.601">
+			<error message="ERROR: res://tests/ui/ingameUI/test_progress.gd:51" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'working_node' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/ingameUI/test_progress.gd:51
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+</testsuites>
