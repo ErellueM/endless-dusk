@@ -31,20 +31,21 @@ size = Vector2(12, 10)
 [node name="slime" instance=ExtResource("1_3q5em")]
 enemy_name = "Slime"
 speed = 20.0
+damage = 10.0
 
 [node name="Health" parent="." index="0"]
 max_health = 20
 
-[node name="AnimatedSprite2D" parent="." index="1"]
+[node name="AnimatedSprite2D" parent="." index="2"]
 position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_crnhq")
 frame_progress = 0.32659218
 
-[node name="AttackArea" parent="." index="2"]
+[node name="AttackArea" parent="." index="3"]
 collision_mask = 3
 
 [node name="CollisionShape2D" parent="AttackArea" index="0"]
 shape = SubResource("RectangleShape2D_3q5em")
 
-[node name="CollisionShape2D" parent="." index="3"]
+[node name="CollisionShape2D" parent="." index="4"]
 shape = SubResource("RectangleShape2D_3q5em")

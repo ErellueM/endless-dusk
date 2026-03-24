@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0mcgac7knbxt"]
+[gd_scene load_steps=10 format=3 uid="uid://c0mcgac7knbxt"]
 
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
 [ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="2_olhwn"]
 [ext_resource type="Script" uid="uid://c8ejv85dn5jdc" path="res://main/weapons/basis/character_weapons.gd" id="3_k1fg7"]
-[ext_resource type="PackedScene" uid="uid://drsd0nyx0txmx" path="res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn" id="4_cpvfl"]
+[ext_resource type="PackedScene" uid="uid://cqulv6gr7h21f" path="res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn" id="4_cpvfl"]
 [ext_resource type="PackedScene" uid="uid://ou10ghhladl2" path="res://main/entities/health.tscn" id="4_olhwn"]
+[ext_resource type="PackedScene" uid="uid://q0ek71qn65ru" path="res://main/entities/status_effects/StatusManager.tscn" id="5_cpvfl"]
+[ext_resource type="PackedScene" uid="uid://dlda7l1tq34n3" path="res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn" id="5_qvsdu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_olhwn"]
 radius = 47.010635
@@ -19,7 +21,11 @@ damage_number_scene = ExtResource("2_olhwn")
 
 [node name="WeaponInventory" type="Node2D" parent="."]
 script = ExtResource("3_k1fg7")
-starting_weapons = Array[PackedScene]([ExtResource("4_cpvfl")])
+starting_weapons = Array[PackedScene]([ExtResource("4_cpvfl"), ExtResource("5_qvsdu")])
+
+[node name="StatusManager" parent="." instance=ExtResource("5_cpvfl")]
+
+[node name="Health" parent="." instance=ExtResource("4_olhwn")]
 
 [node name="MagnetArea" type="Area2D" parent="."]
 modulate = Color(1, 1, 0, 1)
@@ -32,5 +38,3 @@ shape = SubResource("CircleShape2D_olhwn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_k1fg7")
-
-[node name="Health" parent="." instance=ExtResource("4_olhwn")]

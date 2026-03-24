@@ -22,15 +22,14 @@ func _apply_stats_for_current_level():
 		3: slowness_factor -= 0.15 # Stärkerer Slow
 
 func apply_enter_effect(body: Node2D):
-	if body.has_method("add_status_effect"):
-		body.add_status_effect("ice_slow", {
-			"slow_factor": slowness_factor,
-			"color": ice_color
-		})
+	var status_manager = body.get_node_or_null("StatusManager")
+	if status_manager:
+		status_manager.add_effect(SlowEffect.new(999.0, slowness_factor, ice_color))
 
 func apply_exit_effect(body: Node2D):
-	if body.has_method("remove_status_effect"):
-		body.remove_status_effect("ice_slow")
+	var status_manager = body.get_node_or_null("StatusManager")
+	if status_manager and status_manager.has_method("remove_effect_by_id"):
+		status_manager.remove_effect_by_id("ice_slow")
 
 func _draw():
 	var inner_color = Color(0.2, 0.5, 1.0, 0.1) 
