@@ -1,43 +1,57 @@
+#extends GdUnitTestSuite
+#
+# Anpassung am Game-Manager notwendig, Test-endlos ! Standard auf failed in Gdot nicht möglich bei Timeout
+
+#const SCENE_UNDER_TEST = "res://main/ui/general_menu/credits_menu/credits.tscn"
+#const TARGET_SCENE = "res://main/ui/general_menu/main_menu/main_menu.tscn" 
+#
+#func before_test() -> void:
+	#pass
+#
+## TEST 1: Erfolgreicher Wechsel
+#func test_on_button_back_pressed_changes_scene():
+	#var runner = scene_runner(SCENE_UNDER_TEST)
+	#
+	## Trigger die Funktion
+	#runner.invoke("_on_button_back_pressed")
+	#
+	## Wir lassen den Runner bis zu 2000ms warten, bis die Bedingung wahr ist.
+	## Falls die Zeit abläuft, bricht GdUnit diesen Aufruf automatisch ab.
+	#await runner.wait_until(func(): 
+		#return get_tree().current_scene.scene_file_path == TARGET_SCENE
+	#, 2000)
+	#
+	## Jetzt prüfen wir das Ergebnis. Ist es falsch, schlägt der Test fehl (FAILED).
+	#var current_path = get_tree().current_scene.scene_file_path
+	#assert_str(current_path).override_failure_message(
+		#"FAILED: Szene wurde nicht gewechselt. Aktueller Pfad: " + current_path
+	#).is_equal(TARGET_SCENE)
+#
+#
+## TEST 2: Fehlerfall
+#func test_on_button_back_pressed_fails_gracefully_on_missing_file():
+	#var runner = scene_runner(SCENE_UNDER_TEST)
+	#
+	#runner.invoke("_on_button_back_pressed")
+	#
+	## Wir warten hier einfach eine feste Anzahl an Frames OHNE Schleife.
+	#await runner.simulate_frames(5)
+	#
+	## Check ob wir noch da sind
+	#assert_str(get_tree().current_scene.scene_file_path).is_equal(SCENE_UNDER_TEST)
+
 extends GdUnitTestSuite
 
 const SCENE_UNDER_TEST = "res://main/ui/general_menu/credits_menu/credits.tscn"
-const TARGET_SCENE = "res://main/ui/general_menu/credits_menu/credits.tscn"
+const TARGET_SCENE = "res://main/ui/general_menu/main_menu/main_menu.tscn" 
 
+func before_test() -> void:
+	pass
+
+# TEST 1: Immer fehlschlagen
 func test_on_button_back_pressed_changes_scene():
-	# 1. Szene laden
-	var runner = scene_runner(SCENE_UNDER_TEST)
-	
-	# Sicherstellen, dass die Zielszene überhaupt existiert (Pre-Check)
-	assert_bool(ResourceLoader.exists(TARGET_SCENE)).is_true()
-	
-	# 2. Die Funktion direkt aufrufen oder Button-Klick simulieren
-	# Wenn dein Button im Szenenbaum "ButtonBack" heißt:
-	# runner.maximize_view()
-	# runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT) 
-	
-	# Alternativ rufen wir die Funktion direkt auf:
-	runner.invoke("_on_button_back_pressed")
-	
-	# 3. Dem SceneTree Zeit geben, den Wechsel zu verarbeiten
-	await runner.simulate_frames(10)
-	
-	# 4. Überprüfen, ob die aktuelle Szene im Tree nun die Zielszene ist
-	var current_scene = runner.get_tree().current_scene
-	assert_str(current_scene.scene_file_path).is_equal(TARGET_SCENE)
+	fail("FAILED: Dieser Test ist absichtlich auf FAILURE gesetzt.")
 
+# TEST 2: Immer fehlschlagen
 func test_on_button_back_pressed_fails_gracefully_on_missing_file():
-	# Dieser Test simuliert einen falschen Pfad (indem wir die Konstante im Skript kurz "umbiegen")
-	var runner = scene_runner(SCENE_UNDER_TEST)
-	
-	# Wir manipulieren die Konstante für diesen Testlauf, falls möglich, 
-	# oder wir testen einfach nur, dass kein Absturz passiert, wenn ResourceLoader fehlschlägt.
-	# Da SCENE_MAIN eine Konstante ist, können wir sie nicht einfach ändern.
-	# Wir prüfen hier stattdessen, dass die Szene GLEICH BLEIBT, wenn die Datei nicht existiert.
-	
-	# (Hinweis: Um diesen Fall echt zu testen, müsste SCENE_MAIN eine Variable sein)
-	runner.invoke("_on_button_back_pressed")
-	
-	# Wenn die Datei existiert (was sie sollte), wird dieser Test fehlschlagen, 
-	# wenn sie NICHT existiert, bleibt die Szene gleich:
-	var current_scene = runner.get_tree().current_scene
-	assert_str(current_scene.scene_file_path).is_equal(SCENE_UNDER_TEST)
+	fail("FAILED: Dieser Test ist absichtlich auf FAILURE gesetzt.")

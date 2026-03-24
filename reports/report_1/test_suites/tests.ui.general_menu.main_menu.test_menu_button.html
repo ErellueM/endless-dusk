@@ -34,12 +34,12 @@
 		<div class="report-container">
 			<h1>Testsuite Report</h1>
 			<div>
-				<span class="label">res://tests/ui/ingameUI/test_game_ui.gd</span>
+				<span class="label">res://tests/ui/general_menu/main_menu/test_menu_button.gd</span>
 			</div>
 			<div class="summary">
 				<div class="summary-item">
 					<span class="label">Tests</span>
-					<span class="value">5</span>
+					<span class="value">4</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Skipped</span>
@@ -51,7 +51,7 @@
 				</div>
 				<div class="summary-item">
 					<span class="label">Failures</span>
-					<span class="value">3</span>
+					<span class="value">4</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Orphans</span>
@@ -59,21 +59,21 @@
 				</div>
 				<div class="summary-item">
 					<span class="label">Duration</span>
-					<span class="value">5s 191ms</span>
+					<span class="value">2s 982ms</span>
 				</div>
 				<div class="success-rate">
 					<div class="check-icon status-error">✓</div>
 					<div class="rate-text">
 						<span class="label">Success Rate</span>
-						<span class="value">40%</span>
+						<span class="value">100%</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="breadcrumb">
 			<a href="../index.html"><span>All</span></a>
-			<a href="../path/tests.ui.ingameUI.html"><span>tests/ui/ingameUI</span></a>
-			<a class="active" href="#"><span>test_game_ui</span></a>
+			<a href="../path/tests.ui.general_menu.main_menu.html"><span>tests/ui/general_menu/main_menu</span></a>
+			<a class="active" href="#"><span>test_menu_button</span></a>
 		</div>
 	</header>
 
@@ -94,52 +94,16 @@
 					<tbody>
 						
 								<tr class="testcase-group">
-									<td>test_initialization_and_group</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>1s 194ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_timer_progression</td>
-									<td><span class="status status-failed">FAILED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>2s 159ms</td>
-									<td class="report-column">
-										<pre>
-line 22: Expecting:
- '1.168245'
- in range between
- '64.900000' <> '65.100000'
-line 24: Expecting:
- '01:05'
- but was
- '010:051'
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_timer_pauses_when_game_is_paused</td>
+									<td>test_initial_state</td>
 									<td><span class="status status-error">ERROR</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>600ms</td>
+									<td>1s 191ms</td>
 									<td class="report-column">
 										<pre>
-line 31: Godot Runtime Error !
-Error: 'Invalid assignment of property or key 'paused' with value of type 'bool' on a base object of type 'CanvasLayer (game_ui.gd)'.'
-	at res://tests/ui/ingameUI/test_game_ui.gd:31
+line 0: Godot Runtime Error !
+Error: 'Invalid access to property or key 'color_normal' on a base object of type 'Node2D (main_menu.gd)'.'
+	at res://tests/ui/general_menu/main_menu/test_menu_button.gd:14
 
 										</pre>
 									</td>
@@ -147,13 +111,16 @@ Error: 'Invalid assignment of property or key 'paused' with value of type 'bool'
 
 
 								<tr class="testcase-group">
-									<td>test_xp_bar_updates_on_signal</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_hover_behavior</td>
+									<td><span class="status status-error">ERROR</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>637ms</td>
+									<td>587ms</td>
 									<td class="report-column">
 										<pre>
+line 22: Godot Runtime Error !
+Error: 'Invalid call. Nonexistent function 'simulate_mouse_enter' in base 'RefCounted (GdUnitSceneRunnerImpl)'.'
+	at res://tests/ui/general_menu/main_menu/test_menu_button.gd:22
 
 										</pre>
 									</td>
@@ -161,13 +128,33 @@ Error: 'Invalid assignment of property or key 'paused' with value of type 'bool'
 
 
 								<tr class="testcase-group">
-									<td>test_health_bar_updates_on_signal</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_click_offset_and_color</td>
+									<td><span class="status status-error">ERROR</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>594ms</td>
+									<td>609ms</td>
 									<td class="report-column">
 										<pre>
+line 39: Godot Runtime Error !
+Error: 'Invalid access to property or key 'click_offset_y' on a base object of type 'Node2D (main_menu.gd)'.'
+	at res://tests/ui/general_menu/main_menu/test_menu_button.gd:39
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_custom_colors_from_inspector</td>
+									<td><span class="status status-error">ERROR</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>589ms</td>
+									<td class="report-column">
+										<pre>
+line 62: Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'color_normal' with value of type 'Color' on a base object of type 'Node2D (main_menu.gd)'.'
+	at res://tests/ui/general_menu/main_menu/test_menu_button.gd:62
 
 										</pre>
 									</td>
@@ -184,7 +171,7 @@ Error: 'Invalid assignment of property or key 'paused' with value of type 'bool'
 	</main>
 
 	<footer>
-		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-03-24 09:11:14</p>
+		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-03-24 09:32:00</p>
 		<div class="status-legend">
 			<span class="status-legend-item">
 				<span class="status-box status-skipped"></span> Skipped
