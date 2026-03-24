@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=19 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cxocihfwlim8c" path="res://main/systems/wave_handler.tscn" id="9_gdq6d"]
 [ext_resource type="PackedScene" uid="uid://qidhjxhe8p6f" path="res://main/systems/enemy_spawner.tscn" id="10_tiqm4"]
 [ext_resource type="PackedScene" uid="uid://c1uln2w3a0mgq" path="res://main/entities/enemies/simple_enemy/flying_skull.tscn" id="11_o76ia"]
+[ext_resource type="PackedScene" uid="uid://c088twbdki0g0" path="res://main/entities/enemies/simple_enemy/wheel/wheel.tscn" id="12_sxsp2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -1153,7 +1154,8 @@ level_up_screen = NodePath("../GameUI/LevelUpScreen")
 game_over_screen = NodePath("../GameUI/GameOverScreen")
 
 [node name="WaveHandler" parent="GameManager" instance=ExtResource("9_gdq6d")]
-enemy_scenes = Array[PackedScene]([ExtResource("7_tiqm4"), ExtResource("11_o76ia")])
+enemy_scenes = Array[PackedScene]([ExtResource("7_tiqm4"), ExtResource("11_o76ia"), ExtResource("12_sxsp2")])
+enemy_weights = Array[float]([100.0, 30.0, 3.0])
 
 [node name="EnemySpawner2" parent="GameManager/WaveHandler" instance=ExtResource("10_tiqm4")]
 

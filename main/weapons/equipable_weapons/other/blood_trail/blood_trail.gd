@@ -74,5 +74,5 @@ func _apply_stats_for_current_level():
 	match level:
 		2: base_damage += 10.0
 		3: base_area += 0.40
-		4: base_fire_rate -= 0.3
+		4: base_fire_rate *= 0.7
 		5: base_damage += 20.0

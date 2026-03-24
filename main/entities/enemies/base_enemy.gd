@@ -4,8 +4,9 @@ class_name BaseEnemy
 @export var enemy_name: String = "Monster"
 @export var speed: float = 100.0
 @export var damage: float = 10.0
-@export var xp_gem_scene: PackedScene 
-@export var damage_number_scene: PackedScene
+@export var xp_gem_scene: PackedScene = preload("res://main/entities/xp/xp.tscn")
+@export var xp_reward: float = 1.0 
+@export var damage_number_scene: PackedScene = preload("res://main/ui/ingameUI/damage_number.tscn")
 
 @export_group("Status Immunities")
 @export var immune_to_all_status: bool = false
@@ -42,15 +43,9 @@ func _physics_process(_delta):
 	if not is_flashing and is_instance_valid(anim):
 		anim.modulate = c_mod
 	
-	# BEWEGUNG (Speed mal Manager-Speed)
+	# --- BEWEGUNG (Ausgelagert in eigene Funktion) ---
 	if player:
-		var direction = (player.global_position - global_position).normalized()
-		var s_mult = status_manager.speed_mult if status_manager else 1.0
-		velocity = direction * (speed * s_mult)
-		move_and_slide()
-		if velocity.x != 0:
-			anim.flip_h = velocity.x < 0
-			anim.play("default")
+		process_movement(_delta)
 	
 	# ANGRIFF (Damage mal Manager-Damage-Dealt)
 	if can_attack:
@@ -61,6 +56,18 @@ func _physics_process(_delta):
 				body.take_damage_typed(damage * d_mult)
 				start_attack_cooldown()
 				break
+
+# --- NEUE FUNKTION FÜR DIE BEWEGUNG ---
+# Diese Funktion kann von anderen Gegnern überschrieben werden!
+func process_movement(_delta: float):
+	var direction = (player.global_position - global_position).normalized()
+	var s_mult = status_manager.speed_mult if status_manager else 1.0
+	velocity = direction * (speed * s_mult)
+	move_and_slide()
+	
+	if velocity.x != 0:
+		anim.flip_h = velocity.x < 0
+		anim.play("default")
 
 func start_attack_cooldown():
 	can_attack = false
@@ -122,6 +129,7 @@ func _on_death():
 func drop_soul():
 	if xp_gem_scene != null:
 		var gem = xp_gem_scene.instantiate()
+		gem.xp_value = xp_reward
 		var offset = Vector2(38, 0)
 		gem.set_deferred("global_position", global_position + offset)
 		get_tree().current_scene.call_deferred("add_child", gem)

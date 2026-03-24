@@ -61,45 +61,7 @@ var unowned_weapons_db = {
 		},
 }
 
-# NEU: "stats" ist jetzt ein Array! So kannst du mehrere Werte gleichzeitig ändern.
-var stat_upgrades = [
-	# --- MIGHT (Damage) ---
-	{"name": "Sharpen", "desc": "[color=green]+10% Damage[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "might", "amount": 0.1}]},
-	{"name": "Brute Force", "desc": "[color=green]+25% Damage[/color]\n[color=red]-5% Attack Speed[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "might", "amount": 0.25}, {"key": "cooldown_mult", "amount": 0.05}]},
-	{"name": "Glass Cannon", "desc": "[color=green]+50% Damage[/color]\n[color=red]-20 Max Health[/color]", "rarity": "Legendary", "type": "stat", "stats": [{"key": "might", "amount": 0.5}, {"key": "max_health", "amount": -20.0}]},
 
-	# --- COOLDOWN (Attack Speed) ---
-	{"name": "Quick Reflexes", "desc": "[color=green]+5% Attack Speed[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "cooldown_mult", "amount": -0.05}]},
-	{"name": "Haste", "desc": "[color=green]+15% Attack Speed[/color]\n[color=red]-5% Damage[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "cooldown_mult", "amount": -0.15}, {"key": "might", "amount": -0.05}]},
-	{"name": "Time Warp", "desc": "[color=green]+30% Attack Speed[/color]\n[color=red]-15% Damage[/color]", "rarity": "Legendary", "type": "stat", "stats": [{"key": "cooldown_mult", "amount": -0.30}, {"key": "might", "amount": -0.15}]},
-
-	# --- HEALTH & RECOVERY ---
-	{"name": "Minor Health", "desc": "[color=green]+10 Max Health[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "max_health", "amount": 10.0}]},
-	{"name": "Troll Blood", "desc": "[color=green]+0.5 HP/sec Regen[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "recovery", "amount": 0.5}]},
-	{"name": "Vampire Vial", "desc": "[color=green]+2.0 HP/sec Regen[/color]\n[color=red]-20 Max Health[/color]", "rarity": "Legendary", "type": "stat", "stats": [{"key": "recovery", "amount": 2.0}, {"key": "max_health", "amount": -20.0}]},
-
-	# --- ARMOR ---
-	{"name": "Leather Patch", "desc": "[color=green]+1 Armor[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "armor", "amount": 1.0}]},
-	{"name": "Heavy Plate", "desc": "[color=green]+4 Armor[/color]\n[color=red]-10 Move Speed[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "armor", "amount": 4.0}, {"key": "speed", "amount": -10.0}]},
-	{"name": "Juggernaut", "desc": "[color=green]+10 Armor[/color]\n[color=red]-30 Move Speed[/color]", "rarity": "Legendary", "type": "stat", "stats": [{"key": "armor", "amount": 10.0}, {"key": "speed", "amount": -30.0}]},
-
-	# --- SPEED ---
-	{"name": "Swift Boots", "desc": "[color=green]+20 Move Speed[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "speed", "amount": 20.0}]},
-	{"name": "Wind Walker", "desc": "[color=green]+50 Move Speed[/color]\n[color=red]-2 Armor[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "speed", "amount": 50.0}, {"key": "armor", "amount": -2.0}]},
-
-	# --- AREA (Size of Attacks) ---
-	{"name": "Wider Reach", "desc": "[color=green]+10% Attack Area[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "area", "amount": 0.1}]},
-	{"name": "Expanding Force", "desc": "[color=green]+30% Attack Area[/color]\n[color=red]-10% Attack Speed[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "area", "amount": 0.3}, {"key": "cooldown_mult", "amount": 0.1}]},
-
-	# --- UTILITY (Magnet & XP) ---
-	{"name": "Attractor", "desc": "[color=green]+25% Pickup Range[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "magnet_mult", "amount": 0.25}]},
-	{"name": "Scholar", "desc": "[color=green]+15% XP Gain[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "growth", "amount": 0.15}]},
-	{"name": "Greed", "desc": "[color=green]+40% Pickup Range[/color]\n[color=green]+30% XP Gain[/color]\n[color=red]-15% Luck[/color]", "rarity": "Legendary", "type": "stat", "stats": [{"key": "magnet_mult", "amount": 0.4}, {"key": "growth", "amount": 0.3}, {"key": "luck", "amount": -0.15}]},
-
-	# --- LUCK ---
-	{"name": "Small Clover", "desc": "[color=green]+10% Luck[/color]", "rarity": "Common", "type": "stat", "stats": [{"key": "luck", "amount": 0.1}]},
-	{"name": "Golden Horseshoe", "desc": "[color=green]+25% Luck[/color]", "rarity": "Rare", "type": "stat", "stats": [{"key": "luck", "amount": 0.25}]}
-]
 
 func _ready():
 	visibility_changed.connect(_on_visibility_changed)
@@ -109,8 +71,8 @@ func _on_visibility_changed():
 		generate_cards()
 
 func get_weight(item: Dictionary, player_luck: float) -> float:
-	var rarity = item["rarity"]
-	var item_type = item["type"]
+	var rarity = item.get("rarity", "Common")
+	var item_type = item.get("type", "stat")
 	var weight = 10.0
 	
 	match rarity:
@@ -134,7 +96,7 @@ func generate_cards():
 	var player = get_tree().get_first_node_in_group("player")
 	var weapons_manager = player.get_node_or_null("WeaponInventory") if player else null
 	
-	var dynamic_pool = stat_upgrades.duplicate()
+	var dynamic_pool = UpgradeDatabase.stat_upgrades.duplicate()
 	var current_weapons = []
 	var owned_weapon_ids = []
 	
@@ -211,14 +173,15 @@ func _on_upgrade_selected(option_data):
 	var player = get_tree().get_first_node_in_group("player")
 	
 	if player:
-		if option_data["type"] == "stat":
+		var type = option_data.get("type", "stat")
+		if type == "stat":
 			apply_stat_upgrade(player, option_data)
 			
-		elif option_data["type"] == "new_weapon":
+		elif type == "new_weapon":
 			var weapons_manager = player.get_node("WeaponInventory")
 			weapons_manager.add_weapon(option_data["scene"])
 			
-		elif option_data["type"] == "weapon_upgrade":
+		elif type == "weapon_upgrade":
 			var w_node = option_data["weapon_node"]
 			if w_node.has_method("apply_level_upgrade"):
 				w_node.apply_level_upgrade(option_data["new_level"])
@@ -229,6 +192,9 @@ func _on_upgrade_selected(option_data):
 
 # NEU: Verarbeitet jetzt das Array mit mehreren Stats!
 func apply_stat_upgrade(player, data):
+	if not data.has("stats"):
+		return
+		
 	for stat in data["stats"]:
 		var key = stat["key"]
 		var amount = stat["amount"]
@@ -240,7 +206,7 @@ func apply_stat_upgrade(player, data):
 			"might": player.might += amount
 			"recovery": player.recovery += amount
 			"area": player.area += amount
-			"cooldown_mult": player.cooldown_mult += amount
+			"attack_speed_bonus": player.attack_speed_bonus += amount
 			"growth": player.growth += amount
 			"magnet_mult": 
 				player.magnet_mult += amount

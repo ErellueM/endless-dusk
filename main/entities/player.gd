@@ -21,7 +21,7 @@ var max_xp: float = 10.0
 @export_group("Offensive Stats")
 @export var might: float = 1.0          
 @export var area: float = 1.0           
-@export var cooldown_mult: float = 1.0  
+@export var attack_speed_bonus: float = 0.0
 
 @export_group("Utility Stats")
 @export var magnet_mult: float = 1.0 

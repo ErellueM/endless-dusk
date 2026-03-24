@@ -1,14 +1,16 @@
 extends Node
 
 @export var enemy_scenes: Array[PackedScene] 
+@export var enemy_weights: Array[float]
 @export var max_enemies: int = 200
+@export var wheel_index: int = 2
+@export var max_wheels: int = 2
 
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var enemy_spawner := $EnemySpawner2
 
 var player: Node2D
 
-# --- BALANCING ---
 var base_wait_time: float = 1.0   
 var min_wait_time: float = 0.3  
 var time_passed: float = 0.0     
@@ -39,10 +41,12 @@ func _on_spawn_timer_timeout():
 	
 	if is_swarm and enemies_to_spawn >= 3:
 		var chosen_enemy = get_enemy_for_current_wave()
+		chosen_enemy = apply_wheel_limit(chosen_enemy)
 		enemy_spawner.spawn_enemy_group(player, chosen_enemy, 300, 500, enemies_to_spawn)
 	else:
 		for i in range(enemies_to_spawn):
 			var chosen_enemy = get_enemy_for_current_wave()
+			chosen_enemy = apply_wheel_limit(chosen_enemy)
 			enemy_spawner.spawn_enemy_around_player(player, chosen_enemy, 300, 500)
 	
 	var new_time = spawn_timer.wait_time * 0.99
@@ -50,9 +54,30 @@ func _on_spawn_timer_timeout():
 	spawn_timer.start()
 
 func get_enemy_for_current_wave() -> PackedScene:
-	var current_minute = int(time_passed / 60.0)
-	
+	var current_minute = int(time_passed / 10.0)
 	var max_allowed_index = min(current_minute, enemy_scenes.size() - 1)
-	var random_index = randi_range(0, max_allowed_index)
 	
-	return enemy_scenes[random_index]
+	var total_weight: float = 0.0
+	for i in range(max_allowed_index + 1):
+		if i < enemy_weights.size():
+			total_weight += enemy_weights[i]
+		else:
+			total_weight += 10.0
+			
+	var random_roll = randf_range(0.0, total_weight)
+	var current_weight: float = 0.0
+	
+	for i in range(max_allowed_index + 1):
+		var weight = enemy_weights[i] if i < enemy_weights.size() else 10.0
+		current_weight += weight
+		if random_roll <= current_weight:
+			return enemy_scenes[i]
+			
+	return enemy_scenes[0]
+
+func apply_wheel_limit(chosen_scene: PackedScene) -> PackedScene:
+	if enemy_scenes.size() > wheel_index and chosen_scene == enemy_scenes[wheel_index]:
+		var wheel_count = get_tree().get_nodes_in_group("EliteWheels").size()
+		if wheel_count >= max_wheels:
+			return enemy_scenes[0]
+	return chosen_scene

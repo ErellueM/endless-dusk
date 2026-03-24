@@ -26,6 +26,7 @@ shadow_color = Color(0, 0, 0, 1)
 [node name="LevelUpScreen" type="CanvasLayer"]
 process_mode = 2
 script = ExtResource("1_ndms1")
+weapon_weight_multiplier = 2.0
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

@@ -86,7 +86,7 @@ func get_upgrade_info(next_level: int) -> Dictionary:
 func _apply_stats_for_current_level():
 	match level:
 		2: orb_count += 1
-		3: base_fire_rate -= 0.2
+		3: base_fire_rate *= 0.8
 		4: orb_count += 2
 		5: 
 			base_damage += 15.0

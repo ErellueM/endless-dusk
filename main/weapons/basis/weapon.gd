@@ -30,8 +30,10 @@ func get_actual_damage() -> float:
 	return base_damage
 
 func get_actual_fire_rate() -> float:
-	if player_ref and "cooldown_mult" in player_ref:
-		return base_fire_rate * player_ref.cooldown_mult
+	if player_ref and "attack_speed_bonus" in player_ref:
+		var bonus = player_ref.attack_speed_bonus
+		var final_rate = base_fire_rate / (1.0 + max(-0.9, bonus))
+		return max(0.02, final_rate)
 	return base_fire_rate
 
 func get_actual_area() -> float:
