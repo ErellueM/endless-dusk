@@ -50,11 +50,11 @@ func test_color_and_travel_for_poison():
 	await runner.simulate_frames(30)
 	
 	# Da Poison -30 travelt, sollte die Y-Position kleiner (höher) als bei normalem Schaden sein
-	assert_that(dmg_node.position.y).is_less_than(start_pos.y)
+	assert_that(dmg_node.position.y).is_less(start_pos.y)
 
 func test_self_destruction_after_animation():
 	var runner = scene_runner(SCENE_PATH)
-	var dmg_node = runner.working_node()
+	var dmg_node = runner.scene()
 	
 	# Die Animation dauert 1.2 Sekunden. 
 	# Wir simulieren etwas mehr Zeit (z.B. 1.5s), um sicher zu sein.

@@ -32,7 +32,7 @@ class MockWeapon extends Node2D:
 
 func test_update_stats_math_and_colors():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	var player = auto_free(MockPlayer.new())
 	
 	# Global Stats resetten für sauberen Test
@@ -62,7 +62,7 @@ func test_update_stats_math_and_colors():
 
 func test_update_weapons_sorting_and_max_level():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	var player = auto_free(MockPlayer.new())
 	
 	# Mock Inventory bauen
@@ -96,7 +96,7 @@ func test_update_weapons_sorting_and_max_level():
 
 func test_format_huge_number():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	
 	assert_that(ui.format_huge_number(950)).is_equal("950")
 	assert_that(ui.format_huge_number(1500)).is_equal("1.5k")
@@ -104,7 +104,7 @@ func test_format_huge_number():
 
 func test_visibility_trigger():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	
 	# Wir simulieren das Einblenden
 	ui.visible = false

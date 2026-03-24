@@ -4,7 +4,7 @@ const SCENE_PATH = "res://main/ui/general_menu/main_menu/main_menu.tscn"
 
 func test_initial_state():
 	var runner = scene_runner(SCENE_PATH)
-	var button = runner.working_node()
+	var button = runner.scene()
 	var label = runner.find_child("Label")
 	
 	# _ready() abwarten
@@ -15,7 +15,7 @@ func test_initial_state():
 
 func test_hover_behavior():
 	var runner = scene_runner(SCENE_PATH)
-	var button = runner.working_node()
+	var button = runner.scene()
 	var label = runner.find_child("Label")
 	
 	# Simuliere: Maus fährt über den Button
@@ -32,7 +32,7 @@ func test_hover_behavior():
 
 func test_click_offset_and_color():
 	var runner = scene_runner(SCENE_PATH)
-	var button = runner.working_node()
+	var button = runner.scene()
 	var label = runner.find_child("Label")
 	
 	var initial_y = label.position.y
@@ -55,7 +55,7 @@ func test_click_offset_and_color():
 
 func test_custom_colors_from_inspector():
 	var runner = scene_runner(SCENE_PATH)
-	var button = runner.working_node()
+	var button = runner.scene()
 	var label = runner.find_child("Label")
 	
 	# Wir ändern die Export-Variablen im Test

@@ -2,78 +2,81 @@ extends GdUnitTestSuite
 
 const SCENE_PATH = "res://main/systems/wave_handler.tscn"
 
+# Wird vor JEDEM Test aufgerufen, um eine saubere Umgebung zu schaffen
+func before_test() -> void:
+	# Alle alten Gegner löschen, damit Gruppen-Größen wieder bei 0 starten
+	for enemy in get_tree().get_nodes_in_group("Enemygroup"):
+		enemy.free()
+
 func test_max_enemies_limit():
 	var runner = scene_runner(SCENE_PATH)
-	var manager = runner.working_node()
+	await runner.simulate_frames(1) # Warten auf @onready
 	
-	# Setup: Wir setzen das Limit künstlich niedrig für den Test
+	var manager = runner.scene()
 	manager.max_enemies = 5
 	
-	# Wir erstellen einen Mock-Player
 	var player = auto_free(Node2D.new())
 	manager.set_player(player)
 	
-	# Wir simulieren, dass bereits 5 Gegner im Spiel sind
+	# 5 Gegner spawnen
 	for i in range(5):
 		var enemy = Node2D.new()
 		enemy.add_to_group("Enemygroup")
-		runner.get_tree().root.add_child(enemy)
+		manager.add_child(enemy)
 	
-	# Den Timeout manuell triggern
 	runner.invoke("_on_spawn_timer_timeout")
 	
-	# Es dürfen immer noch nur 5 Gegner in der Gruppe sein
-	var enemy_count = runner.get_tree().get_nodes_in_group("Enemygroup").size()
-	assert_that(enemy_count).is_equal(5)
+	var enemy_count = get_tree().get_nodes_in_group("Enemygroup").size()
+	assert_int(enemy_count).is_equal(5)
 
 func test_scaling_over_time():
 	var runner = scene_runner(SCENE_PATH)
-	var manager = runner.working_node()
-	var player = auto_free(Node2D.new())
-	manager.set_player(player)
+	await runner.simulate_frames(1)
 	
-	# Fall A: Ganz am Anfang (time_passed = 0)
-	# Formel: 2 + int(0 / 20) = 2 Gegner
+	var manager = runner.scene()
+	manager.set_player(auto_free(Node2D.new()))
+	
+	# Fall A: 0s -> 2 Gegner erwartet
 	manager.time_passed = 0.0
 	runner.invoke("_on_spawn_timer_timeout")
+	assert_int(get_tree().get_nodes_in_group("Enemygroup").size()).is_equal(2)
 	
-	var count_start = runner.get_tree().get_nodes_in_group("Enemygroup").size()
-	assert_that(count_start).is_equal(2)
-	
-	# Fall B: Nach 40 Sekunden
-	# Formel: 2 + int(40 / 20) = 4 Gegner
+	# Fall B: 40s -> +4 Gegner (insgesamt 6)
 	manager.time_passed = 40.0
 	runner.invoke("_on_spawn_timer_timeout")
-	
-	# 2 (von vorher) + 4 (neue) = 6
-	var count_after = runner.get_tree().get_nodes_in_group("Enemygroup").size()
-	assert_that(count_after).is_equal(6)
+	assert_int(get_tree().get_nodes_in_group("Enemygroup").size()).is_equal(6)
 
 func test_timer_acceleration():
 	var runner = scene_runner(SCENE_PATH)
-	var manager = runner.working_node()
-	var timer = manager.get_node("SpawnTimer") as Timer
+	await runner.simulate_frames(1)
+	
+	var manager = runner.scene()
+	var timer = manager.find_child("SpawnTimer", true, false) as Timer
+	
+	# Korrektur für Zeile 64: override_failure_message nutzen
+	assert_object(timer).override_failure_message("SpawnTimer nicht gefunden!").is_not_null()
 	
 	var initial_wait = manager.base_wait_time
 	manager.set_player(auto_free(Node2D.new()))
 	
-	# Erster Timeout
 	runner.invoke("_on_spawn_timer_timeout")
 	
-	# Der neue wait_time sollte 99% vom alten sein
-	assert_that(timer.wait_time).is_equal(initial_wait * 0.99)
+	# Float-Vergleiche sind bei Zeitwerten oft präziser mit assert_float
+	assert_float(timer.wait_time).is_equal(initial_wait * 0.99)
 	
-	# Teste das Minimum-Limit
+	# Minimum-Limit
 	timer.wait_time = 0.31
 	runner.invoke("_on_spawn_timer_timeout")
-	assert_that(timer.wait_time).is_equal(0.3) # Darf nicht unter min_wait_time fallen
+	assert_float(timer.wait_time).is_equal(0.3)
 
 func test_no_player_no_spawn():
 	var runner = scene_runner(SCENE_PATH)
-	var manager = runner.working_node()
+	await runner.simulate_frames(1)
 	
-	manager.set_player(null) # Keinen Spieler setzen
+	var manager = runner.scene()
+	manager.set_player(null)
+	
 	runner.invoke("_on_spawn_timer_timeout")
 	
-	var enemy_count = runner.get_tree().get_nodes_in_group("Enemygroup").size()
-	assert_that(enemy_count).is_equal(0)
+	# Dank before_test() ist die Gruppe hier garantiert leer
+	assert_int(get_tree().get_nodes_in_group("Enemygroup").size()).is_equal(0)

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
 <testsuites id="2026-03-23" name="report_1" tests="33" failures="13" skipped="0" flaky="0" time="0.000">
 	<testsuite id="0" name="test_entity" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="3" failures="1" errors="1" skipped="0" flaky="0" time="0.037">
 		<testcase name="test_health_node_is_assigned" classname="test_entity" time="0.001">
@@ -232,6 +233,104 @@ Expecting:
 Godot Runtime Error !
 Error: 'Invalid assignment of property or key 'take_damage' with value of type 'Callable' on a base object of type 'null instance'.'
 	at res://tests/entities/enemies/test_base_enemy.gd:86
+=======
+<testsuites id="2026-03-24" name="report_1" tests="4" failures="3" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_wave_handler" package="tests/systems" timestamp="2026-03-24T09:59:58" hostname="localhost" tests="4" failures="3" errors="8" skipped="0" flaky="0" time="3.452">
+		<testcase name="test_max_enemies_limit" classname="test_wave_handler" time="1.147">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:12" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:12
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_scaling_over_time" classname="test_wave_handler" time="0.570">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:33" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:33
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:33" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'spawn_enemy_around_player' in base 'null instance' on a null instance.'
+	at res://main/systems/wave_handler.gd:40
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:33" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'spawn_enemy_around_player' in base 'null instance' on a null instance.'
+	at res://main/systems/wave_handler.gd:40
+]]>
+			</error>
+			<failure message="FAILED: res://tests/systems/test_wave_handler.gd:42" type="FAILURE">
+<![CDATA[
+Expecting:
+ '2'
+ but was
+ '0'
+]]>
+			</failure>
+			<failure message="FAILED: res://tests/systems/test_wave_handler.gd:47" type="FAILURE">
+<![CDATA[
+Expecting:
+ '6'
+ but was
+ '0'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_timer_acceleration" classname="test_wave_handler" time="0.615">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:50" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:50
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:50" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'spawn_enemy_around_player' in base 'null instance' on a null instance.'
+	at res://main/systems/wave_handler.gd:40
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:50" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid access to property or key 'wait_time' on a base object of type 'null instance'.'
+	at res://tests/systems/test_wave_handler.gd:65
+]]>
+			</error>
+			<failure message="FAILED: res://tests/systems/test_wave_handler.gd:57" type="FAILURE">
+<![CDATA[
+SpawnTimer nicht gefunden!
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_no_player_no_spawn" classname="test_wave_handler" time="1.116">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:73" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:73
+>>>>>>> b568aa5 (Improvement/Update Unitests Systems +Ui)
 ]]>
 			</error>
 		</testcase>

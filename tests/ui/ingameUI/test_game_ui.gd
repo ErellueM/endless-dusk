@@ -4,7 +4,7 @@ const SCENE_PATH = "res://main/ui/ingameUI/game_ui.tscn"
 
 func test_initialization_and_group():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	
 	# Prüfen, ob die UI sich korrekt in die Gruppe einträgt
 	assert_that(ui.is_in_group("GameUI")).is_true()
@@ -12,7 +12,7 @@ func test_initialization_and_group():
 
 func test_timer_progression():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	var label = runner.find_child("TimerLabel", true, false) as Label
 	
 	# Wir simulieren den Ablauf von 65 Sekunden
@@ -25,10 +25,10 @@ func test_timer_progression():
 
 func test_timer_pauses_when_game_is_paused():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	
 	# Spiel pausieren
-	runner.get_tree().paused = true
+	runner.scene().paused = true
 	var time_before = ui.time_elapsed
 	
 	await runner.simulate_frames(10, 0.1)
@@ -41,7 +41,7 @@ func test_timer_pauses_when_game_is_paused():
 
 func test_xp_bar_updates_on_signal():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	var exp_bar = runner.find_child("ExpBar", true, false) as TextureProgressBar
 	
 	# Signal-Funktion direkt aufrufen (Simuliert das Signal vom Spieler)
@@ -52,7 +52,7 @@ func test_xp_bar_updates_on_signal():
 
 func test_health_bar_updates_on_signal():
 	var runner = scene_runner(SCENE_PATH)
-	var ui = runner.working_node()
+	var ui = runner.scene()
 	var health_bar = runner.find_child("HealthBar", true, false) as TextureProgressBar
 	
 	ui._on_player_health_changed(20, 80)
