@@ -22,7 +22,7 @@ func _on_pressed():
 	if not unlocked:
 		return
 	Global.selected_character_scene = character_scene
-	get_tree().change_scene_to_file("res://maps/map_1.tscn")
+	SceneChanger.change_scene("res://maps/map_1.tscn")
 
 func make_locked_visual():
 	$TextureButton.modulate = Color(0, 0, 0, 0.5)
@@ -35,7 +35,7 @@ const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
 func _on_button_back_pressed():
 	if ResourceLoader.exists(SCENE_MAIN):
 		# Ersetze die aktuelle Szene (MainMenu) durch  Zielszene (CharacterSeletion)
-		get_tree().change_scene_to_file(SCENE_MAIN)
+		SceneChanger.change_scene(SCENE_MAIN)
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_MAIN)

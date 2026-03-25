@@ -82,7 +82,18 @@ text = "Sound Off/On"
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 
+[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SkipTransitionsCheck" type="CheckBox" parent="CanvasLayer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Skip Transitions"
+
 [connection signal="pressed" from="Button_back" to="." method="_on_button_back_pressed"]
 [connection signal="value_changed" from="CanvasLayer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer2/VSync" to="." method="_on_fullscreen_check_toggled"]
 [connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer3/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer4/SkipTransitionsCheck" to="." method="_on_skip_transitions_toggled"]

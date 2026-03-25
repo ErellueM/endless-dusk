@@ -13,7 +13,7 @@ func _ready():
 func _on_button_start_game_pressed():
 	if ResourceLoader.exists(SCENE_CHARACTER_SELECTION):
 		# Ersetze die aktuelle Szene (MainMenu) durch  Zielszene (CharacterSeletion)
-		get_tree().change_scene_to_file(SCENE_CHARACTER_SELECTION)
+		SceneChanger.change_scene(SCENE_CHARACTER_SELECTION)
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_CHARACTER_SELECTION)
@@ -22,7 +22,7 @@ func _on_button_start_game_pressed():
 func _on_button_settings_pressed():
 	if ResourceLoader.exists(SCENE_SETTINGS):
 		# Ersetze die aktuelle Szene (MainMenu) durch  Zielszene (CharacterSeletion)
-		get_tree().change_scene_to_file(SCENE_SETTINGS)
+		SceneChanger.change_scene(SCENE_SETTINGS)
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_SETTINGS)
@@ -31,7 +31,7 @@ func _on_button_settings_pressed():
 func _on_button_credits_pressed():
 	if ResourceLoader.exists(SCENE_CREDITS):
 		# Ersetze die aktuelle Szene (MainMenu) durch  Zielszene (CharacterSeletion)
-		get_tree().change_scene_to_file(SCENE_CREDITS)
+		SceneChanger.change_scene(SCENE_CREDITS)
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_CREDITS)
@@ -40,7 +40,7 @@ func _on_button_credits_pressed():
 func _on_button_back_pressed():
 	if ResourceLoader.exists(SCENE_MAIN):
 		# Ersetze die aktuelle Szene (MainMenu) durch  Zielszene (CharacterSeletion)
-		get_tree().change_scene_to_file(SCENE_MAIN)
+		SceneChanger.change_scene(SCENE_MAIN)
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_MAIN)

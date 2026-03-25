@@ -4,8 +4,6 @@ extends CanvasLayer
 @onready var stats_grid = %StatsGrid
 @onready var weapons_grid = %WeaponsGrid
 
-const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
-
 func _ready():
 	visibility_changed.connect(_on_visibility_changed)
 	
@@ -227,6 +225,8 @@ func _on_resume_button_pressed():
 	if manager:
 		manager.change_state(manager.GameState.PLAYING)
 
+func _on_settings_button_pressed():
+	SceneChanger.change_scene("res://main/ui/general_menu/settings_menu/settings.tscn")
+
 func _on_quit_button_pressed():
-	get_tree().paused = false
-	get_tree().change_scene_to_file(SCENE_MAIN)
+	SceneChanger.change_scene("res://main/ui/general_menu/main_menu/main_menu.tscn")
