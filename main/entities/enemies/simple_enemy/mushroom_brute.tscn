@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3 uid="uid://bxl61rgyqfkfy"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_nnorj"]
+[ext_resource type="Texture2D" uid="uid://db37x7dqfi028" path="res://assets/art/enemys/MushroomBrute.png" id="2_ip8yq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctku1"]
+atlas = ExtResource("2_ip8yq")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mm76t"]
+atlas = ExtResource("2_ip8yq")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrxyk"]
+atlas = ExtResource("2_ip8yq")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vlh8v"]
+atlas = ExtResource("2_ip8yq")
+region = Rect2(60, 0, 20, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2bm7e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ctku1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mm76t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrxyk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vlh8v")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nnorj"]
+size = Vector2(12, 17)
+
+[node name="MushroomBrute" instance=ExtResource("1_nnorj")]
+speed = 10.0
+damage = 80.0
+xp_reward = 10.0
+immune_to_all_status = true
+
+[node name="Health" parent="." index="0"]
+max_health = 500
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_2bm7e")
+frame_progress = 0.81594795
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_nnorj")
+
+[node name="CollisionShape2D" parent="." index="4"]
+position = Vector2(0, -0.46)
+shape = SubResource("RectangleShape2D_nnorj")

@@ -44,3 +44,6 @@ func _on_button_back_pressed():
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_MAIN)
+
+func _on_quit_button_pressed():
+	get_tree().quit()
