@@ -1,38 +1,28 @@
 shader_type canvas_item;
 
-// --- EINSTELLUNGEN ---
-uniform float speed : hint_range(0.0, 5.0) = 1.0;
+uniform float speed : hint_range(0.0, 5.0) = 1.5;
 uniform float intensity : hint_range(0.0, 1.0) = 0.5;
-uniform float pause_between : hint_range(0.0, 5.0) = 2.0;
+uniform float line_width : hint_range(0.0, 0.5) = 0.15;
+uniform float angle : hint_range(0.0, 6.28) = 0.785;
+uniform float pause_time : hint_range(0.0, 5.0) = 2.0;
 
-// WICHTIG: Wie dick ist dein Rand in Prozent? (0.05 = 5% Rand)
-// Pass das an, bis es genau auf deinen StyleBoxTexture-Rand passt!
-uniform float border_threshold : hint_range(0.0, 0.5) = 0.05;
+// NEU: Welche Farbe hat der Lichtschweif? (Weiß für normal, Orange/Gold für Legendary)
+uniform vec4 shine_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
 void fragment() {
-	// 1. Hole die Farbe der Textur (dein goldener/blauer Rahmen)
-	vec4 original_color = COLOR;
-	
-	// 2. Erstelle eine Maske: Sind wir im Randbereich oder in der Mitte?
-	// step(a, b) gibt 0.0 wenn b < a, sonst 1.0
-	float is_left = step(UV.x, border_threshold);
-	float is_right = step(1.0 - border_threshold, UV.x);
-	float is_top = step(UV.y, border_threshold);
-	float is_bottom = step(1.0 - border_threshold, UV.y);
-	
-	// Wenn IRGENDEINE dieser Bedingungen wahr ist (Wert > 0), sind wir im Rand
-	float is_border = max(max(is_left, is_right), max(is_top, is_bottom));
-	
-	// 3. Schimmer-Berechnung (wie vorher, aber nur aktiv wenn is_border == 1.0)
-	float cycle = (TIME * speed);
-	float movement = mod(cycle, pause_between + 2.0) - 1.0;
-	float pos = UV.x + UV.y;
-	float shine = smoothstep(0.2, 0.0, abs(pos - movement));
-	
-	// 4. Den Schimmer anwenden -> NUR wenn wir im Rand sind
-	vec3 shine_color = vec3(1.0, 1.0, 1.0) * shine * intensity * is_border;
-	
-	// 5. Mischen
-	COLOR.rgb = original_color.rgb + shine_color;
-	COLOR.a = original_color.a;
+    vec4 current_color = COLOR;
+    float cycle = mod(TIME * speed, 1.0 + pause_time);
+    vec2 uv = UV - 0.5;
+    float rot_x = uv.x * cos(angle) - uv.y * sin(angle);
+    float pos = (cycle * 2.5) - 1.0; 
+    float dist = abs(rot_x - pos);
+    
+    float shine = smoothstep(line_width, 0.0, dist);
+    float shine2 = smoothstep(line_width * 0.2, 0.0, abs(rot_x - (pos + 0.1)));
+    
+    float total_shine = (shine + shine2) * intensity;
+    
+    // NEU: Wir multiplizieren den Glanz mit unserem shine_tint!
+    COLOR.rgb = current_color.rgb + (shine_tint.rgb * total_shine * current_color.a);
+    COLOR.a = current_color.a;
 }

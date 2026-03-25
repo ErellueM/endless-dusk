@@ -104,7 +104,7 @@ func update_weapons(player):
 			var level_display = ""
 			
 			if data["level"] >= data["max_level"]:
-				level_display = "[color=#ffaa00][wave amp=30 freq=3]MAX[/wave][/color]"
+				level_display = "[font_size=16][color=#ff2222]MAX LEVEL[/color]"
 			else:
 				for i in range(data["max_level"]):
 					if i < data["level"]:

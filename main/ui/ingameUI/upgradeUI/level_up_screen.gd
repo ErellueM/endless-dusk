@@ -3,25 +3,27 @@ extends CanvasLayer
 @onready var card_container = $Control/VBoxContainer/CardContainer
 var card_scene = preload("res://main/ui/ingameUI/upgradeUI/UpgradeCard.tscn")
 
-@export_group("Balancing & Debug")
-# Wie viel wahrscheinlicher sind Waffen im Vergleich zu Stats? (Standard: 5x)
-@export var weapon_weight_multiplier: float = 5.0 
-# CHEAT-MODUS: Wenn an, kriegst du IMMER Waffen, bis das Inventar voll ist!
+@export_group("Balancing & Loot Chances")
 @export var debug_force_weapons: bool = false
+@export_range(0.0, 1.0) var weapon_chance: float = 0.4 
+@export var weight_common: float = 70.0
+@export var weight_uncommon: float = 50.0
+@export var weight_rare: float = 25.0
+@export var weight_epic: float = 10.0
+@export var weight_legendary: float = 3.0
 
-# DATENBANK FÜR NEUE WAFFEN (Pfade anpassen!)
 var unowned_weapons_db = {
 	"knife": {
 		"name": "Knife",
 		"desc": "Throws a fast knife.",
 		"rarity": "Common",
-		"scene": preload("res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn") # <--- DEIN PFAD
+		"scene": preload("res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn")
 	},
 	"ice_aura": {
 		"name": "Ice Aura",
 		"desc": "Creates a freezing zone.",
-		"rarity": "Common",
-		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn") # <--- DEIN PFAD
+		"rarity": "Uncommon",
+		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn")
 	},
 	"chain_lightning": {
 		"name": "Chain Lightning",
@@ -32,7 +34,7 @@ var unowned_weapons_db = {
 	"pillar_of_light": {
 		"name": "Pillar of Light",
 		"desc": "[color=green]New Weapon[/color]\nGod strikes the souls.",
-		"rarity": "Rare",
+		"rarity": "Epic",
 		"scene": preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn")
 	},
 	"void_orbs": {
@@ -44,24 +46,22 @@ var unowned_weapons_db = {
 	"blood_trail": {
 		"name": "Blood Trail",
 		"desc": "[color=green]New Weapon[/color]\n ...",
-		"rarity": "Rare",
+		"rarity": "Uncommon",
 		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn")
 	},
 	"phantom_glaive": {
-			"name": "Phantom Glaive",
-			"desc": "[color=green]New Weapon[/color]\nThrows a spectral blade that returns to you.",
-			"rarity": "Rare",
-			"scene": preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn")
-		},
+		"name": "Phantom Glaive",
+		"desc": "[color=green]New Weapon[/color]\nThrows a spectral blade that returns to you.",
+		"rarity": "Rare",
+		"scene": preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn")
+	},
 	"abyssal_impale": {
-			"name": "Abyssal Impale",
-			"desc": "[color=green]New Weapon[/color]\nSpikes outranging the ground.",
-			"rarity": "Rare",
-			"scene": preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn")
-		},
+		"name": "Abyssal Impale",
+		"desc": "[color=green]New Weapon[/color]\nSpikes outranging the ground.",
+		"rarity": "Epic",
+		"scene": preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn")
+	},
 }
-
-
 
 func _ready():
 	visibility_changed.connect(_on_visibility_changed)
@@ -76,16 +76,14 @@ func get_weight(item: Dictionary, player_luck: float) -> float:
 	var weight = 10.0
 	
 	match rarity:
-		"Common": weight = 70.0 
-		"Rare": weight = 25.0 * player_luck 
-		"Legendary": weight = 5.0 * (player_luck * 1.5) 
+		"Common": weight = weight_common 
+		"Uncommon": weight = weight_uncommon
+		"Rare": weight = weight_rare * player_luck 
+		"Epic": weight = weight_epic * (player_luck * 1.2)
+		"Legendary": weight = weight_legendary * (player_luck * 1.5) 
 		
-	# --- DIE MAGIE FÜR WAFFEN & DEN CHEAT ---
-	if item_type == "weapon_upgrade" or item_type == "new_weapon":
-		if debug_force_weapons:
-			return 99999.0 # CHEAT: Macht die Waffe quasi zur 100% Garantie!
-		else:
-			weight *= weapon_weight_multiplier # Normales Balancing
+	if debug_force_weapons and (item_type == "weapon_upgrade" or item_type == "new_weapon"):
+		return 99999.0 
 			
 	return weight
 
@@ -96,14 +94,15 @@ func generate_cards():
 	var player = get_tree().get_first_node_in_group("player")
 	var weapons_manager = player.get_node_or_null("WeaponInventory") if player else null
 	
-	var dynamic_pool = UpgradeDatabase.stat_upgrades.duplicate()
+	var stat_pool = UpgradeDatabase.stat_upgrades.duplicate()
+	var weapon_pool = [] 
+	
 	var current_weapons = []
 	var owned_weapon_ids = []
 	
 	if weapons_manager:
 		current_weapons = weapons_manager.get_children()
 		
-		# 1. UPGRADES FÜR BESTEHENDE WAFFEN
 		for w in current_weapons:
 			if "weapon_id" in w:
 				owned_weapon_ids.append(w.weapon_id)
@@ -112,7 +111,7 @@ func generate_cards():
 					var next_lvl = w.level + 1
 					var upg_info = w.get_upgrade_info(next_lvl)
 					
-					dynamic_pool.append({
+					weapon_pool.append({
 						"name": str(w.weapon_id).capitalize() + " Lvl " + str(next_lvl),
 						"desc": upg_info["desc"],
 						"rarity": upg_info["rarity"],
@@ -121,13 +120,12 @@ func generate_cards():
 						"new_level": next_lvl
 					})
 
-		# 2. NEUE WAFFEN HINZUFÜGEN (Wenn Inventar Platz hat)
 		if current_weapons.size() < weapons_manager.max_weapons:
 			for w_id in unowned_weapons_db:
 				if not owned_weapon_ids.has(w_id):
 					var w_data = unowned_weapons_db[w_id]
-					dynamic_pool.append({
-						"name": "New: " + w_data["name"],
+					weapon_pool.append({
+						"name": w_data["name"],
 						"desc": w_data["desc"],
 						"rarity": w_data.get("rarity", "Common"),
 						"type": "new_weapon",
@@ -135,31 +133,42 @@ func generate_cards():
 						"scene": w_data["scene"]
 					})
 
-	# 3. KARTEN ZIEHEN
 	var options = []
 	var current_luck = player.luck if player and "luck" in player else 1.0
-	var loop_failsafe = 0
 	
-	while options.size() < 3 and dynamic_pool.size() > 0 and loop_failsafe < 100:
+	var loop_failsafe = 0
+	while options.size() < 3 and loop_failsafe < 100:
 		loop_failsafe += 1
-		var total_weight = 0.0
-		for item in dynamic_pool:
-			if options.has(item): continue 
-			# HIER ÄNDERN: Einfach 'item' übergeben!
-			total_weight += get_weight(item, current_luck) 
+		
+		var chosen_pool = stat_pool
+		var roll_for_weapon = randf() < weapon_chance or debug_force_weapons
+		
+		if roll_for_weapon and weapon_pool.size() > 0:
+			chosen_pool = weapon_pool
+		elif stat_pool.size() == 0 and weapon_pool.size() > 0:
+			chosen_pool = weapon_pool
 			
+		if chosen_pool.size() == 0:
+			break
+			
+		var total_weight = 0.0
+		for item in chosen_pool:
+			if not options.has(item): 
+				total_weight += get_weight(item, current_luck)
+				
+		if total_weight <= 0.0:
+			continue
+				
 		var random_roll = randf_range(0.0, total_weight)
 		var current_sum = 0.0
 		
-		for item in dynamic_pool:
-			if options.has(item): continue
-			# HIER ÄNDERN: Einfach 'item' übergeben!
-			current_sum += get_weight(item, current_luck) 
-			if random_roll <= current_sum:
-				options.append(item)
-				break
+		for item in chosen_pool:
+			if not options.has(item):
+				current_sum += get_weight(item, current_luck)
+				if random_roll <= current_sum:
+					options.append(item)
+					break
 
-	# 4. KARTEN ANZEIGEN
 	for i in options.size():
 		var option = options[i]
 		var card_instance = card_scene.instantiate()
@@ -167,7 +176,6 @@ func generate_cards():
 		card_instance.set_item_data(option["name"], option["desc"], option["rarity"])
 		card_instance.selected.connect(_on_upgrade_selected.bind(option))
 		card_instance.appear(i * 0.2)
-
 
 func _on_upgrade_selected(option_data):
 	var player = get_tree().get_first_node_in_group("player")
@@ -190,7 +198,6 @@ func _on_upgrade_selected(option_data):
 	if manager:
 		manager.change_state(manager.GameState.PLAYING)
 
-# NEU: Verarbeitet jetzt das Array mit mehreren Stats!
 func apply_stat_upgrade(player, data):
 	if not data.has("stats"):
 		return

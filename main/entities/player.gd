@@ -59,11 +59,13 @@ func _physics_process(delta):
 	if not is_flashing and is_instance_valid(anim):
 		anim.modulate = c_mod
 
-	if health_component and recovery > 0:
-		if health_component.current_health < health_component.max_health:
+	if health_component and recovery != 0:
+		if recovery < 0 or health_component.current_health < health_component.max_health:
 			health_component.current_health += recovery * delta
-			health_component.current_health = min(health_component.current_health, health_component.max_health)
+			health_component.current_health = clamp(health_component.current_health, 0.0, health_component.max_health)
 			health_changed.emit(health_component.current_health, health_component.max_health)
+			if health_component.current_health <= 0:
+				die()
 
 	var direction = Vector2.ZERO
 	if Input.is_action_pressed("ui_right"): direction.x += 1

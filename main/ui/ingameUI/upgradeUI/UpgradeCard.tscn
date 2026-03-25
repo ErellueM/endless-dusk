@@ -1,14 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyaajs1lvmg6g"]
+[gd_scene load_steps=7 format=3 uid="uid://dyaajs1lvmg6g"]
 
 [ext_resource type="Script" uid="uid://deqw4j34xv7tb" path="res://main/ui/ingameUI/upgradeUI/upgrade_card.gd" id="1_5uuf2"]
-[ext_resource type="Shader" uid="uid://c8ml76iikgncl" path="res://main/effects/shader/shine.gdshader" id="2_ja70v"]
+[ext_resource type="Shader" uid="uid://b3vl7heewqafu" path="res://main/ui/ingameUI/upgradeUI/UpgradeCard.gdshader" id="1_ja70v"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ja70v"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l3eeu"]
+noise = SubResource("FastNoiseLite_ja70v")
+seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ja70v"]
-shader = ExtResource("2_ja70v")
+shader = ExtResource("1_ja70v")
 shader_parameter/speed = 1.0
 shader_parameter/intensity = 0.5
-shader_parameter/pause_between = 2.0
-shader_parameter/border_threshold = 0.05
+shader_parameter/base_tint = Color(1, 1, 1, 1)
+shader_parameter/glow_color = Color(1, 0.5, 0.1, 1)
+shader_parameter/noise_pattern = SubResource("NoiseTexture2D_l3eeu")
+shader_parameter/dirt_strength = 0.4
+shader_parameter/random_offset = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja70v"]
 bg_color = Color(1, 1, 1, 1)
@@ -50,10 +59,11 @@ theme_override_constants/margin_bottom = 2
 z_index = 3
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="RichTextLabel" parent="MarginContainer/MarginContainer/VBoxContainer"]
 z_index = 4
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+bbcode_enabled = true
+fit_content = true
 horizontal_alignment = 1
 
 [node name="Icon" type="TextureRect" parent="MarginContainer/MarginContainer/VBoxContainer"]
