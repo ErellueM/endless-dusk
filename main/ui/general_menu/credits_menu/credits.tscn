@@ -14,17 +14,17 @@ scale = Vector2(1.203466, 1.4418832)
 text = "go back"
 
 [node name="Label" type="Label" parent="."]
-offset_left = 452.0
+offset_left = 248.0
 offset_top = 73.0
-offset_right = 618.0
+offset_right = 414.0
 offset_bottom = 128.0
 theme_override_font_sizes/font_size = 40
 text = "Creators"
 
 [node name="GridContainer" type="GridContainer" parent="."]
-offset_left = 408.0
+offset_left = 238.0
 offset_top = 160.0
-offset_right = 686.0
+offset_right = 516.0
 offset_bottom = 318.0
 
 [node name="Label_timo" type="Label" parent="GridContainer"]

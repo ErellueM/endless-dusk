@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<<<<<<< HEAD
+<testsuites id="2026-03-23" name="report_1" tests="33" failures="13" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_entity" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="3" failures="1" errors="1" skipped="0" flaky="0" time="0.037">
+		<testcase name="test_health_node_is_assigned" classname="test_entity" time="0.001">
+		</testcase>
+		<testcase name="test_died_signal_connected" classname="test_entity" time="0.014">
+			<failure message="FAILED: res://tests/entities/test_entity.gd:29" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_entity_is_freed_on_death" classname="test_entity" time="0.021">
+			<error message="ERROR: res://tests/entities/test_entity.gd:0" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Cannot call method 'is_queued_for_deletion' on a previously freed instance.'
+	at res://tests/entities/test_entity.gd:37
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="test_health" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="4" failures="1" errors="0" skipped="0" flaky="0" time="0.024">
+		<testcase name="test_initial_health" classname="test_health" time="0.001">
+		</testcase>
+		<testcase name="test_take_damage_reduces_health" classname="test_health" time="0.003">
+		</testcase>
+		<testcase name="test_health_does_not_go_below_zero" classname="test_health" time="0.006">
+		</testcase>
+		<testcase name="test_died_signal_emitted" classname="test_health" time="0.007">
+			<failure message="FAILED: res://tests/entities/test_health.gd:46" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="test_player" package="tests/entities" timestamp="2026-03-23T15:16:42" hostname="localhost" tests="9" failures="5" errors="7" skipped="0" flaky="0" time="0.146">
+		<testcase name="test_gain_xp_increases_current_xp" classname="test_player" time="0.006">
+		</testcase>
+		<testcase name="test_gain_xp_triggers_level_up" classname="test_player" time="0.013">
+			<failure message="FAILED: res://tests/entities/test_player.gd:28" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_gain_xp_emits_xp_changed" classname="test_player" time="0.014">
+			<error message="ERROR: res://tests/entities/test_player.gd:0" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'play' in base 'null instance' on a null instance.'
+	at res://main/entities/player.gd:82
+]]>
+			</error>
+			<failure message="FAILED: res://tests/entities/test_player.gd:40" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_take_damage_reduces_health" classname="test_player" time="0.021">
+			<error message="ERROR: res://tests/entities/test_player.gd:46" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'modulate' with value of type 'Color' on a base object of type 'null instance'.'
+	at res://main/entities/player.gd:134
+	at res://tests/entities/test_player.gd:46
+]]>
+			</error>
+			<error message="ERROR: res://tests/entities/test_player.gd:46" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'play' in base 'null instance' on a null instance.'
+	at res://main/entities/player.gd:82
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_armor_reduces_damage" classname="test_player" time="0.020">
+			<error message="ERROR: res://tests/entities/test_player.gd:58" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'modulate' with value of type 'Color' on a base object of type 'null instance'.'
+	at res://main/entities/player.gd:134
+	at res://tests/entities/test_player.gd:58
+]]>
+			</error>
+			<error message="ERROR: res://tests/entities/test_player.gd:58" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'play' in base 'null instance' on a null instance.'
+	at res://main/entities/player.gd:82
+]]>
+			</error>
+			<failure message="FAILED: res://tests/entities/test_player.gd:62" type="FAILURE">
+<![CDATA[
+Expecting:
+ '95'
+ but was
+ '95.000000'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_heal_increases_health" classname="test_player" time="0.013">
+			<failure message="FAILED: res://tests/entities/test_player.gd:71" type="FAILURE">
+<![CDATA[
+Expecting:
+ '60'
+ but was
+ '60.000000'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_health_changed_signal_emitted_on_damage" classname="test_player" time="0.021">
+			<error message="ERROR: res://tests/entities/test_player.gd:80" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'modulate' with value of type 'Color' on a base object of type 'null instance'.'
+	at res://main/entities/player.gd:134
+	at res://tests/entities/test_player.gd:80
+]]>
+			</error>
+			<failure message="FAILED: res://tests/entities/test_player.gd:83" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_update_magnet_scales_radius" classname="test_player" time="0.013">
+		</testcase>
+		<testcase name="test_die_changes_game_state" classname="test_player" time="0.015">
+			<error message="ERROR: res://tests/entities/test_player.gd:98" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'GameState' with value of type 'Dictionary' on a base object of type 'Node'.'
+	at res://tests/entities/test_player.gd:98
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="test_xp" package="tests/entities/xp" timestamp="2026-03-23T15:16:43" hostname="localhost" tests="8" failures="3" errors="1" skipped="0" flaky="0" time="0.232">
+		<testcase name="test_gem_initial_values" classname="test_xp" time="0.112">
+			<failure message="FAILED: res://tests/entities/xp/test_xp.gd:18" type="FAILURE">
+<![CDATA[
+Expecting:
+ '(1.0, 1.0)'
+ but was
+ '(0.999883, 0.999883)'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_on_body_entered_grants_xp_and_frees" classname="test_xp" time="0.014">
+			<error message="ERROR: res://tests/entities/xp/test_xp.gd:23" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'gain_xp' with value of type 'Callable' on a base object of type 'Node'.'
+	at res://tests/entities/xp/test_xp.gd:23
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_fly_to_player_starts_flying" classname="test_xp" time="0.014">
+		</testcase>
+		<testcase name="test_absorb_gem_increases_xp" classname="test_xp" time="0.020">
+			<failure message="FAILED: res://tests/entities/xp/test_xp.gd:53" type="FAILURE">
+<![CDATA[
+Expecting:
+ '8'
+ but was
+ '8.000000'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_absorb_gem_frees_other" classname="test_xp" time="0.022">
+			<failure message="FAILED: res://tests/entities/xp/test_xp.gd:64" type="FAILURE">
+<![CDATA[
+Expecting: 'false' but is 'true'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_update_visuals_changes_scale" classname="test_xp" time="0.013">
+		</testcase>
+		<testcase name="test_high_xp_changes_color" classname="test_xp" time="0.013">
+		</testcase>
+		<testcase name="test_optimization_tick_does_not_crash" classname="test_xp" time="0.014">
+		</testcase>
+	</testsuite>
+	<testsuite id="4" name="test_base_enemy" package="tests/entities/enemies" timestamp="2026-03-23T15:16:43" hostname="localhost" tests="9" failures="3" errors="2" skipped="0" flaky="0" time="0.154">
+		<testcase name="test_enemy_initializes" classname="test_base_enemy" time="0.007">
+		</testcase>
+		<testcase name="test_take_damage_reduces_health" classname="test_base_enemy" time="0.020">
+		</testcase>
+		<testcase name="test_death_sets_is_dead" classname="test_base_enemy" time="0.021">
+			<error message="ERROR: res://tests/entities/enemies/test_base_enemy.gd:0" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid access to property or key 'is_dead' on a base object of type 'previously freed'.'
+	at res://tests/entities/enemies/test_base_enemy.gd:34
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_add_status_effect_slow" classname="test_base_enemy" time="0.013">
+		</testcase>
+		<testcase name="test_remove_status_effect_restores_speed" classname="test_base_enemy" time="0.014">
+		</testcase>
+		<testcase name="test_status_effect_duration_removal" classname="test_base_enemy" time="0.020">
+			<failure message="FAILED: res://tests/entities/enemies/test_base_enemy.gd:69" type="FAILURE">
+<![CDATA[
+Expecting: 'false' but is 'true'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_enemy_has_player_target" classname="test_base_enemy" time="0.014">
+			<failure message="FAILED: res://tests/entities/enemies/test_base_enemy.gd:72" type="FAILURE">
+<![CDATA[
+Expecting: not to be '<null>'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_enemy_moves_towards_player" classname="test_base_enemy" time="0.021">
+			<failure message="FAILED: res://tests/entities/enemies/test_base_enemy.gd:80" type="FAILURE">
+<![CDATA[
+Expecting:
+ '(0.0, 0.0)'
+ not equal to
+ '(0.0, 0.0)'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_enemy_can_attack_player" classname="test_base_enemy" time="0.014">
+			<error message="ERROR: res://tests/entities/enemies/test_base_enemy.gd:86" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'take_damage' with value of type 'Callable' on a base object of type 'null instance'.'
+	at res://tests/entities/enemies/test_base_enemy.gd:86
+=======
+<testsuites id="2026-03-24" name="report_1" tests="4" failures="3" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_wave_handler" package="tests/systems" timestamp="2026-03-24T09:59:58" hostname="localhost" tests="4" failures="3" errors="8" skipped="0" flaky="0" time="3.452">
+		<testcase name="test_max_enemies_limit" classname="test_wave_handler" time="1.147">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:12" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:12
+]]>
+			</error>
+		</testcase>
+		<testcase name="test_scaling_over_time" classname="test_wave_handler" time="0.570">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:33" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:33
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:33" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'spawn_enemy_around_player' in base 'null instance' on a null instance.'
+	at res://main/systems/wave_handler.gd:40
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:33" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'spawn_enemy_around_player' in base 'null instance' on a null instance.'
+	at res://main/systems/wave_handler.gd:40
+]]>
+			</error>
+			<failure message="FAILED: res://tests/systems/test_wave_handler.gd:42" type="FAILURE">
+<![CDATA[
+Expecting:
+ '2'
+ but was
+ '0'
+]]>
+			</failure>
+			<failure message="FAILED: res://tests/systems/test_wave_handler.gd:47" type="FAILURE">
+<![CDATA[
+Expecting:
+ '6'
+ but was
+ '0'
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_timer_acceleration" classname="test_wave_handler" time="0.615">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:50" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:50
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:50" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Attempt to call function 'spawn_enemy_around_player' in base 'null instance' on a null instance.'
+	at res://main/systems/wave_handler.gd:40
+]]>
+			</error>
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:50" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid access to property or key 'wait_time' on a base object of type 'null instance'.'
+	at res://tests/systems/test_wave_handler.gd:65
+]]>
+			</error>
+			<failure message="FAILED: res://tests/systems/test_wave_handler.gd:57" type="FAILURE">
+<![CDATA[
+SpawnTimer nicht gefunden!
+]]>
+			</failure>
+		</testcase>
+		<testcase name="test_no_player_no_spawn" classname="test_wave_handler" time="1.116">
+			<error message="ERROR: res://tests/systems/test_wave_handler.gd:73" type="ABORT">
+<![CDATA[
+Godot Runtime Error !
+Error: 'Invalid assignment of property or key 'wait_time' with value of type 'float' on a base object of type 'null instance'.'
+	at res://main/systems/wave_handler.gd:20
+	at res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd:74
+	at res://addons/gdUnit4/src/GdUnitTestSuite.gd:242
+	at res://tests/systems/test_wave_handler.gd:73
+>>>>>>> b568aa5 (Improvement/Update Unitests Systems +Ui)
+]]>
+			</error>
+		</testcase>
+	</testsuite>
+</testsuites>

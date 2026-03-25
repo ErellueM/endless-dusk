@@ -1,9 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://boaauw6akyf8l"]
+[gd_scene load_steps=3 format=3 uid="uid://boaauw6akyf8l"]
 
 [ext_resource type="Script" uid="uid://dh852gyftr3ht" path="res://main/ui/general_menu/settings_menu/settings.gd" id="1_b3aux"]
 
+[sub_resource type="Environment" id="Environment_b3aux"]
+adjustment_enabled = true
+
 [node name="Settings" type="Node2D"]
 script = ExtResource("1_b3aux")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_b3aux")
 
 [node name="Button_back" type="Button" parent="."]
 offset_left = 48.0
@@ -17,18 +23,18 @@ text = "go back"
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 custom_minimum_size = Vector2(400, 250)
-offset_left = 237.0
-offset_top = 125.0
-offset_right = 637.0
-offset_bottom = 375.0
+offset_left = 158.0
+offset_top = 90.0
+offset_right = 558.0
+offset_bottom = 340.0
 mouse_filter = 2
 color = Color(0.22352941, 1, 1, 0.105882354)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
-offset_left = 356.0
-offset_top = 146.0
-offset_right = 511.0
-offset_bottom = 329.0
+offset_left = 282.0
+offset_top = 128.0
+offset_right = 437.0
+offset_bottom = 311.0
 mouse_filter = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer"]
@@ -50,6 +56,8 @@ text = "Music-Volume
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
+max_value = 1.0
+step = 0.05
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
@@ -57,21 +65,24 @@ mouse_filter = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-text = "Brightness
-"
+text = "Vertical-Sync Off/On"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="HSlider" type="HSlider" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
+[node name="VSync" type="CheckButton" parent="CanvasLayer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
-text = "Sound On/Off"
+text = "Sound Off/On"
 
 [node name="CheckButton" type="CheckButton" parent="CanvasLayer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 
 [connection signal="pressed" from="Button_back" to="." method="_on_button_back_pressed"]
+[connection signal="value_changed" from="CanvasLayer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer2/VSync" to="." method="_on_fullscreen_check_toggled"]
+[connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer3/CheckButton" to="." method="_on_check_button_toggled"]
