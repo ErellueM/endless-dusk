@@ -14,7 +14,7 @@ extends CanvasLayer
 @onready var opt_resolution = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_Resolution
 @onready var btn_vsync = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/CheckBox_Vsync
 @onready var opt_fps = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_FPS
-@onready var opt_showFps = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_ShowFps
+@onready var btn_show_fps = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_ShowFps
 
 # Audio
 @onready var slider_master = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid/HSlider_Volume
@@ -49,7 +49,7 @@ func _ready():
 	if opt_resolution: opt_resolution.selected = SettingsManager.resolution_index
 	if btn_vsync: btn_vsync.button_pressed = SettingsManager.vsync_enabled
 	if opt_fps: opt_fps.selected = SettingsManager.fps_limit_index
-	if opt_showFps: opt_fps.selected = SettingsManager.show_fps
+	if btn_show_fps: opt_fps.selected = SettingsManager.show_fps
 	
 	if slider_master: slider_master.value = SettingsManager.master_volume
 	if slider_music: slider_music.value = SettingsManager.music_volume
@@ -70,6 +70,7 @@ func _ready():
 	if opt_resolution: opt_resolution.item_selected.connect(_on_resolution_selected)
 	if btn_vsync: btn_vsync.toggled.connect(_on_vsync_toggled)
 	if opt_fps: opt_fps.item_selected.connect(_on_fps_selected)
+	if btn_show_fps: btn_show_fps.toggled.connect(_on_fps_toggled)
 	
 	if slider_master: slider_master.value_changed.connect(_on_master_changed)
 	if slider_music: slider_music.value_changed.connect(_on_music_changed)
