@@ -14,10 +14,10 @@ extends CanvasLayer
 @onready var opt_resolution = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_Resolution
 @onready var btn_vsync = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/CheckBox_Vsync
 @onready var opt_fps = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_FPS
-@onready var btn_show_fps = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/Option_ShowFps
+@onready var btn_show_fps = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/CheckBox_ShowFps
 
 # Audio
-@onready var slider_master = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid/HSlider_Volume
+@onready var slider_master = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid/HSlider_Master
 @onready var slider_music = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid/HSlider_Music
 @onready var slider_sfx = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid/HSlider_SFX
 @onready var btn_focus_mute = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid/CheckBox_FocusMute

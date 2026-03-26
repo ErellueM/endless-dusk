@@ -13,7 +13,7 @@ bg_color = Color(1, 1, 1, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rewnd"]
-bg_color = Color(1, 0.81559116, 0.7847141, 1)
+bg_color = Color(0.8217887, 0.82178867, 0.82178867, 1)
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gewyu"]
@@ -222,7 +222,7 @@ popup/item_6/id = 6
 layout_mode = 2
 text = "Show FPS"
 
-[node name="CheckBox_SchowFps" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+[node name="CheckBox_ShowFps" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
 layout_mode = 2
 focus_mode = 0
 
@@ -436,5 +436,3 @@ grow_horizontal = 0
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Audio" to="." method="_on_button_audio_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Controls" to="." method="_on_button_controls_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Gameplay" to="." method="_on_button_gameplay_pressed"]
-[connection signal="toggled" from="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/CheckBox_SchowFps" to="." method="_on_fps_toggled"]
-[connection signal="toggled" from="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid/CheckBox_Skip" to="." method="_on_skip_transitions_toggled"]
