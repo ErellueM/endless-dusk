@@ -1,0 +1,377 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1k2ql1tav3mb"]
+
+[ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="1_13n8v"]
+[ext_resource type="Script" uid="uid://fiol3wyo8aum" path="res://main/ui/general_menu/settings_menu/settings_menu.gd" id="1_gewyu"]
+
+[node name="SettingsMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_gewyu")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.9)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer_Tabs" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Button_Display" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer_Tabs"]
+layout_mode = 2
+focus_mode = 0
+text = "Display"
+flat = true
+alignment = 0
+
+[node name="Button_Audio" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer_Tabs"]
+layout_mode = 2
+focus_mode = 0
+text = "Audio"
+flat = true
+alignment = 0
+
+[node name="Button_Controls" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer_Tabs"]
+layout_mode = 2
+focus_mode = 0
+text = "Controls"
+flat = true
+alignment = 0
+
+[node name="Button_Gameplay" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer_Tabs"]
+layout_mode = 2
+focus_mode = 0
+text = "Gameplay"
+flat = true
+alignment = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 10
+
+[node name="Pages" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Page_Display" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display"]
+layout_mode = 2
+text = "--- DISPLAY ---"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="Label_Window" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+text = "Window Mode"
+
+[node name="Option_Window" type="OptionButton" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+focus_mode = 0
+selected = 0
+item_count = 2
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Fullscreen"
+popup/item_1/id = 1
+
+[node name="Label_Resolution" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+text = "Resolution"
+
+[node name="Option_Resolution" type="OptionButton" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+focus_mode = 0
+selected = 0
+item_count = 4
+popup/item_0/text = "1280x720"
+popup/item_0/id = 1
+popup/item_1/text = "1920x1080"
+popup/item_1/id = 0
+popup/item_2/text = "2560x1440"
+popup/item_2/id = 2
+popup/item_3/text = "3840x2160"
+popup/item_3/id = 3
+
+[node name="Label_Vsync" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+text = "V-Sync"
+
+[node name="CheckBox_Vsync" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="Label_FPS" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+text = "FPS Limit"
+
+[node name="Option_FPS" type="OptionButton" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+focus_mode = 0
+selected = 2
+item_count = 7
+popup/item_0/text = "30 FPS"
+popup/item_0/id = 0
+popup/item_1/text = "60 FPS"
+popup/item_1/id = 1
+popup/item_2/text = "90 FPS"
+popup/item_2/id = 2
+popup/item_3/text = "120 FPS"
+popup/item_3/id = 3
+popup/item_4/text = "144 FPS"
+popup/item_4/id = 4
+popup/item_5/text = "240 FPS"
+popup/item_5/id = 5
+popup/item_6/text = "Unlimited"
+popup/item_6/id = 6
+
+[node name="Label_ShowFps" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+text = "Show FPS"
+
+[node name="CheckBox_SchowFps" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
+layout_mode = 2
+
+[node name="Page_Audio" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio"]
+layout_mode = 2
+text = "--- AUDIO ---"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="Label_Master" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="HSlider_Master" type="HSlider" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="Label_Music" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="HSlider_Music" type="HSlider" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="Label_SFX" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="HSlider_SFX" type="HSlider" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="Label_Focus" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+text = "Mute on Focus Loss"
+
+[node name="CheckBox_FocusMute" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+
+[node name="Page_Controls" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls"]
+layout_mode = 2
+text = "--- CONTROLS ---"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label_Mouse" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Move towards Mouse"
+
+[node name="CheckBox_Mouse" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="Label_Up" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Move Up"
+
+[node name="Btn_Bind_Up" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+text = "W"
+
+[node name="Label_Down" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Move Down"
+
+[node name="Btn_Bind_Down" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+text = "S"
+
+[node name="Label_Left" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Move Left"
+
+[node name="Btn_Bind_Left" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+text = "A"
+
+[node name="Label_Right" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Move Right"
+
+[node name="Btn_Bind_Right" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+text = "D"
+
+[node name="Label_Interact" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Interact / Confirm"
+
+[node name="Btn_Bind_Interact" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+text = "Space"
+
+[node name="Label_Pause" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+text = "Pause / Back"
+
+[node name="Btn_Bind_Pause" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Controls/Grid"]
+layout_mode = 2
+focus_mode = 0
+text = "Escape"
+
+[node name="Page_Gameplay" type="VBoxContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay"]
+layout_mode = 2
+text = "--- GAMEPLAY ---"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="Label_Dmg" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+text = "Show Damage Numbers"
+
+[node name="CheckBox_Dmg" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+
+[node name="Label_Particles" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+text = "Reduce Particles"
+
+[node name="CheckBox_Particles" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+text = "Skip Transition"
+
+[node name="CheckBox_Skip" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+focus_mode = 0
+
+[node name="SaveFeedback" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -50.0
+offset_right = -30.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Saved!"
+horizontal_alignment = 2
+
+[node name="GenericBackButton" parent="." instance=ExtResource("1_13n8v")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -60.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+grow_horizontal = 0
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Display" to="." method="_on_button_display_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Audio" to="." method="_on_button_audio_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Controls" to="." method="_on_button_controls_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer_Tabs/Button_Gameplay" to="." method="_on_button_gameplay_pressed"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid/CheckBox_SchowFps" to="." method="_on_fps_toggled"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid/CheckBox_Skip" to="." method="_on_skip_transitions_toggled"]

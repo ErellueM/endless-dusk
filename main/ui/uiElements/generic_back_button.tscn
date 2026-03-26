@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0yj1llxhwtd4"]
+
+[ext_resource type="Texture2D" uid="uid://dc3mqiok577l" path="res://assets/art/ui/x_button.png" id="1_u6u5m"]
+[ext_resource type="Script" uid="uid://rsky3bdddtwo" path="res://main/ui/uiElements/generic_back_button.gd" id="2_d057l"]
+
+[node name="GenericBackButton" type="TextureButton"]
+texture_normal = ExtResource("1_u6u5m")
+script = ExtResource("2_d057l")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_smart_pressed"]

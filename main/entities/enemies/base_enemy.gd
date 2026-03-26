@@ -96,7 +96,7 @@ func take_damage_typed(amount: float, is_dot: bool = false, dmg_color: Color = C
 		
 	actual_damage = max(0.0, actual_damage)
 	
-	if damage_number_scene and display_damage > 0:
+	if SettingsManager.show_damage_numbers and damage_number_scene and display_damage > 0:
 		var dmg_num = damage_number_scene.instantiate()
 		var offset = Vector2(38, -20)
 		var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))

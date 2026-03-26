@@ -1,7 +1,9 @@
-[gd_scene load_steps=39 format=3 uid="uid://yiugqchqnyuh"]
+[gd_scene load_steps=41 format=3 uid="uid://yiugqchqnyuh"]
 
+[ext_resource type="Script" uid="uid://dshtu0n0h40qm" path="res://main/ui/CharacterSelection/character_seletion.gd" id="1_8du83"]
 [ext_resource type="FontFile" uid="uid://bi8yhuhuvn611" path="res://assets/fonts/Bitmgothic/Bitmgothic.ttf" id="1_nxpqh"]
 [ext_resource type="PackedScene" uid="uid://yd6amcmsh8in" path="res://main/ui/CharacterSelection/ChoseableCharacters/ChoseableCharacter_01.tscn" id="1_r6mht"]
+[ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="1_w8bcl"]
 [ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="2_oardr"]
 [ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="3_tgso6"]
 [ext_resource type="PackedScene" uid="uid://bk8p1tcioxxce" path="res://main/entities/Characters/PlayableCharacter_02.tscn" id="4_5ltq3"]
@@ -228,21 +230,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_8du83")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="GenericBackButton" parent="CanvasLayer" instance=ExtResource("1_w8bcl")]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
 offset_left = 132.0
 offset_top = 12.0
-offset_right = 578.0
-offset_bottom = 59.0
+offset_right = 597.0
+offset_bottom = 60.0
 theme_override_fonts/font = ExtResource("1_nxpqh")
 theme_override_font_sizes/font_size = 48
 text = "Chose your Character"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 192.0
@@ -251,29 +265,20 @@ offset_right = -201.0
 offset_bottom = -64.0
 columns = 4
 
-[node name="Soilder" parent="GridContainer" instance=ExtResource("1_r6mht")]
+[node name="Soilder" parent="CanvasLayer/GridContainer" instance=ExtResource("1_r6mht")]
 layout_mode = 2
 character_name = "Soilder"
 character_scene = ExtResource("2_oardr")
 sprite_frames = SubResource("SpriteFrames_tgso6")
 
-[node name="Orc" parent="GridContainer" instance=ExtResource("1_r6mht")]
+[node name="Orc" parent="CanvasLayer/GridContainer" instance=ExtResource("1_r6mht")]
 layout_mode = 2
 character_name = "Orc"
 character_scene = ExtResource("4_5ltq3")
 sprite_frames = SubResource("SpriteFrames_t6acf")
 
-[node name="Crusader" parent="GridContainer" instance=ExtResource("1_r6mht")]
+[node name="Crusader" parent="CanvasLayer/GridContainer" instance=ExtResource("1_r6mht")]
 layout_mode = 2
 character_name = "Crusader"
 character_scene = ExtResource("7_eclxw")
 sprite_frames = SubResource("SpriteFrames_8du83")
-
-[node name="Button_back" type="Button" parent="."]
-layout_mode = 0
-offset_top = 25.000011
-offset_right = 120.0
-offset_bottom = 56.209187
-text = "go back"
-
-[connection signal="pressed" from="Button_back" to="GridContainer/Soilder" method="_on_button_back_pressed"]

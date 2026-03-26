@@ -1,19 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfvax0wddpvrs"]
+[gd_scene load_steps=3 format=3 uid="uid://cfvax0wddpvrs"]
 
 [ext_resource type="Script" uid="uid://ctd6my708cadd" path="res://main/ui/general_menu/credits_menu/credits.gd" id="1_junm0"]
+[ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="2_h10wd"]
 
 [node name="Credits" type="Node2D"]
 script = ExtResource("1_junm0")
 
-[node name="Button_back" type="Button" parent="."]
-offset_left = 48.0
-offset_top = 43.999996
-offset_right = 116.0
-offset_bottom = 75.0
-scale = Vector2(1.203466, 1.4418832)
-text = "go back"
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Label" type="Label" parent="."]
+[node name="GenericBackButton" parent="CanvasLayer" instance=ExtResource("2_h10wd")]
+offset_left = 13.0
+offset_top = 12.0
+offset_right = 45.0
+offset_bottom = 44.0
+
+[node name="Label" type="Label" parent="CanvasLayer"]
 offset_left = 248.0
 offset_top = 73.0
 offset_right = 414.0
@@ -21,34 +22,32 @@ offset_bottom = 128.0
 theme_override_font_sizes/font_size = 40
 text = "Creators"
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
 offset_left = 238.0
 offset_top = 160.0
 offset_right = 516.0
 offset_bottom = 318.0
 
-[node name="Label_timo" type="Label" parent="GridContainer"]
+[node name="Label_timo" type="Label" parent="CanvasLayer/GridContainer"]
 layout_mode = 2
 text = "Wagner Timo - timopromotive"
 
-[node name="Label_mika" type="Label" parent="GridContainer"]
+[node name="Label_mika" type="Label" parent="CanvasLayer/GridContainer"]
 layout_mode = 2
 text = "Stoetter Mika - Mika1011"
 
-[node name="Label_erik" type="Label" parent="GridContainer"]
+[node name="Label_erik" type="Label" parent="CanvasLayer/GridContainer"]
 layout_mode = 2
 text = "Müller Erik - ErellueM"
 
-[node name="Label_till" type="Label" parent="GridContainer"]
+[node name="Label_till" type="Label" parent="CanvasLayer/GridContainer"]
 layout_mode = 2
 text = "Tillmann Felix - Sh4d0wnight"
 
-[node name="Label_beric" type="Label" parent="GridContainer"]
+[node name="Label_beric" type="Label" parent="CanvasLayer/GridContainer"]
 layout_mode = 2
 text = "Bayrakal Beric - Beric-61"
 
-[node name="Label_maxi" type="Label" parent="GridContainer"]
+[node name="Label_maxi" type="Label" parent="CanvasLayer/GridContainer"]
 layout_mode = 2
 text = "Tarta Maximilian Robin - maxitaxi27"
-
-[connection signal="pressed" from="Button_back" to="." method="_on_button_back_pressed"]

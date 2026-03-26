@@ -10,7 +10,8 @@ extends Node2D
 
 # Kommentiere diese ein und passe den Pfad an, wenn du die UI-Elemente erstellt hast:
 # @onready var btn_fullscreen = $CanvasLayer/VBoxContainer/.../FullscreenCheck
-# 
+
+var is_overlay: bool = false
 
 func _ready():
 	# UI beim Öffnen auf die aktuell geladenen globalen Settings setzen
@@ -73,5 +74,7 @@ func _on_skip_transitions_toggled(toggled_on: bool):
 	SettingsManager.save_settings()
 
 func _on_button_back_pressed():
-	# Geht dorthin zurück, wo du herkamst (Main Menu oder Pause Menü)
-	SceneChanger.go_back()
+	if is_overlay:
+		queue_free()
+	else:
+		SceneChanger.go_back()

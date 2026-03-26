@@ -67,20 +67,34 @@ func _physics_process(delta):
 			if health_component.current_health <= 0:
 				die()
 
+	# --- HIER STARTET DIE NEUE BEWEGUNGS-LOGIK ---
 	var direction = Vector2.ZERO
-	if Input.is_action_pressed("ui_right"): direction.x += 1
-	if Input.is_action_pressed("ui_left"): direction.x -= 1
-	if Input.is_action_pressed("ui_down"): direction.y += 1
-	if Input.is_action_pressed("ui_up"): direction.y -= 1
 	
-	if direction.length() > 0:
-		direction = direction.normalized()
+	# Option A: Die Maus-Steuerung ist in den Settings aktiviert
+	if SettingsManager.mouse_movement and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var mouse_pos = get_global_mouse_position()
 		
-	# BEWEGUNG (Speed mal Manager-Speed)
+		# Deadzone (10 Pixel reicht völlig, damit er nicht zittert)
+		if global_position.distance_to(mouse_pos) > 30.0:
+			direction = global_position.direction_to(mouse_pos)
+			
+	# Option B: Klassische Tastatur-Steuerung (Nutzt jetzt DEINE neuen Action-Namen!)
+	else:
+		if Input.is_action_pressed("move_right"): direction.x += 1
+		if Input.is_action_pressed("move_left"): direction.x -= 1
+		if Input.is_action_pressed("move_down"): direction.y += 1
+		if Input.is_action_pressed("move_up"): direction.y -= 1
+		
+		# Verhindert, dass man diagonal schneller läuft als geradeaus
+		if direction.length() > 0:
+			direction = direction.normalized()
+			
+	# BEWEGUNG AUSFÜHREN (Speed mal Manager-Speed)
 	var s_mult = status_manager.speed_mult if status_manager else 1.0
 	velocity = direction * (speed * s_mult)
 	move_and_slide()
 	
+	# ANIMATIONEN
 	if velocity.length() > 0:
 		anim.play("walk")
 		if velocity.x != 0: anim.flip_h = velocity.x < 0
@@ -128,7 +142,7 @@ func take_damage_typed(dmg_amount: float, is_dot: bool = false, dmg_color: Color
 	var pre_armor_dmg = dmg_amount * t_mult
 	var final_damage = max(0, pre_armor_dmg - armor)
 	
-	if damage_number_scene and final_damage > 0:
+	if SettingsManager.show_damage_numbers and damage_number_scene and final_damage > 0:
 		var dmg_num = damage_number_scene.instantiate()
 		var offset = Vector2(38, -20)
 		var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))

@@ -4,6 +4,8 @@ extends CanvasLayer
 @onready var stats_grid = %StatsGrid
 @onready var weapons_grid = %WeaponsGrid
 
+const SETTINGS_SCENE = preload("res://main/ui/general_menu/settings_menu/settings_menu.tscn")
+
 func _ready():
 	visibility_changed.connect(_on_visibility_changed)
 	
@@ -226,7 +228,9 @@ func _on_resume_button_pressed():
 		manager.change_state(manager.GameState.PLAYING)
 
 func _on_settings_button_pressed():
-	SceneChanger.change_scene("res://main/ui/general_menu/settings_menu/settings.tscn")
+	var settings_instance = SETTINGS_SCENE.instantiate()
+	settings_instance.is_overlay = true
+	add_child(settings_instance)
 
 func _on_quit_button_pressed():
 	SceneChanger.change_scene("res://main/ui/general_menu/main_menu/main_menu.tscn")

@@ -1,25 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://boaauw6akyf8l"]
+[gd_scene load_steps=4 format=3 uid="uid://boaauw6akyf8l"]
 
 [ext_resource type="Script" uid="uid://dh852gyftr3ht" path="res://main/ui/general_menu/settings_menu/settings.gd" id="1_b3aux"]
+[ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="2_ml7vd"]
 
 [sub_resource type="Environment" id="Environment_b3aux"]
 adjustment_enabled = true
 
 [node name="Settings" type="Node2D"]
+process_mode = 3
+z_index = 10
 script = ExtResource("1_b3aux")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_b3aux")
 
-[node name="Button_back" type="Button" parent="."]
-offset_left = 48.0
-offset_top = 43.999996
-offset_right = 116.0
-offset_bottom = 75.0
-scale = Vector2(1.203466, 1.4418832)
-text = "go back"
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer"]
+custom_minimum_size = Vector2(640, 340)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 custom_minimum_size = Vector2(400, 250)
@@ -29,6 +35,12 @@ offset_right = 558.0
 offset_bottom = 340.0
 mouse_filter = 2
 color = Color(0.22352941, 1, 1, 0.105882354)
+
+[node name="GenericBackButton" parent="CanvasLayer" instance=ExtResource("2_ml7vd")]
+offset_left = 11.0
+offset_top = 9.0
+offset_right = 43.0
+offset_bottom = 41.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 offset_left = 282.0
@@ -92,7 +104,6 @@ layout_mode = 2
 layout_mode = 2
 text = "Skip Transitions"
 
-[connection signal="pressed" from="Button_back" to="." method="_on_button_back_pressed"]
 [connection signal="value_changed" from="CanvasLayer/VBoxContainer/HBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer2/VSync" to="." method="_on_fullscreen_check_toggled"]
 [connection signal="toggled" from="CanvasLayer/VBoxContainer/HBoxContainer3/CheckButton" to="." method="_on_check_button_toggled"]
