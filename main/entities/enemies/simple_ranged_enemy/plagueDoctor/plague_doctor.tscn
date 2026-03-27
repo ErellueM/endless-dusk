@@ -1,0 +1,97 @@
+[gd_scene load_steps=15 format=3 uid="uid://du1kfn18sx4kf"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_hcrm0"]
+[ext_resource type="Script" uid="uid://cdf2331fby8gh" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.gd" id="2_fy3mj"]
+[ext_resource type="Texture2D" uid="uid://c0bmojclvcji4" path="res://assets/art/enemys/pest_doc.png" id="3_2p07r"]
+[ext_resource type="PackedScene" uid="uid://ojmt04lbxkon" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_fireball.tscn" id="3_dchm1"]
+[ext_resource type="Script" uid="uid://b82b1r16hhqjv" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_Light.gd" id="4_fy3mj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4hbcb"]
+atlas = ExtResource("3_2p07r")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q654c"]
+atlas = ExtResource("3_2p07r")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ct6ik"]
+atlas = ExtResource("3_2p07r")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nsp4y"]
+atlas = ExtResource("3_2p07r")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2y5s2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4hbcb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q654c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ct6ik")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nsp4y")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hcrm0"]
+size = Vector2(12, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fy3mj"]
+size = Vector2(12, 15)
+
+[sub_resource type="Gradient" id="Gradient_2p07r"]
+offsets = PackedFloat32Array(0, 0.30677292)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m6q33"]
+gradient = SubResource("Gradient_2p07r")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.9)
+
+[node name="plagueDoctor" instance=ExtResource("1_hcrm0")]
+script = ExtResource("2_fy3mj")
+attack_range = 170.0
+acceleration = 4.0
+projectile_scene = ExtResource("3_dchm1")
+proj_speed = 40.0
+proj_damage = 15.0
+proj_charge_time = 0.0
+enemy_name = "plagueDoctor"
+speed = 8.0
+xp_reward = 10.0
+
+[node name="Health" parent="." index="0"]
+max_health = 30
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_2y5s2")
+frame_progress = 0.2521326
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+visible = false
+position = Vector2(-2, 0.5)
+shape = SubResource("RectangleShape2D_hcrm0")
+
+[node name="CollisionShape2D" parent="." index="4"]
+visible = false
+position = Vector2(-2, 0.5)
+shape = SubResource("RectangleShape2D_fy3mj")
+
+[node name="PointLight2D" type="PointLight2D" parent="." index="5"]
+position = Vector2(-2, 4)
+color = Color(0, 1, 0, 1)
+texture = SubResource("GradientTexture2D_m6q33")
+script = ExtResource("4_fy3mj")
+
+[node name="ShootPoint" type="Marker2D" parent="." index="6"]
+position = Vector2(-2, 4)

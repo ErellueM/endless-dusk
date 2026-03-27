@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @onready var master_bus = AudioServer.get_bus_index("Master")
+var is_menu_ready: bool = false
 
 # --- PAGES ---
 @onready var page_display = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display
@@ -49,7 +50,7 @@ func _ready():
 	if opt_resolution: opt_resolution.selected = SettingsManager.resolution_index
 	if btn_vsync: btn_vsync.button_pressed = SettingsManager.vsync_enabled
 	if opt_fps: opt_fps.selected = SettingsManager.fps_limit_index
-	if btn_show_fps: opt_fps.selected = SettingsManager.show_fps
+	if btn_show_fps: btn_show_fps.button_pressed = SettingsManager.show_fps
 	
 	if slider_master: slider_master.value = SettingsManager.master_volume
 	if slider_music: slider_music.value = SettingsManager.music_volume
@@ -92,8 +93,10 @@ func _ready():
 	if btn_skip_fade: btn_skip_fade.toggled.connect(_on_skip_transitions_toggled)
 	
 	show_page(page_display)
+	is_menu_ready = true
 
 func show_save_feedback():
+	if not is_menu_ready: return
 	if not save_feedback_label: return
 	var tween = create_tween()
 	save_feedback_label.modulate.a = 1.0 

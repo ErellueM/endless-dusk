@@ -251,7 +251,7 @@ text = "Master Volume"
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
-step = 0.05
+step = 0.01
 value = 1.0
 
 [node name="Label_Music" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
@@ -262,7 +262,7 @@ text = "Music Volume"
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
-step = 0.05
+step = 0.01
 value = 1.0
 
 [node name="Label_SFX" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]
@@ -273,7 +273,7 @@ text = "SFX Volume"
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
-step = 0.05
+step = 0.01
 value = 1.0
 
 [node name="Label_Focus" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Audio/Grid"]

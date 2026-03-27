@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://ojmt04lbxkon"]
+
+[ext_resource type="Script" uid="uid://cdcfgy20wblqc" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_fireball.gd" id="1_oia87"]
+[ext_resource type="Texture2D" uid="uid://ddls1lbdc08gr" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_flame_ball.png" id="2_sskuh"]
+[ext_resource type="Script" uid="uid://b82b1r16hhqjv" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_Light.gd" id="3_sskuh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y24c0"]
+radius = 3.0
+
+[sub_resource type="Gradient" id="Gradient_h6irm"]
+offsets = PackedFloat32Array(0, 0.30677292)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_y24c0"]
+gradient = SubResource("Gradient_h6irm")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.9)
+
+[node name="GreenFireball" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_oia87")
+speed = 40.0
+damage = 20.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_sskuh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_y24c0")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+z_index = 1
+position = Vector2(-2, 4)
+color = Color(0, 1, 0, 1)
+texture = SubResource("GradientTexture2D_y24c0")
+script = ExtResource("3_sskuh")
+base_energy = 0.5
+pulse_amount = 0.2
