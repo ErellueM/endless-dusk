@@ -1,12 +1,12 @@
 [gd_scene load_steps=15 format=3 uid="uid://d1k2ql1tav3mb"]
 
 [ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="1_13n8v"]
-[ext_resource type="Script" uid="uid://fiol3wyo8aum" path="res://main/ui/general_menu/settings_menu/settings_menu.gd" id="1_gewyu"]
+[ext_resource type="Script" uid="uid://cb0hovp55vyva" path="res://main/ui/general_menu/settings_menu/settings_menu.gd" id="1_gewyu"]
 [ext_resource type="Texture2D" uid="uid://dl14ytnld1n1p" path="res://assets/art/ui/x_checkbox.png" id="2_qy8ck"]
 [ext_resource type="Texture2D" uid="uid://ojiv0cp0nnsa" path="res://assets/art/ui/slider.png" id="2_rewnd"]
 [ext_resource type="Texture2D" uid="uid://ddw20k3wafa5u" path="res://assets/art/ui/arrow_down.png" id="3_py3ce"]
 [ext_resource type="Texture2D" uid="uid://bjb71533alhyt" path="res://assets/art/ui/radio_checked.png" id="5_ji8lt"]
-[ext_resource type="Texture2D" uid="uid://cmhpijjhb2y6c" path="res://assets/art/ui/radio_unchecked.png" id="6_tk3my"]
+[ext_resource type="Texture2D" uid="uid://chqo0vfskaciv" path="res://assets/art/ui/radio_unchecked.png" id="6_tk3my"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_py3ce"]
 bg_color = Color(1, 1, 1, 1)
@@ -162,11 +162,13 @@ text = "Window Mode"
 layout_mode = 2
 focus_mode = 0
 selected = 0
-item_count = 2
+item_count = 3
 popup/item_0/text = "Windowed"
 popup/item_0/id = 0
-popup/item_1/text = "Fullscreen"
+popup/item_1/text = "Borderless"
 popup/item_1/id = 1
+popup/item_2/text = "Fullscreen"
+popup/item_2/id = 2
 
 [node name="Label_Resolution" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Display/Grid"]
 layout_mode = 2
@@ -178,9 +180,9 @@ focus_mode = 0
 selected = 0
 item_count = 4
 popup/item_0/text = "1280x720"
-popup/item_0/id = 1
+popup/item_0/id = 0
 popup/item_1/text = "1920x1080"
-popup/item_1/id = 0
+popup/item_1/id = 1
 popup/item_2/text = "2560x1440"
 popup/item_2/id = 2
 popup/item_3/text = "3840x2160"

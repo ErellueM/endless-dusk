@@ -24,4 +24,7 @@ func tick(delta: float):
 		_tick_timer = tick_rate 
 
 func get_color() -> Color:
-	return Color(0.3, 1.0, 0.3)
+	if target.is_in_group("player"):
+		return Color(0.8, 1.0, 0.8)
+	else:
+		return Color(0.3, 1.0, 0.3)

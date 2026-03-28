@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://du1kfn18sx4kf"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_hcrm0"]
-[ext_resource type="Script" uid="uid://cdf2331fby8gh" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.gd" id="2_fy3mj"]
+[ext_resource type="Script" uid="uid://csvdli4xhaov" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.gd" id="2_fy3mj"]
 [ext_resource type="Texture2D" uid="uid://c0bmojclvcji4" path="res://assets/art/enemys/pest_doc.png" id="3_2p07r"]
 [ext_resource type="PackedScene" uid="uid://ojmt04lbxkon" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_fireball.tscn" id="3_dchm1"]
-[ext_resource type="Script" uid="uid://b82b1r16hhqjv" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_Light.gd" id="4_fy3mj"]
+[ext_resource type="Script" uid="uid://4er55jnqsra7" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_Light.gd" id="4_fy3mj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4hbcb"]
 atlas = ExtResource("3_2p07r")
@@ -62,12 +62,14 @@ fill_to = Vector2(0.5, 0.9)
 script = ExtResource("2_fy3mj")
 attack_range = 170.0
 acceleration = 4.0
+shoot_cooldown = 2.0
 projectile_scene = ExtResource("3_dchm1")
-proj_speed = 40.0
+proj_speed = 70.0
 proj_damage = 15.0
 proj_charge_time = 0.0
-enemy_name = "plagueDoctor"
-speed = 8.0
+enemy_name = "Plague Doctor"
+speed = 35.0
+damage = 2.0
 xp_reward = 10.0
 
 [node name="Health" parent="." index="0"]

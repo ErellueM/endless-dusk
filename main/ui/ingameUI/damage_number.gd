@@ -16,10 +16,10 @@ func setup(damage_amount: float, is_player: bool = false, is_dot: bool = false, 
 func _ready():
 	label.text = str(int(stored_damage))
 	
-	if stored_is_player:
-		label.modulate = Color(1.0, 0.2, 0.2)
-	else:
-		label.modulate = stored_color 
+	#if stored_is_player:
+	#	label.modulate = Color(1.0, 0.2, 0.2)
+	#else:
+	label.modulate = stored_color 
 		
 	animate_number()
 

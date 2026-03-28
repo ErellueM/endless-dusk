@@ -3,6 +3,16 @@ extends AuraWeapon
 @export var slowness_factor: float = 0.5
 var ice_color = Color(0.5, 0.5, 1.0) 
 var base_radius: float = 50.0 
+@onready var particles = $GPUParticles2D
+
+func _ready():
+	super()
+	_apply_particle_setting(SettingsManager.reduce_particles)
+	SettingsManager.particles_setting_changed.connect(_apply_particle_setting)
+
+func _apply_particle_setting(is_reduced: bool):
+	if is_instance_valid(particles):
+		particles.emitting = not is_reduced
 
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
@@ -19,7 +29,7 @@ func get_upgrade_info(next_level: int) -> Dictionary:
 func _apply_stats_for_current_level():
 	match level:
 		2: base_area *= 1.2
-		3: slowness_factor -= 0.15 # Stärkerer Slow
+		3: slowness_factor -= 0.15 
 
 func apply_enter_effect(body: Node2D):
 	var status_manager = body.get_node_or_null("StatusManager")

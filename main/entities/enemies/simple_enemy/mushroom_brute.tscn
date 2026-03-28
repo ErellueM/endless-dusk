@@ -43,6 +43,7 @@ animations = [{
 size = Vector2(12, 17)
 
 [node name="MushroomBrute" instance=ExtResource("1_nnorj")]
+enemy_name = "Mushroom Brute"
 speed = 10.0
 damage = 80.0
 xp_reward = 10.0

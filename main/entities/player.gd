@@ -135,9 +135,9 @@ func _on_tick_damage(amount: float, _source: Node2D, color: Color):
 	take_damage_typed(amount * t_mult, true, color)
 
 func take_damage(dmg_amount: float):
-	take_damage_typed(dmg_amount, false, Color(1, 1, 0))
+	take_damage_typed(dmg_amount, false, Color(1.0, 0.2, 0.2))
 
-func take_damage_typed(dmg_amount: float, is_dot: bool = false, dmg_color: Color = Color(1, 1, 0)):
+func take_damage_typed(dmg_amount: float, is_dot: bool = false, dmg_color: Color = Color(1.0, 0.2, 0.2)):
 	var t_mult = status_manager.dmg_taken_mult if status_manager else 1.0
 	var pre_armor_dmg = dmg_amount * t_mult
 	var final_damage = max(0, pre_armor_dmg - armor)

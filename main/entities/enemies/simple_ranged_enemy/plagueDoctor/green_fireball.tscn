@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://ojmt04lbxkon"]
 
-[ext_resource type="Script" uid="uid://cdcfgy20wblqc" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_fireball.gd" id="1_oia87"]
+[ext_resource type="Script" uid="uid://uwierwpwk7h4" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_fireball.gd" id="1_oia87"]
 [ext_resource type="Texture2D" uid="uid://ddls1lbdc08gr" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_flame_ball.png" id="2_sskuh"]
-[ext_resource type="Script" uid="uid://b82b1r16hhqjv" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_Light.gd" id="3_sskuh"]
+[ext_resource type="Script" uid="uid://4er55jnqsra7" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/green_Light.gd" id="3_sskuh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y24c0"]
 radius = 3.0
@@ -27,15 +27,13 @@ damage = 20.0
 texture = ExtResource("2_sskuh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_y24c0")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-visible = false
+rect = Rect2(-3, -3, 6, 6)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 z_index = 1
-position = Vector2(-2, 4)
 color = Color(0, 1, 0, 1)
 texture = SubResource("GradientTexture2D_y24c0")
 script = ExtResource("3_sskuh")

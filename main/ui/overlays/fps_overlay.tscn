@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dag7g8r0uc0b0"]
 
-[ext_resource type="Script" uid="uid://bhod2775ucnau" path="res://main/ui/overlays/fps_overlay.gd" id="1_h1hux"]
+[ext_resource type="Script" uid="uid://stww4ka1yowk" path="res://main/ui/overlays/fps_overlay.gd" id="1_h1hux"]
 
 [node name="FPSOverlay" type="CanvasLayer"]
 process_mode = 3
