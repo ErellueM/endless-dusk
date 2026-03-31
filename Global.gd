@@ -1,6 +1,6 @@
 extends Node
 
-var selected_character_scene: PackedScene = null
+var selected_character_scene: PackedScene = load("res://main/entities/Characters/PlayableCharacter_01.tscn")
 const SAVE_PATH = "user://savegame.cfg"
 
 # --- RUN STATS ---
