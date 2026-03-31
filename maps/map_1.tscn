@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=24 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -2623,7 +2623,6 @@ script = ExtResource("5_hm8ck")
 position = Vector2(597, 322)
 
 [node name="GameUI" parent="." instance=ExtResource("8_063jp")]
-visible = false
 
 [node name="PauseMenu" parent="GameUI" index="2"]
 process_mode = 2
