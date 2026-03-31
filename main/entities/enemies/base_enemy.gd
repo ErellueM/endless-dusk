@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name BaseEnemy 
 
 @export var enemy_name: String = "Monster"
+@export var is_miniboss: bool = false
 @export var speed: float = 100.0
 @export var damage: float = 10.0
 @export var xp_gem_scene: PackedScene = preload("res://main/entities/xp/xp.tscn")

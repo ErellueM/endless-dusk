@@ -1,0 +1,72 @@
+[gd_scene load_steps=11 format=3 uid="uid://b24oocjwprsh3"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_eim1a"]
+[ext_resource type="Script" uid="uid://05dxtfcfiwmw" path="res://main/entities/enemies/miniboss/slime_king/slime_king.gd" id="2_66o6j"]
+[ext_resource type="Texture2D" uid="uid://bg6n8d6x6ttta" path="res://assets/art/enemys/miniboss/slime_king.png" id="3_7bgig"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_datqg"]
+atlas = ExtResource("3_7bgig")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_byrdp"]
+atlas = ExtResource("3_7bgig")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehdc8"]
+atlas = ExtResource("3_7bgig")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eoyiq"]
+atlas = ExtResource("3_7bgig")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lg7yf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_datqg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_byrdp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehdc8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eoyiq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dfl1q"]
+size = Vector2(24, 23)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7bgig"]
+size = Vector2(24, 23)
+
+[node name="SlimeKing" instance=ExtResource("1_eim1a")]
+script = ExtResource("2_66o6j")
+jump_speed = 350.0
+jump_range = 140.0
+prepare_time = 0.6
+jump_duration = 0.4
+rest_time = 1.2
+enemy_name = "Slime King"
+is_miniboss = true
+speed = 20.0
+damage = 30.0
+xp_reward = 20.0
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_lg7yf")
+frame_progress = 0.1726025
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+position = Vector2(1, 1.5)
+shape = SubResource("RectangleShape2D_dfl1q")
+
+[node name="CollisionShape2D" parent="." index="4"]
+position = Vector2(1, 1.5)
+shape = SubResource("RectangleShape2D_7bgig")
