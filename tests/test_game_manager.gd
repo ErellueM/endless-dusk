@@ -17,8 +17,13 @@ func before_test():
 
 func after_test():
 	if game_manager and is_instance_valid(game_manager):
+		if is_instance_valid(game_manager.pause_menu):
+			game_manager.pause_menu.queue_free()
+		if is_instance_valid(game_manager.level_up_screen):
+			game_manager.level_up_screen.queue_free()
+		if is_instance_valid(game_manager.game_over_screen):
+			game_manager.game_over_screen.queue_free()
 		game_manager.queue_free()
-
 func test_initial_state():
 	assert_that(game_manager.current_state).is_equal(0) # GameState.PLAYING
 
