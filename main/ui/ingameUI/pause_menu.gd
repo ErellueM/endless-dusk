@@ -27,43 +27,43 @@ func update_stats(player):
 	var current_hp = player.health_component.current_health
 	var max_hp = player.health_component.max_health
 	var hp_text = str(int(current_hp)) + " / " + str(int(max_hp))
-	add_stat_row("❤ Max Health", hp_text)
+	add_stat_row("Max Health", hp_text, UpgradeDatabase.stat_icons["max_health"])
 	
 	var armor_col = Color.GREEN if player.armor > 0 else (Color.RED if player.armor < 0 else Color.WHITE)
-	add_stat_row("🛡 Armor", get_clean_text(player.armor), armor_col)
+	add_stat_row("Armor", get_clean_text(player.armor), UpgradeDatabase.stat_icons["armor"], armor_col)
 	
 	var rec_text = get_clean_text(player.recovery) + "/sec"
 	var rec_color = Color.GREEN if player.recovery > 0 else (Color.RED if player.recovery < 0 else Color.WHITE)
-	add_stat_row("💖 Recovery", rec_text, rec_color)
+	add_stat_row("Recovery", rec_text, UpgradeDatabase.stat_icons["recovery"], rec_color)
 	
 	var might_bonus = (player.might - 1.0) * 100
 	var might_col = Color.GREEN if might_bonus > 0 else (Color.RED if might_bonus < 0 else Color.WHITE)
-	add_stat_row("⚔ Might", get_clean_text(might_bonus) + "%", might_col)
+	add_stat_row("Might", get_clean_text(might_bonus) + "%", UpgradeDatabase.stat_icons["might"], might_col)
 	
 	var area_bonus = (player.area - 1.0) * 100
 	var area_col = Color.GREEN if area_bonus > 0 else (Color.RED if area_bonus < 0 else Color.WHITE)
-	add_stat_row("⭕ Area", get_clean_text(area_bonus) + "%", area_col)
+	add_stat_row("Area", get_clean_text(area_bonus) + "%", UpgradeDatabase.stat_icons["area"], area_col)
 	
 	var as_bonus = player.attack_speed_bonus * 100
 	var as_col = Color.GREEN if as_bonus > 0 else (Color.RED if as_bonus < 0 else Color.WHITE)
-	add_stat_row("⏳ Attack Speed", get_clean_text(as_bonus) + "%", as_col)
+	add_stat_row("Attack Speed", get_clean_text(as_bonus) + "%", UpgradeDatabase.stat_icons["attack_speed_bonus"], as_col)
 	
-	add_stat_row("👟 Speed", str(int(player.speed)))
+	add_stat_row("Speed", str(int(player.speed)), UpgradeDatabase.stat_icons["speed"])
 	
 	var luck_bonus = (player.luck - 1.0) * 100
 	var luck_col = Color.GREEN if luck_bonus > 0 else (Color.RED if luck_bonus < 0 else Color.WHITE)
-	add_stat_row("🍀 Luck", get_clean_text(luck_bonus) + "%", luck_col)
+	add_stat_row("Luck", get_clean_text(luck_bonus) + "%", UpgradeDatabase.stat_icons["luck"], luck_col)
 	
 	var mag_bonus = (player.magnet_mult - 1.0) * 100
 	var mag_col = Color.GREEN if mag_bonus > 0 else (Color.RED if mag_bonus < 0 else Color.WHITE)
-	add_stat_row("🧲 Magnet", get_clean_text(mag_bonus) + "%", mag_col)
+	add_stat_row("Magnet", get_clean_text(mag_bonus) + "%", UpgradeDatabase.stat_icons["magnet_mult"], mag_col)
 	
 	var growth_bonus = (player.growth - 1.0) * 100
 	var growth_col = Color.GREEN if growth_bonus > 0 else (Color.RED if growth_bonus < 0 else Color.WHITE)
-	add_stat_row("🌱 Growth", get_clean_text(growth_bonus) + "%", growth_col)
+	add_stat_row("Growth", get_clean_text(growth_bonus) + "%", UpgradeDatabase.stat_icons["growth"], growth_col)
 	
-	add_stat_row("💀 Run Kills", str(Global.run_total_kills), Color(1.0, 0.3, 0.3))
-	add_stat_row("👑 Total Kills", str(Global.lifetime_total_kills), Color(1.0, 0.8, 0.1))
+	add_stat_row("Run Kills", str(Global.run_total_kills), null, Color(1.0, 0.3, 0.3))
+	add_stat_row("Total Kills", str(Global.lifetime_total_kills), null, Color(1.0, 0.8, 0.1))
 
 func update_weapons(player):
 	for child in weapons_grid.get_children():
@@ -192,11 +192,26 @@ func get_clean_text(val: float) -> String:
 	else:
 		return "%.1f" % rounded_val
 
-func add_stat_row(name_text: String, value_text: String, value_color: Color = Color.WHITE):
+# --- HIER IST DIE GEÄNDERTE FUNKTION ---
+func add_stat_row(name_text: String, value_text: String, icon_texture: Texture2D = null, value_color: Color = Color.WHITE):
+	var left_hbox = HBoxContainer.new()
+	left_hbox.add_theme_constant_override("separation", 4) # Kleiner Abstand zwischen Bild und Text
+	
+	if icon_texture:
+		var icon_rect = TextureRect.new()
+		icon_rect.texture = icon_texture
+		icon_rect.custom_minimum_size = Vector2(16, 16) # Fixe 16x16 Größe
+		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_rect.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		left_hbox.add_child(icon_rect)
+		
 	var lbl_name = Label.new()
 	lbl_name.text = name_text
 	lbl_name.modulate = Color(0.8, 0.8, 0.8)
-	stats_grid.add_child(lbl_name)
+	left_hbox.add_child(lbl_name)
+	
+	stats_grid.add_child(left_hbox)
 	
 	var lbl_val = Label.new()
 	lbl_val.text = value_text
@@ -220,7 +235,7 @@ func format_huge_number(num: float) -> String:
 	elif num >= 1000:
 		return "%.1fk" % (num / 1000.0)    
 	else:
-		return str(int(num))               
+		return str(int(num))                
 
 func _on_resume_button_pressed():
 	var manager = get_tree().get_first_node_in_group("Managers")

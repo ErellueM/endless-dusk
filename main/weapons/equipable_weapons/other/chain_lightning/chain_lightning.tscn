@@ -1,10 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccoby0f7jw18l"]
+[gd_scene load_steps=3 format=3 uid="uid://ccoby0f7jw18l"]
 
 [ext_resource type="Script" uid="uid://cb2kdgn801dkl" path="res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.gd" id="1_fasqa"]
+[ext_resource type="Texture2D" uid="uid://c7b1bxb8h8uwp" path="res://assets/art/icons/weapon_icon/chain_lightning.png" id="2_nxmex"]
 
 [node name="ChainLightning" type="Node2D"]
 script = ExtResource("1_fasqa")
 weapon_id = "chain_lightning"
+weapon_icon = ExtResource("2_nxmex")
 base_damage = 5.0
 base_fire_rate = 1.5
 base_range = 250.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cltvqu2agqb7g"]
+[gd_scene load_steps=3 format=3 uid="uid://cbkk4mdxwxopm"]
 
 [ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="1_61muo"]
 [ext_resource type="PackedScene" uid="uid://b24oocjwprsh3" path="res://main/entities/enemies/miniboss/slime_king/slime_king.tscn" id="2_j5p63"]

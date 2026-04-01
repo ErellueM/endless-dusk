@@ -1,6 +1,19 @@
 class_name UpgradeDatabase
 extends Node
 
+static var stat_icons: Dictionary = {
+	"might": preload("res://assets/art/icons/stats_icon/might_gauntlet.png"),
+	"attack_speed_bonus": preload("res://assets/art/icons/stats_icon/attackSpeed_knife.png"),
+	"max_health": preload("res://assets/art/icons/stats_icon/hearth.png"),
+	"recovery": preload("res://assets/art/icons/stats_icon/recovery_arrow.png"),
+	"armor": preload("res://assets/art/icons/stats_icon/armor.png"),
+	"speed": preload("res://assets/art/icons/stats_icon/movement_speed_wingboots.png"),
+	"area": preload("res://assets/art/icons/stats_icon/area_wave.png"),
+	"luck": preload("res://assets/art/icons/stats_icon/luck.png"),
+	"magnet_mult": preload("res://assets/art/icons/stats_icon/magnet_soul-xp.png"),
+	"growth": preload("res://assets/art/icons/stats_icon/growth.png")
+}
+
 static var stat_upgrades = [
 	# ==========================================
 	# --- MIGHT (OFFENSE) ---
