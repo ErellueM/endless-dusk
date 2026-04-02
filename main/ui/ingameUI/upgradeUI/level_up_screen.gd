@@ -46,14 +46,14 @@ var unowned_weapons_db = {
 		"desc": "[color=green]New Weapon[/color]\n ...",
 		"rarity": "Legendary",
 		"scene": preload("res://main/weapons/equipable_weapons/melee/void_orbs/void_orbs.tscn"),
-		#"icon": preload("res://pfad/zu/deinem/void_orb_icon.png") # <--- ANPASSEN
+		"icon": preload("res://assets/art/icons/weapon_icon/void_orbs.png")
 	},
 	"blood_trail": {
 		"name": "Blood Trail",
 		"desc": "[color=green]New Weapon[/color]\n ...",
 		"rarity": "Uncommon",
 		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn"),
-		#"icon": preload("res://pfad/zu/deinem/blood_trail_icon.png") # <--- ANPASSEN
+		"icon": preload("res://assets/art/icons/weapon_icon/blood_trail.png")
 	},
 	"phantom_glaive": {
 		"name": "Phantom Glaive",
@@ -67,7 +67,7 @@ var unowned_weapons_db = {
 		"desc": "[color=green]New Weapon[/color]\nSpikes outranging the ground.",
 		"rarity": "Epic",
 		"scene": preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn"),
-		#"icon": preload("res://pfad/zu/deinem/abyssal_impale_icon.png") # <--- ANPASSEN
+		"icon": preload("res://assets/art/icons/weapon_icon/abyssal_impale.png")
 	},
 }
 

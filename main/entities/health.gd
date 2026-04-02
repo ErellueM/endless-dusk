@@ -1,6 +1,6 @@
 extends Node
 
-@export var max_health = 100
+var max_health
 var current_health = max_health
 
 signal died  # Signal for when health reaches zero

@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://b24oocjwprsh3"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_eim1a"]
-[ext_resource type="Script" uid="uid://05dxtfcfiwmw" path="res://main/entities/enemies/miniboss/slime_king/slime_king.gd" id="2_66o6j"]
+[ext_resource type="Script" uid="uid://muux46aafe1q" path="res://main/entities/enemies/miniboss/slime_king/slime_king.gd" id="2_66o6j"]
 [ext_resource type="Texture2D" uid="uid://bg6n8d6x6ttta" path="res://assets/art/enemys/miniboss/slime_king.png" id="3_7bgig"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_datqg"]
@@ -55,6 +55,7 @@ jump_duration = 0.4
 rest_time = 1.2
 enemy_name = "Slime King"
 is_miniboss = true
+max_health = 100.0
 speed = 20.0
 damage = 30.0
 xp_reward = 20.0

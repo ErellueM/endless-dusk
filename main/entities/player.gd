@@ -10,8 +10,12 @@ var max_xp: float = 10.0
 
 @export var damage_number_scene: PackedScene
 
+@export_group("Inventory")
+@export var starting_weapons: Array[PackedScene] = []
+@export var max_weapons: int = 6
+
 @export_group("Movement")
-@export var speed: float = 200.0
+@export var speed: float = 150.0
 
 @export_group("Survival Stats")
 @export var max_health: float = 100.0
@@ -36,6 +40,7 @@ var max_xp: float = 10.0
 @onready var anim = $AnimatedSprite2D
 @onready var magnet_shape = $MagnetArea/CollisionShape2D
 @onready var status_manager = $StatusManager
+@onready var weapon_inventory = $WeaponInventory
 
 var base_magnet_radius: float = 0.0
 var pending_levelups: int = 0
@@ -43,6 +48,8 @@ var is_flashing: bool = false
 
 func _ready():
 	if health_component:
+		health_component.max_health = max_health
+		health_component.current_health = max_health
 		health_component.died.connect(die)
 		
 	if magnet_shape and magnet_shape.shape:
@@ -52,6 +59,11 @@ func _ready():
 		
 	if status_manager:
 		status_manager.apply_tick_damage.connect(_on_tick_damage)
+	
+	if weapon_inventory:
+		weapon_inventory.max_weapons = max_weapons
+		for weapon in starting_weapons:
+			weapon_inventory.add_weapon(weapon)
 
 func _physics_process(delta):
 	# FARBE VOM MANAGER HOLEN

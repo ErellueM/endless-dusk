@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://4vfaevmc7je4"]
+[gd_scene load_steps=3 format=3 uid="uid://4vfaevmc7je4"]
 
 [ext_resource type="Script" uid="uid://re8x6g4gkscs" path="res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.gd" id="1_4rm5c"]
+[ext_resource type="Texture2D" uid="uid://clye5vpwhpboj" path="res://assets/art/icons/weapon_icon/blood_trail.png" id="2_7fo78"]
 
 [node name="BloodTrail" type="Node2D"]
 script = ExtResource("1_4rm5c")
 weapon_id = "blood_trail"
+weapon_icon = ExtResource("2_7fo78")
 base_damage = 5.0

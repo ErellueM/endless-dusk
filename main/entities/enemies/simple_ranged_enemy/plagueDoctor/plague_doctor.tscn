@@ -68,12 +68,10 @@ proj_speed = 70.0
 proj_damage = 15.0
 proj_charge_time = 0.0
 enemy_name = "Plague Doctor"
+max_health = 30.0
 speed = 35.0
 damage = 2.0
 xp_reward = 10.0
-
-[node name="Health" parent="." index="0"]
-max_health = 30
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = SubResource("SpriteFrames_2y5s2")

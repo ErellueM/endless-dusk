@@ -27,4 +27,4 @@ func get_color() -> Color:
 	if target.is_in_group("player"):
 		return Color(0.8, 1.0, 0.8)
 	else:
-		return Color(0.3, 1.0, 0.3)
+		return Color(0.7, 1.0, 0.7)

@@ -132,20 +132,62 @@ func update_weapons(player):
 func _add_sleek_weapon_row(w_name_bb: String, w_info: String, icon_texture: Texture2D, info_color: Color, fill_ratio: float, is_util: bool):
 	var row = HBoxContainer.new()
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_theme_constant_override("separation", 8) 
 	
+	# --- DER EPISCHE, BÜNDIGE METALL-SOCKEL ---
+	var icon_panel = PanelContainer.new()
+	icon_panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = Color(0.0, 0.0, 0.0, 1.0) 
+	
+	# Asymmetrische 3D-Rahmendicke (Pixel-Art Look)
+	style_box.border_width_left = 1
+	style_box.border_width_top = 1
+	style_box.border_width_right = 1
+	style_box.border_width_bottom = 1 
+	
+	# --- DER FIX ---
+	# Wir sagen Godot: "Halte exakt den Platz für den Rahmen frei!"
+	# Dadurch bleibt der Innenraum perfekte 16x16 groß und wird nicht übermalt.
+	style_box.content_margin_left = 1
+	style_box.content_margin_top = 1
+	style_box.content_margin_right = 1
+	style_box.content_margin_bottom = 2
+	
+	# Epische Rahmenfarbe: Angelaufenes dunkles Gold
+	style_box.border_color =  Color("440000")   #Color("#7a6332")
+	
+	# Magisches Leuchten (Aura)
+	var glow_color = info_color
+	glow_color.a = 0.15 
+	style_box.shadow_color = glow_color
+	style_box.shadow_size = 4
+	style_box.shadow_offset = Vector2(0, 0) 
+	
+	# Knackscharfe Kanten für Pixel-Art
+	style_box.anti_aliasing = false
+	
+	icon_panel.add_theme_stylebox_override("panel", style_box)
+	
+	# Das eigentliche Bild (bleibt zu 100% sichtbar)
 	var icon_rect = TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(24, 24)
+	icon_rect.custom_minimum_size = Vector2(16, 16)
 	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	if icon_texture:
 		icon_rect.texture = icon_texture
 	else:
 		var fallback = PlaceholderTexture2D.new()
-		fallback.size = Vector2(24, 24)
+		fallback.size = Vector2(16, 16)
 		icon_rect.texture = fallback
 		icon_rect.modulate = Color(0.2, 0.1, 0.25) 
-	row.add_child(icon_rect)
+		
+	# Bild in den Rahmen packen
+	icon_panel.add_child(icon_rect)
+	row.add_child(icon_panel)
 	
+	# --- REST DER FUNKTION (TEXT & BALKEN) ---
 	var right_vbox = VBoxContainer.new()
 	right_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	right_vbox.add_theme_constant_override("separation", 0) 

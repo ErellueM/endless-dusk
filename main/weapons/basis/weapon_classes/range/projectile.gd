@@ -27,15 +27,10 @@ func _on_body_entered(body: Node2D):
 			if weapon_ref and weapon_ref.has_method("add_damage_stat"):
 				weapon_ref.add_damage_stat(actual_damage)
 		
-		
-		if weapon_ref and body.has_method("add_status_effect"):
-			if weapon_ref.get("applies_poison") == true:
-				body.add_status_effect("knife_poison", {
-					"color": Color(0.5, 1, 0.5),
-					"duration": 5.0,
-					"tick_damage": damage * 0.2,   
-					"tick_rate": 1.0
-				})
+
+		if weapon_ref.get("applies_poison") == true:
+			var manager = body.get_node_or_null("StatusManager")
+			if manager: manager.add_effect(PoisonEffect.new(3,3,0.5))
 			
 			# Bonus-Idee: Falls du mal eine Feuerwaffe baust:
 			# if weapon_ref.get("applies_burn") == true:

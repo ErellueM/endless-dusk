@@ -3,6 +3,7 @@ class_name BaseEnemy
 
 @export var enemy_name: String = "Monster"
 @export var is_miniboss: bool = false
+@export var max_health: float = 50.0
 @export var speed: float = 100.0
 @export var damage: float = 10.0
 @export var xp_gem_scene: PackedScene = preload("res://main/entities/xp/xp.tscn")
@@ -31,6 +32,8 @@ func _ready():
 	speed = speed * randf_range(0.8, 1.2)
 	
 	if health:
+		health.max_health = max_health
+		health.current_health = max_health
 		health.died.connect(_on_death)
 		
 	if status_manager:
