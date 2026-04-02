@@ -62,3 +62,4 @@ func get_speed_mult() -> float: return 1.0
 func get_dmg_taken_mult() -> float: return 1.0
 func get_color() -> Color: return Color(1, 1, 1)
 func get_power() -> float: return 0.0
+func get_dmg_dealt_mult() -> float: return 1.0

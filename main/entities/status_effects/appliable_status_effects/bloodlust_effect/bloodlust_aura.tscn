@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bifohwfq3fooo"]
+
+[ext_resource type="Script" uid="uid://b6fyj6r2geuvw" path="res://main/entities/status_effects/appliable_status_effects/bloodlust_effect/bloodlust_aura.gd" id="1_erhmy"]
+
+[node name="BloodlustAura" type="Node2D"]
+script = ExtResource("1_erhmy")

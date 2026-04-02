@@ -1,7 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhus8box6pkhd"]
+[gd_scene load_steps=9 format=3 uid="uid://bhus8box6pkhd"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_3q5em"]
+[ext_resource type="Shader" uid="uid://cchjvuaeh07ew" path="res://main/effects/shader/red_outline.gdshader" id="2_3q5em"]
 [ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="3_w37c1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqmjv"]
+resource_local_to_scene = true
+shader = ExtResource("2_3q5em")
+shader_parameter/line_color = Color(0.8, 0.1, 0.1, 1)
+shader_parameter/line_thickness = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j34gi"]
 atlas = ExtResource("3_w37c1")
@@ -29,6 +36,7 @@ animations = [{
 size = Vector2(12, 10)
 
 [node name="slime" instance=ExtResource("1_3q5em")]
+material = SubResource("ShaderMaterial_iqmjv")
 enemy_name = "Slime"
 max_health = 20.0
 speed = 20.0

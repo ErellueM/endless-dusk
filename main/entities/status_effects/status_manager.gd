@@ -56,7 +56,7 @@ func _physics_process(delta):
 		speed_mult *= eff.get_speed_mult()
 		dmg_taken_mult *= eff.get_dmg_taken_mult()
 		color_mod *= eff.get_color()
-		# (dmg_dealt_mult könnte man hier analog ergänzen, wenn Effekte das haben)
+		dmg_dealt_mult *= eff.get_dmg_dealt_mult()
 		
 		if eff.duration <= 0:
 			eff.remove()

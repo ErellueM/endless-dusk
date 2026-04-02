@@ -1,14 +1,48 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbkk4mdxwxopm"]
+[gd_scene load_steps=10 format=3 uid="uid://cbkk4mdxwxopm"]
 
 [ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="1_61muo"]
+[ext_resource type="PackedScene" uid="uid://cqulv6gr7h21f" path="res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn" id="2_cjqb1"]
 [ext_resource type="PackedScene" uid="uid://b24oocjwprsh3" path="res://main/entities/enemies/miniboss/slime_king/slime_king.tscn" id="2_j5p63"]
+[ext_resource type="Shader" uid="uid://cchjvuaeh07ew" path="res://main/effects/shader/red_outline.gdshader" id="3_q6ss2"]
+[ext_resource type="PackedScene" uid="uid://drsd0nyx0txmx" path="res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn" id="3_xm13f"]
+[ext_resource type="PackedScene" uid="uid://civ3xedadwekw" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.tscn" id="4_a3rpa"]
+[ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_a3rpa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cjqb1"]
+resource_local_to_scene = true
+shader = ExtResource("3_q6ss2")
+shader_parameter/line_color = Color(0.8, 0.1, 0.1, 1)
+shader_parameter/line_thickness = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q6ss2"]
+resource_local_to_scene = true
+shader = ExtResource("3_q6ss2")
+shader_parameter/line_color = Color(0.8, 0.1, 0.1, 1)
+shader_parameter/line_thickness = 0.0
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_61muo")]
-position = Vector2(174, 105)
+position = Vector2(122, 107)
+starting_weapons = Array[PackedScene]([ExtResource("2_cjqb1"), ExtResource("3_xm13f")])
 
 [node name="SlimeKing" parent="." instance=ExtResource("2_j5p63")]
-position = Vector2(325, 95)
+material = SubResource("ShaderMaterial_cjqb1")
+position = Vector2(9, 19)
 jump_speed = 450.0
 jump_duration = 0.6
+
+[node name="tollkeeper" parent="." instance=ExtResource("4_a3rpa")]
+material = SubResource("ShaderMaterial_q6ss2")
+position = Vector2(96, 103)
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
+position = Vector2(597, 321)
+process_callback = 0
+limit_left = -893
+limit_top = -615
+limit_right = 643
+limit_bottom = 361
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+script = ExtResource("5_a3rpa")

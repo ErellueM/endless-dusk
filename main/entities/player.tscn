@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://vqqtly31t0y2" path="res://main/entities/player.gd" id="1_rp718"]
 [ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="2_olhwn"]
 [ext_resource type="Script" uid="uid://c8ejv85dn5jdc" path="res://main/weapons/basis/character_weapons.gd" id="3_k1fg7"]
-[ext_resource type="PackedScene" uid="uid://cqulv6gr7h21f" path="res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn" id="4_cpvfl"]
+[ext_resource type="PackedScene" uid="uid://ccoby0f7jw18l" path="res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.tscn" id="3_qvsdu"]
+[ext_resource type="PackedScene" uid="uid://bup72vdavkhl7" path="res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn" id="4_nlgl6"]
 [ext_resource type="PackedScene" uid="uid://ou10ghhladl2" path="res://main/entities/health.tscn" id="4_olhwn"]
-[ext_resource type="PackedScene" uid="uid://drsd0nyx0txmx" path="res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn" id="4_qvsdu"]
 [ext_resource type="PackedScene" uid="uid://q0ek71qn65ru" path="res://main/entities/status_effects/StatusManager.tscn" id="5_cpvfl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_olhwn"]
@@ -18,7 +18,7 @@ size = Vector2(12, 18)
 z_index = 50
 script = ExtResource("1_rp718")
 damage_number_scene = ExtResource("2_olhwn")
-starting_weapons = Array[PackedScene]([ExtResource("4_cpvfl"), ExtResource("4_qvsdu")])
+starting_weapons = Array[PackedScene]([ExtResource("3_qvsdu"), ExtResource("4_nlgl6")])
 
 [node name="WeaponInventory" type="Node2D" parent="."]
 script = ExtResource("3_k1fg7")

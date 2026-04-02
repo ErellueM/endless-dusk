@@ -1,0 +1,133 @@
+[gd_scene load_steps=20 format=3 uid="uid://civ3xedadwekw"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_2g4sm"]
+[ext_resource type="Shader" uid="uid://cchjvuaeh07ew" path="res://main/effects/shader/red_outline.gdshader" id="2_l3u3v"]
+[ext_resource type="Script" uid="uid://cdwttw2asp8o1" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.gd" id="3_rvd58"]
+[ext_resource type="Texture2D" uid="uid://8w42dtdgktmf" path="res://assets/art/enemys/tollkeeper/tollkeeper_v2_dong_animation.png" id="4_rvd58"]
+[ext_resource type="Texture2D" uid="uid://bbdslxl35oliw" path="res://assets/art/enemys/tollkeeper/tollkeeper_bel_v3l10.png" id="5_rvd58"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0xkch"]
+resource_local_to_scene = true
+shader = ExtResource("2_l3u3v")
+shader_parameter/line_color = Color(0.8, 0.1, 0.1, 1)
+shader_parameter/line_thickness = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xkch"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8noms"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqlhc"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3e2b"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_exh70"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_58mhs"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq8c5"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6v384"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xv176"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3qgm"]
+atlas = ExtResource("4_rvd58")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rvd58"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xkch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8noms")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqlhc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3e2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_exh70")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_58mhs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mq8c5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6v384")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xv176")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3qgm")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_rvd58")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xkch"]
+size = Vector2(21, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8noms"]
+size = Vector2(21, 20)
+
+[node name="tollkeeper" instance=ExtResource("1_2g4sm")]
+material = SubResource("ShaderMaterial_0xkch")
+script = ExtResource("3_rvd58")
+keep_distance = 180.0
+buff_radius = 140.0
+buff_cooldown = 10.0
+buff_duration = 12.0
+buff_multiplier = 1.5
+enemy_name = "Tollkeeper"
+max_health = 70.0
+speed = 15.0
+damage = 4.0
+xp_reward = 10.0
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_rvd58")
+animation = &"attack"
+frame = 9
+frame_progress = 1.0
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+position = Vector2(0.5, -4)
+shape = SubResource("RectangleShape2D_0xkch")
+
+[node name="CollisionShape2D" parent="." index="4"]
+position = Vector2(0.5, -4)
+shape = SubResource("RectangleShape2D_8noms")

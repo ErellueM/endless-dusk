@@ -84,7 +84,11 @@ func shoot():
 	if projectile_scene:
 		proj = projectile_scene.instantiate()
 		
-		proj.damage = proj_damage
+		var d_mult = 1.0
+		if status_manager:
+			d_mult = status_manager.dmg_dealt_mult
+		
+		proj.damage = proj_damage * d_mult
 		proj.speed = 0.0 
 		proj.scale = Vector2.ZERO
 		proj.z_index = z_index + 1

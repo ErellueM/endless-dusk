@@ -1,8 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://c088twbdki0g0"]
+[gd_scene load_steps=12 format=3 uid="uid://c088twbdki0g0"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_akhnk"]
 [ext_resource type="Script" uid="uid://ct2bhlssnky71" path="res://main/entities/enemies/simple_enemy/wheel/wheel.gd" id="2_c2b07"]
+[ext_resource type="Shader" uid="uid://cchjvuaeh07ew" path="res://main/effects/shader/red_outline.gdshader" id="2_gibu7"]
 [ext_resource type="Texture2D" uid="uid://djq058xjn1n7g" path="res://assets/art/enemys/wheel.png" id="2_tsllg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wc5ug"]
+resource_local_to_scene = true
+shader = ExtResource("2_gibu7")
+shader_parameter/line_color = Color(0.8, 0.1, 0.1, 1)
+shader_parameter/line_thickness = 0.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c2b07"]
 atlas = ExtResource("2_tsllg")
@@ -40,6 +47,7 @@ size = Vector2(11, 19)
 size = Vector2(11, 19)
 
 [node name="Wheel" instance=ExtResource("1_akhnk")]
+material = SubResource("ShaderMaterial_wc5ug")
 script = ExtResource("2_c2b07")
 chase_time = 3.0
 rush_speed_multiplier = 4.0
@@ -47,12 +55,9 @@ aim_time = 1.0
 charge_time = 0.5
 rush_time = 1.0
 cooldown_time = 0.5
-enemy_name = "wheel"
+enemy_name = "Wheel"
 speed = 60.0
 xp_reward = 10.0
-
-[node name="Health" parent="." index="0"]
-max_health = 50
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = SubResource("SpriteFrames_qsyor")
