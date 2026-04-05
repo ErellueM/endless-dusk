@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=26 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -6,17 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://bd6b54asmqcgu" path="res://main/environments/lightSources/candle_2.tscn" id="4_nli1r"]
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_hm8ck"]
 [ext_resource type="PackedScene" uid="uid://506dfn3f56hi" path="res://main/ui/ingameUI/game_over_screen.tscn" id="7_o76ia"]
-[ext_resource type="PackedScene" uid="uid://bhus8box6pkhd" path="res://main/entities/enemies/simple_enemy/slime.tscn" id="7_tiqm4"]
 [ext_resource type="PackedScene" uid="uid://ic3hmfvhlxmq" path="res://main/ui/ingameUI/game_ui.tscn" id="8_063jp"]
 [ext_resource type="Script" uid="uid://dociaqow5vvrf" path="res://game_manager.gd" id="8_jkpbc"]
-[ext_resource type="PackedScene" uid="uid://cxocihfwlim8c" path="res://main/systems/wave_handler.tscn" id="9_gdq6d"]
-[ext_resource type="PackedScene" uid="uid://qidhjxhe8p6f" path="res://main/systems/enemy_spawner.tscn" id="10_tiqm4"]
-[ext_resource type="PackedScene" uid="uid://c1uln2w3a0mgq" path="res://main/entities/enemies/simple_enemy/flying_skull.tscn" id="11_o76ia"]
-[ext_resource type="PackedScene" uid="uid://c088twbdki0g0" path="res://main/entities/enemies/simple_enemy/wheel/wheel.tscn" id="12_sxsp2"]
-[ext_resource type="PackedScene" uid="uid://bxl61rgyqfkfy" path="res://main/entities/enemies/simple_enemy/mushroom_brute.tscn" id="13_68835"]
-[ext_resource type="PackedScene" uid="uid://du1kfn18sx4kf" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn" id="14_5yxj1"]
-[ext_resource type="PackedScene" uid="uid://civ3xedadwekw" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.tscn" id="14_tdbau"]
+[ext_resource type="Script" uid="uid://dh28lijjw7q1w" path="res://maps/wave_manager.gd" id="9_jkpbc"]
+[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
+[ext_resource type="Resource" uid="uid://d4f0sa0tgcbf7" path="res://main/entities/enemies/simple_enemy/slime/slime_data.tres" id="11_o76ia"]
+[ext_resource type="Resource" uid="uid://byoll1n8dn5vm" path="res://main/entities/enemies/simple_enemy/wheel/wheel_data.tres" id="12_y5lha"]
+[ext_resource type="Resource" uid="uid://ce0d75rgxkpuv" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper_data.tres" id="13_tdbau"]
+[ext_resource type="Resource" uid="uid://bu8y8gxs0msdk" path="res://main/entities/enemies/simple_enemy/mushroom_brute/mushroom_brute_data.tres" id="14_5da34"]
+[ext_resource type="Resource" uid="uid://7iq6ae61o717" path="res://main/entities/enemies/simple_enemy/flying_skull/flying_skull_data.tres" id="15_m0juc"]
 [ext_resource type="PackedScene" uid="uid://b24oocjwprsh3" path="res://main/entities/enemies/miniboss/slime_king/slime_king.tscn" id="15_y5lha"]
+[ext_resource type="Resource" uid="uid://dn3di480hwma0" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor_data.tres" id="16_ylxxr"]
+[ext_resource type="Resource" uid="uid://bvibad2ji24hp" path="res://main/entities/enemies/miniboss/slime_king/slime_king_data.tres" id="17_5da34"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -2637,15 +2638,11 @@ pause_menu = NodePath("../GameUI/PauseMenu")
 level_up_screen = NodePath("../GameUI/LevelUpScreen")
 game_over_screen = NodePath("../GameUI/GameOverScreen")
 
-[node name="WaveHandler" parent="GameManager" instance=ExtResource("9_gdq6d")]
-enemy_scenes = Array[PackedScene]([ExtResource("7_tiqm4"), ExtResource("14_5yxj1"), ExtResource("11_o76ia"), ExtResource("12_sxsp2"), ExtResource("14_tdbau"), ExtResource("13_68835"), ExtResource("15_y5lha")])
-enemy_weights = Array[float]([100.0, 4.0, 30.0, 4.0, 3.0, 10.0, 5.0])
-wheel_index = 3
-
-[node name="EnemySpawner2" parent="GameManager/WaveHandler" instance=ExtResource("10_tiqm4")]
-
-[node name="SpawnTimer" type="Timer" parent="GameManager/WaveHandler"]
-process_mode = 1
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("9_jkpbc")
+enemy_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_o76ia"), ExtResource("12_y5lha"), ExtResource("13_tdbau"), ExtResource("14_5da34"), ExtResource("15_m0juc"), ExtResource("16_ylxxr"), ExtResource("17_5da34")])
+boss_scenes = Array[PackedScene]([ExtResource("15_y5lha")])
+base_spawn_interval = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gdq6d")

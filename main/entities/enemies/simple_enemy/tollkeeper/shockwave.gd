@@ -11,6 +11,7 @@ var current_thickness: float = 2.0
 
 func _ready():
 	# z_index = -1 # <-- Nur einkommentieren, wenn dein Fußboden z_index < -1 hat!
+	top_level = true
 	
 	var tween = create_tween()
 	tween.set_parallel(true) 

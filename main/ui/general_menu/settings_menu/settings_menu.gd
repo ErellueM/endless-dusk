@@ -37,6 +37,7 @@ var is_menu_ready: bool = false
 
 # --- GAMEPLAY ---
 @onready var btn_dmg = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid/CheckBox_Dmg
+@onready var btn_shake = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid/CheckBox_Shake
 @onready var btn_particles = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid/CheckBox_Particles
 @onready var btn_skip_fade = $MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid/CheckBox_Skip
 
@@ -66,6 +67,7 @@ func _ready():
 	_update_keybind_buttons_text()
 	
 	if btn_dmg: btn_dmg.button_pressed = SettingsManager.show_damage_numbers
+	if btn_shake: btn_shake.button_pressed = SettingsManager.enable_screenshake
 	if btn_particles: btn_particles.button_pressed = SettingsManager.reduce_particles
 	if btn_skip_fade: btn_skip_fade.button_pressed = SettingsManager.skip_transitions
 	
@@ -93,6 +95,7 @@ func _ready():
 	if btn_bind_pause: btn_bind_pause.pressed.connect(_on_bind_pressed.bind("pause", btn_bind_pause))
 	
 	if btn_dmg: btn_dmg.toggled.connect(_on_dmg_toggled)
+	if btn_shake: btn_shake.toggled.connect(_on_shake_toggled)
 	if btn_particles: btn_particles.toggled.connect(_on_particles_toggled)
 	if btn_skip_fade: btn_skip_fade.toggled.connect(_on_skip_transitions_toggled)
 	
@@ -204,6 +207,11 @@ func _on_focus_mute_toggled(toggled_on: bool):
 
 func _on_dmg_toggled(toggled_on: bool):
 	SettingsManager.show_damage_numbers = toggled_on
+	SettingsManager.save_settings()
+	show_save_feedback()
+
+func _on_shake_toggled(toggled_on: bool):
+	SettingsManager.enable_screenshake = toggled_on
 	SettingsManager.save_settings()
 	show_save_feedback()
 

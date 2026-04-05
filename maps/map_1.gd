@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var game_ui = $GameUI
 @onready var game_manager = $GameManager
-@onready var wave_handler = $GameManager/WaveHandler
+@onready var wave_handler = $WaveManager
 
 var player: Node2D
 func _ready():

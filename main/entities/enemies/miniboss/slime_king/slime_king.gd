@@ -14,7 +14,6 @@ var current_state: State = State.CHASE
 var jump_direction: Vector2 = Vector2.ZERO
 
 func _ready():
-	enemy_name = "Jump Slime"
 	super._ready() # Ruft das Setup von BaseEnemy auf
 
 # Wir überschreiben die Bewegung aus dem BaseEnemy

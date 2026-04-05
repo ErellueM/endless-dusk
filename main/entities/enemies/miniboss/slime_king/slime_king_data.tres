@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://bvibad2ji24hp"]
+
+[ext_resource type="PackedScene" uid="uid://b24oocjwprsh3" path="res://main/entities/enemies/miniboss/slime_king/slime_king.tscn" id="1_hp6qi"]
+[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="1_kjilm"]
+
+[resource]
+script = ExtResource("1_kjilm")
+enemy_scene = ExtResource("1_hp6qi")
+spawn_type = 2
+enemy_id = "miniboss_slime_king"
+metadata/_custom_type_script = "uid://3g4hjl2knida"

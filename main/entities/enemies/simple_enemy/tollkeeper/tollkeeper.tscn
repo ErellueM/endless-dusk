@@ -131,3 +131,5 @@ shape = SubResource("RectangleShape2D_0xkch")
 [node name="CollisionShape2D" parent="." index="4"]
 position = Vector2(0.5, -4)
 shape = SubResource("RectangleShape2D_8noms")
+
+[node name="ShockwaveSpawn" type="Marker2D" parent="." index="5"]

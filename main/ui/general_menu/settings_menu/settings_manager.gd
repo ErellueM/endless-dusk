@@ -37,6 +37,7 @@ var keybindings: Dictionary = {
 # --- GAMEPLAY ---
 signal particles_setting_changed(is_reduced: bool)
 var show_damage_numbers: bool = true
+var enable_screenshake: bool = true
 var reduce_particles: bool = false:
 	set(value):
 		reduce_particles = value
@@ -67,6 +68,7 @@ func save_settings():
 	config.set_value("Controls", "keybindings", keybindings)
 	
 	config.set_value("Gameplay", "show_damage_numbers", show_damage_numbers)
+	config.set_value("Gameplay", "enable_screenshake", enable_screenshake)
 	config.set_value("Gameplay", "reduce_particles", reduce_particles)
 	config.set_value("Gameplay", "skip_transitions", skip_transitions)
 	config.save(SETTINGS_PATH)
@@ -91,6 +93,7 @@ func load_settings():
 			keybindings[action] = saved_keys[action]
 			
 		show_damage_numbers = config.get_value("Gameplay", "show_damage_numbers", true)
+		enable_screenshake = config.get_value("Gameplay", "enable_screenshake", true)
 		reduce_particles = config.get_value("Gameplay", "reduce_particles", false)
 		skip_transitions = config.get_value("Gameplay", "skip_transitions", false)
 	apply_settings()

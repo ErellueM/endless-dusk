@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://7iq6ae61o717"]
+
+[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="1_7ipoi"]
+[ext_resource type="PackedScene" uid="uid://c1uln2w3a0mgq" path="res://main/entities/enemies/simple_enemy/flying_skull/flying_skull.tscn" id="1_l2a4p"]
+
+[resource]
+script = ExtResource("1_7ipoi")
+enemy_scene = ExtResource("1_l2a4p")
+spawn_type = 1
+weight = 30.0
+metadata/_custom_type_script = "uid://3g4hjl2knida"

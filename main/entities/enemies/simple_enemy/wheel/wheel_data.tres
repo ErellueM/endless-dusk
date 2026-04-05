@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://byoll1n8dn5vm"]
+
+[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="1_pla5f"]
+[ext_resource type="PackedScene" uid="uid://c088twbdki0g0" path="res://main/entities/enemies/simple_enemy/wheel/wheel.tscn" id="1_qy16d"]
+
+[resource]
+script = ExtResource("1_pla5f")
+enemy_scene = ExtResource("1_qy16d")
+weight = 5.0
+enemy_id = "wheel"
+max_active_count = 4
+metadata/_custom_type_script = "uid://3g4hjl2knida"

@@ -1,5 +1,7 @@
 extends BaseEnemy
 
+@onready var shockwave_spawn = $ShockwaveSpawn
+
 @export_group("Tollkeeper Settings")
 @export var keep_distance: float = 200.0
 @export var buff_radius: float = 200.0
@@ -76,7 +78,7 @@ func cast_buff_sequence():
 		if is_dead: return
 		
 		# Zufälliges Rütteln des Sprites (±3 Pixel hin und her)
-		var shake_x = randf_range(-3.0, 3.0)
+		var shake_x = randf_range(-1.5, 1.5)
 		var shake_y = randf_range(-1.0, 1.0)
 		anim.position = original_anim_pos + Vector2(shake_x, shake_y)
 		
@@ -95,9 +97,11 @@ func spawn_dust_shockwave():
 	shockwave.max_radius = buff_radius
 	
 	# Den Effekt exakt unter dem Gegner spawnen (am Boden)
-	var offset = Vector2(0, 10) 
-	shockwave.global_position = global_position + offset
+	var offset = Vector2(0, 3) 
 	get_tree().current_scene.call_deferred("add_child", shockwave)
+	shockwave.global_position = shockwave_spawn.global_position + offset 
+	if shockwave.has_method("reset_physics_interpolation"):
+			shockwave.reset_physics_interpolation()
 
 func apply_buff_to_all_in_radius():
 	var all_enemies = get_tree().get_nodes_in_group("Enemygroup")
@@ -114,6 +118,7 @@ func apply_buff_to_all_in_radius():
 func trigger_screenshake():
 	# HIER KOMMT DEIN KAMERA-SHAKE HIN. 
 	# Z.B.:
+	#if SettingsManager.
 	var camera = get_tree().get_first_node_in_group("camera")
 	if camera and camera.has_method("shake"):
 		camera.shake(0.3, 8.0) # Dauer 0.3s, Stärke 8.0

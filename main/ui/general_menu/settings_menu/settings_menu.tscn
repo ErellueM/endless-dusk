@@ -392,6 +392,13 @@ layout_mode = 2
 focus_mode = 0
 button_pressed = true
 
+[node name="Label_Shake" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+text = "Enable Screen Shake"
+
+[node name="CheckBox_Shake" type="CheckBox" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+layout_mode = 2
+
 [node name="Label_Particles" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
 layout_mode = 2
 text = "Reduce Particles"
@@ -400,7 +407,7 @@ text = "Reduce Particles"
 layout_mode = 2
 focus_mode = 0
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
+[node name="Label_Transition" type="Label" parent="MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Pages/Page_Gameplay/Grid"]
 layout_mode = 2
 text = "Skip Transition"
 
