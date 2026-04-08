@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://cebg2s8xsq7jv"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_ure1g"]
+[ext_resource type="Script" uid="uid://co6luliw7qe87" path="res://main/entities/enemies/exploder_enemy/exploder_enemy.gd" id="2_bberb"]
+[ext_resource type="Texture2D" uid="uid://dsq5sktjd27vp" path="res://assets/art/enemys/exploder_enemy.png" id="3_bop71"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rq4jh"]
+atlas = ExtResource("3_bop71")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slb83"]
+atlas = ExtResource("3_bop71")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wtu5m"]
+animations = [{
+"frames": [{
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_rq4jh")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_slb83")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="BaseEnemy" instance=ExtResource("1_ure1g")]
+script = ExtResource("2_bberb")
+explosion_range = 60.0
+explosion_damage = 20.0
+explosion_radius = 80.0
+xp_gem_scene = null
+damage_number_scene = null
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_wtu5m")
+frame_progress = 0.80657816

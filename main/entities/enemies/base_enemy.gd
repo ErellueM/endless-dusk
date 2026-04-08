@@ -23,6 +23,7 @@ var can_attack: bool = true
 
 func _ready():
 	add_to_group("Enemygroup")
+	await get_tree().process_frame
 	player = get_tree().get_first_node_in_group("player")
 	base_speed = speed * randf_range(0.8, 1.2)
 	current_speed = base_speed
