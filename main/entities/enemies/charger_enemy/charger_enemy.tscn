@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://b65tcnwtedixj"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_f4erp"]
+[ext_resource type="Script" uid="uid://cn53exgualfxt" path="res://main/entities/enemies/charger_enemy/charger_enemy.gd" id="2_qpr3c"]
+[ext_resource type="Texture2D" uid="uid://bvxen5gtchmft" path="res://assets/art/enemys/Charger_enemy.png" id="3_r26b1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6kfc"]
+atlas = ExtResource("3_r26b1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eijkq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c6kfc")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="BaseEnemy" instance=ExtResource("1_f4erp")]
+script = ExtResource("2_qpr3c")
+charge_speed = 400.0
+charge_duration = 0.5
+cooldown_base = 1.5
+cooldown_random = 1.0
+max_charges = 3
+xp_gem_scene = null
+damage_number_scene = null
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_eijkq")

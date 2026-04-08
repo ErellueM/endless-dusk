@@ -27,6 +27,7 @@ var is_flashing: bool = false
 
 func _ready():
 	add_to_group("Enemygroup")
+	await get_tree().process_frame
 	player = get_tree().get_first_node_in_group("player")
 	# Leichte Speed-Variation
 	speed = speed * randf_range(0.8, 1.2)
