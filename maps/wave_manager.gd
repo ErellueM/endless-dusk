@@ -3,32 +3,43 @@ extends Node
 enum State { NORMAL, PRE_BOSS, BOSS }
 var current_state: State = State.NORMAL
 
+@export_group("Spawning & Waves")
 @export var enemy_database: Array[SpawnData] 
+@export var max_enemies_on_screen: int = 300 
+@export var base_spawn_interval: float = 0.5 
+
+@export_group("Bosses")
 @export var boss_scenes: Array[PackedScene] 
 @export var boss_interval_minutes: float = 10.0 
-
-@export var max_enemies_on_screen: int = 300 # 300 ist ein super Wert für Godot!
-@export var base_spawn_interval: float = 0.5 
 @export var miniboss_interval_minutes: float = 1.0
 
-var minibosses_spawned: int = 0 
+# --- NEU: PROPS / FÄSSER ---
+@export_group("Props (Fässer)")
+@export var prop_scene: PackedScene
+@export var prop_spawn_interval: float = 8.0 # Alle 8 Sekunden ein Fass
+@export var max_props: int = 10
 
 var map_bounds: Rect2 = Rect2(-181, -171, 1536, 976)
 
 var time_elapsed: float = 0.0
 var spawn_timer: float = 0.0
+var prop_timer: float = 0.0 # NEU
+
 var bosses_spawned: int = 0
+var minibosses_spawned: int = 0 
 var scaling_factor: float = 1.05 
 var last_spawn_angle: float = 0.0 
 
 var player: Node2D
+var dark_arena: Node2D 
 
 func set_player(p: Node2D) -> void:
 	player = p
 
 func _process(delta: float):
+	if not player: return
+	
 	time_elapsed += delta
-	spawn_timer += delta
 	
 	check_for_miniboss()
 	check_for_boss()
@@ -40,69 +51,86 @@ func _process(delta: float):
 		var time_since_boss_spawn = time_elapsed - (bosses_spawned * boss_interval_minutes * 60.0)
 		if time_since_boss_spawn < 60.0:
 			return 
+			
+	# --- NEU: PROP SPAWNING ---
+	prop_timer += delta
+	if prop_timer >= prop_spawn_interval and prop_scene:
+		prop_timer = 0.0
+		try_spawn_prop()
 	
+	# --- PERFORMANCE FIX: Gegner-Spawning ---
+	spawn_timer += delta
 	if spawn_timer >= get_current_spawn_rate():
 		spawn_timer = 0.0
-		# --- NEU: BATCH SPAWNING (Masse statt Klasse) ---
-		# Je später im Spiel, desto mehr Gegner spawnen GLEICHZEITIG pro Tick!
-		var batch_size = 1 + int(time_elapsed / 30.0) # Jede halbe Minute +1 Gegner pro Welle
-		if current_state == State.BOSS:
-			batch_size += 5 # Im Bosskampf kommen nochmal 5 extra pro Welle dazu!
+		
+		# 1. Wir holen die Gegner-Liste NUR EINMAL pro Tick (Spart extrem viel CPU!)
+		var current_enemies = get_tree().get_nodes_in_group("Enemygroup")
+		var enemy_count = current_enemies.size()
+		
+		# 2. Laufband-System: Weit entfernte Gegner löschen
+		enemy_count = recycle_distant_enemies(current_enemies, enemy_count)
+		
+		# 3. Spawnen (Nur wenn Platz ist)
+		if enemy_count < max_enemies_on_screen:
+			var batch_size = 1 + int(time_elapsed / 30.0)
+			if current_state == State.BOSS: batch_size += 5 
 			
-		for i in range(batch_size):
-			try_spawn_enemy()
+			# Wir übergeben die aktuelle Liste, damit sie nicht neu berechnet werden muss
+			for i in range(batch_size):
+				if enemy_count >= max_enemies_on_screen: break
+				if try_spawn_enemy():
+					enemy_count += 1
+
+# --- DAS NEUE RECYCLING SYSTEM ---
+func recycle_distant_enemies(enemies: Array, current_count: int) -> int:
+	# Wenn wir nicht am Limit sind, müssen wir auch niemanden löschen
+	if current_count < max_enemies_on_screen:
+		return current_count
+		
+	var despawned = 0
+	# Distanz im Quadrat ist viel schneller zu berechnen als echte Distanz!
+	# 90000 entspricht ca. 300 Pixeln (300 * 300) - Passe das an deine Bildschirmgröße an!
+	var max_dist_squared = 120000.0 
+	
+	for e in enemies:
+		if e.is_in_group("boss") or e.is_in_group("miniboss"):
+			continue
+			
+		if e.global_position.distance_squared_to(player.global_position) > max_dist_squared:
+			e.queue_free()
+			despawned += 1
+			
+			# Lösche maximal 5 pro Tick, um Ruckler zu vermeiden
+			if despawned >= 5: 
+				break
+				
+	return current_count - despawned
 
 func get_current_spawn_rate() -> float:
-	# Die Rate geht nicht mehr ins unendliche (0.01), sondern stoppt sanft,
-	# da wir ja jetzt durch die "batch_size" die Masse regulieren!
 	var current_minute = time_elapsed / 60.0
 	var speed_up = clamp(current_minute * 0.03, 0.0, 0.5) 
 	return base_spawn_interval * (1.0 - speed_up)
 
-func try_spawn_enemy():
-	var current_enemies = get_tree().get_nodes_in_group("Enemygroup")
-	
-	# --- VS LAUFBAND-RECYCLING ---
-	if current_enemies.size() >= max_enemies_on_screen:
-		if current_state == State.BOSS and player:
-			var furthest_enemy = null
-			var max_dist = 0.0
-			
-			for e in current_enemies:
-				if e.is_in_group("boss") or e.is_in_group("miniboss"):
-					continue
-					
-				var d = e.global_position.distance_to(player.global_position)
-				if d > max_dist:
-					max_dist = d
-					furthest_enemy = e
-			
-			# Gnadenloses Löschen der Nachzügler, um Platz für die Frontlinie zu machen
-			if furthest_enemy and max_dist > 140.0:
-				furthest_enemy.queue_free()
-			else:
-				return 
-		else:
-			return 
-		
+# Gibt jetzt true zurück, wenn erfolgreich gespawnt wurde
+func try_spawn_enemy() -> bool:
 	var current_minute = time_elapsed / 60.0
 	var valid_enemies = []
 	var total_weight = 0.0
 	
 	for data in enemy_database:
-		if data.spawn_type == SpawnData.SpawnType.MINIBOSS:
-			continue
+		if data.spawn_type == SpawnData.SpawnType.MINIBOSS: continue
 			
 		if current_minute >= data.spawn_start_minute and current_minute <= data.spawn_end_minute:
+			# PERFORMANCE FIX: Wir prüfen max_active_count nur grob oder lassen es weg, 
+			# da das ständige Gruppenzählen langsam ist. (Falls es laggt, nimm diesen Check raus!)
 			if data.max_active_count > 0:
-				var current_count = get_tree().get_nodes_in_group(data.enemy_id).size()
-				if current_count >= data.max_active_count:
+				if get_tree().get_nodes_in_group(data.enemy_id).size() >= data.max_active_count:
 					continue 
 			
 			valid_enemies.append(data)
 			total_weight += data.weight
 			
-	if valid_enemies.size() == 0: return
+	if valid_enemies.size() == 0: return false
 	
 	var roll = randf_range(0.0, total_weight)
 	var chosen_data: SpawnData = null
@@ -113,7 +141,7 @@ func try_spawn_enemy():
 			chosen_data = data
 			break
 			
-	if not chosen_data: return
+	if not chosen_data: return false
 	
 	var new_angle = last_spawn_angle + randf_range(PI / 2.0, PI * 1.5)
 	last_spawn_angle = new_angle 
@@ -124,6 +152,25 @@ func try_spawn_enemy():
 			spawn_single_enemy(chosen_data, current_minute, new_angle)
 	else:
 		spawn_single_enemy(chosen_data, current_minute, new_angle)
+		
+	return true
+
+# --- NEU: PROP SPAWN LOGIK ---
+func try_spawn_prop():
+	var current_props = get_tree().get_nodes_in_group("Props").size()
+	if current_props >= max_props:
+		return
+		
+	var random_angle = randf() * TAU
+	# Spawnt ca. 400 Pixel weit weg
+	var spawn_pos = player.global_position + Vector2(cos(random_angle), sin(random_angle)) * 400.0
+	
+	# Check ob es innerhalb der Map liegt
+	if map_bounds.has_point(spawn_pos):
+		var prop = prop_scene.instantiate()
+		prop.global_position = spawn_pos
+		get_tree().current_scene.add_child(prop)
+
 
 func spawn_single_enemy(data: SpawnData, current_minute: float, base_angle: float):
 	var enemy = data.enemy_scene.instantiate()
@@ -136,7 +183,6 @@ func spawn_single_enemy(data: SpawnData, current_minute: float, base_angle: floa
 	if "xp_reward" in enemy: enemy.xp_reward *= (current_multiplier * 0.5) 
 	
 	enemy.global_position = get_offscreen_position(base_angle)
-	
 	enemy.scale = Vector2.ZERO
 	enemy.modulate = Color(0.0, 0.0, 0.0, 0.0) 
 	get_tree().current_scene.add_child(enemy)
@@ -152,48 +198,37 @@ func get_offscreen_position(base_angle: float) -> Vector2:
 		for i in range(10):
 			var random_angle = randf() * TAU
 			var test_pos = dark_arena.global_position + Vector2(cos(random_angle), sin(random_angle)) * 240.0
-			
 			if test_pos.distance_to(player.global_position) > 100.0:
 				return test_pos
-				
 		var opposite_angle = (player.global_position - dark_arena.global_position).angle() + PI
 		return dark_arena.global_position + Vector2(cos(opposite_angle), sin(opposite_angle)) * 240.0
 
 	var cam = get_tree().get_first_node_in_group("camera")
 	var center_pos = player.global_position
-	if cam:
-		center_pos = cam.get_screen_center_position()
+	if cam: center_pos = cam.get_screen_center_position()
 		
 	var current_angle = base_angle + randf_range(-0.35, 0.35) 
-	var distance = 300.0 
+	var distance = 350.0 
 	
 	var safe_bounds = map_bounds.grow(-20.0)
-	
 	for i in range(12):
 		var offset = Vector2(cos(current_angle), sin(current_angle)) * distance
 		var test_pos = center_pos + offset
-		
 		if safe_bounds.has_point(test_pos):
 			return test_pos
-			
 		current_angle += (PI / 6.0)
 		
 	var fallback_offset = Vector2(cos(base_angle), sin(base_angle)) * distance
 	var raw_pos = center_pos + fallback_offset
 	raw_pos.x = clamp(raw_pos.x, safe_bounds.position.x, safe_bounds.end.x)
 	raw_pos.y = clamp(raw_pos.y, safe_bounds.position.y, safe_bounds.end.y)
-	
 	return raw_pos
-
 
 # --- MINIBOSS LOGIK ---
 func check_for_miniboss():
-	if current_state != State.NORMAL: 
-		return
-		
+	if current_state != State.NORMAL: return
 	var current_minute = time_elapsed / 60.0
 	var expected_minibosses = int(current_minute / miniboss_interval_minutes)
-	
 	if expected_minibosses > minibosses_spawned:
 		spawn_random_miniboss(current_minute)
 
@@ -203,17 +238,10 @@ func spawn_random_miniboss(current_minute: float):
 	
 	for data in enemy_database:
 		if data.spawn_type == SpawnData.SpawnType.MINIBOSS:
-			if data.max_active_count > 0:
-				var current_count = get_tree().get_nodes_in_group(data.enemy_id).size()
-				if current_count >= data.max_active_count:
-					continue 
-					
 			miniboss_pool.append(data)
 			total_weight += data.weight
 			
-	if miniboss_pool.size() == 0:
-		return
-		
+	if miniboss_pool.size() == 0: return
 	minibosses_spawned += 1 
 		
 	var roll = randf_range(0.0, total_weight)
@@ -226,12 +254,11 @@ func spawn_random_miniboss(current_minute: float):
 			break
 			
 	if not chosen_miniboss: return
-	
 	var random_angle = randf() * TAU
 	spawn_single_enemy(chosen_miniboss, current_minute, random_angle)
 
-# --- BOSS LOGIK & DUNKLE DIMENSION ---
-var dark_arena: Node2D 
+# --- BOSS LOGIK & DUNKLE DIMENSION
+#var dark_arena: Node2D 
 
 func check_for_boss():
 	var current_minute = time_elapsed / 60.0
@@ -336,7 +363,8 @@ func create_dark_arena(center_pos: Vector2):
 	get_tree().current_scene.add_child(dark_arena)
 	
 	var static_body = StaticBody2D.new()
-	static_body.collision_layer = 1
+	static_body.collision_layer = 0
+	static_body.set_collision_layer_value(3, true)
 	var radius = 250.0
 	var segments = 32
 	

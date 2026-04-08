@@ -1,0 +1,57 @@
+[gd_scene load_steps=10 format=3 uid="uid://dbqfr87lrdt78"]
+
+[ext_resource type="Script" uid="uid://dnwnww6j8xfa" path="res://main/environments/destructables/barrel/barrel.gd" id="1_16qu8"]
+[ext_resource type="Texture2D" uid="uid://dd264yieg2sb8" path="res://assets/art/destructables/barrel/barrel.png" id="2_1wryi"]
+[ext_resource type="PackedScene" uid="uid://1wa3a4vfa1pr" path="res://main/environments/destructables/barrel/item_drops/blood_vial/blood_vial.tscn" id="2_77wbi"]
+[ext_resource type="PackedScene" uid="uid://sdmsi4ucl34q" path="res://main/environments/destructables/barrel/item_drops/void_magnet/void_magnet.tscn" id="3_6tbmv"]
+[ext_resource type="PackedScene" uid="uid://dfyyvbo3ycp4w" path="res://main/environments/destructables/barrel/item_drops/holy_bomb/holy_bomb.tscn" id="4_ix5la"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iyolm"]
+size = Vector2(14, 16)
+
+[sub_resource type="Curve" id="Curve_77wbi"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0, 1.9775282), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_6tbmv"]
+curve = SubResource("Curve_77wbi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ix5la"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector3(0, -1, 0)
+spread = 180.0
+initial_velocity_min = 150.0
+initial_velocity_max = 250.0
+gravity = Vector3(0, 400, 0)
+scale_curve = SubResource("CurveTexture_6tbmv")
+color = Color(0.34901962, 0.2627451, 0.21176471, 1)
+
+[node name="Barrel" type="StaticBody2D"]
+z_index = 1
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_16qu8")
+heal_scene = ExtResource("2_77wbi")
+magnet_scene = ExtResource("3_6tbmv")
+bomb_scene = ExtResource("4_ix5la")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_iyolm")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.39215687)
+texture = ExtResource("2_1wryi")
+offset = Vector2(4, -2)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1wryi")
+
+[node name="WoodSplinters" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 15
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_ix5la")

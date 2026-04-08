@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://1wa3a4vfa1pr"]
+
+[ext_resource type="Script" uid="uid://c7n2eovu3ok58" path="res://main/environments/destructables/barrel/item_drops/blood_vial/blood_vial.gd" id="1_htjva"]
+[ext_resource type="Texture2D" uid="uid://3q21o2xbtfw6" path="res://assets/art/destructables/barrel/item_drops/blood_vial.png" id="2_xdpkg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h0o2b"]
+radius = 7.071068
+
+[sub_resource type="Gradient" id="Gradient_xdpkg"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h0o2b"]
+gradient = SubResource("Gradient_xdpkg")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.6, 0)
+
+[node name="BloodVial" type="Area2D"]
+collision_layer = 64
+script = ExtResource("1_htjva")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_h0o2b")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_xdpkg")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.6612783, 0, 0.308616, 1)
+energy = 0.8
+texture = SubResource("GradientTexture2D_h0o2b")

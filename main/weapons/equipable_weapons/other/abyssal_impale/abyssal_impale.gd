@@ -80,7 +80,7 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 	# 2. Trefferberechnung & Hochschießen
 	tween.tween_callback(func():
 		for body in area.get_overlapping_bodies():
-			if body.is_in_group("Enemygroup") and body.has_method("take_damage"):
+			if (body.is_in_group("Enemygroup") or body.is_in_group("Props")) and body.has_method("take_damage"):
 				body.take_damage(dmg)
 				add_damage_stat(dmg)
 	)

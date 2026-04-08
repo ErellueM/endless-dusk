@@ -22,6 +22,7 @@ blend_mode = 1
 radius = 5.0
 
 [node name="XP" type="Area2D"]
+collision_layer = 64
 script = ExtResource("1_6r2eh")
 max_gems_on_screen = 300
 merge_radius = 50.0

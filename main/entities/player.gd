@@ -18,7 +18,12 @@ var max_xp: float = 10.0
 @export var speed: float = 150.0
 
 @export_group("Survival Stats")
-@export var max_health: float = 100.0
+@export var max_health: float = 100.0 :
+	set(new_value):
+		max_health = new_value
+		if is_node_ready() and health_component:
+			health_component.max_health = max_health
+			health_changed.emit(health_component.current_health, health_component.max_health)
 @export var armor: float = 0.0          
 @export var recovery: float = 0.0       
 
@@ -44,7 +49,8 @@ var max_xp: float = 10.0
 
 var base_magnet_radius: float = 0.0
 var pending_levelups: int = 0
-var is_flashing: bool = false 
+var is_flashing: bool = false
+var recovery_timer: float = 0.0 
 
 func _ready():
 	if health_component:
@@ -72,12 +78,13 @@ func _physics_process(delta):
 		anim.modulate = c_mod
 
 	if health_component and recovery != 0:
-		if recovery < 0 or health_component.current_health < health_component.max_health:
-			health_component.current_health += recovery * delta
-			health_component.current_health = clamp(health_component.current_health, 0.0, health_component.max_health)
-			health_changed.emit(health_component.current_health, health_component.max_health)
-			if health_component.current_health <= 0:
-				die()
+		recovery_timer += delta
+		if recovery_timer >= 1.0: # Tickt jede Sekunde
+			recovery_timer = 0.0
+			if recovery > 0:
+				heal(recovery) # Heilt (Grün)
+			elif recovery < 0:
+				take_damage_typed(abs(recovery), true, Color(0.8, 0.2, 0.2))
 
 	# --- HIER STARTET DIE NEUE BEWEGUNGS-LOGIK ---
 	var direction = Vector2.ZERO
@@ -139,7 +146,7 @@ func update_magnet():
 		magnet_shape.shape.radius = base_magnet_radius * magnet_mult
 
 func _on_magnet_area_entered(area: Area2D):
-	if area.is_in_group("XPGem") and area.has_method("fly_to_player"):
+	if area.has_method("fly_to_player"):
 		area.fly_to_player(self)
 
 func _on_tick_damage(amount: float, _source: Node2D, color: Color):
@@ -176,10 +183,20 @@ func _flash_hit():
 	is_flashing = false
 
 func heal(amount: float):
-	if health_component:
-		health_component.current_health += amount
-		health_component.current_health = min(health_component.current_health, health_component.max_health)
+	if health_component and health_component.current_health < health_component.max_health:
+		var actual_heal = min(amount, health_component.max_health - health_component.current_health)
+		health_component.current_health += actual_heal
 		health_changed.emit(health_component.current_health, health_component.max_health)
+		
+		if SettingsManager.show_damage_numbers and damage_number_scene and actual_heal > 0:
+			var heal_num = damage_number_scene.instantiate()
+			var offset = Vector2(38, -20)
+			var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))
+			
+			heal_num.global_position = global_position + random_offset + offset
+			heal_num.setup(actual_heal, false, false, Color(0.2, 1.0, 0.2))
+			
+			get_tree().current_scene.call_deferred("add_child", heal_num)
 
 func die():
 	print("Game Over!") 

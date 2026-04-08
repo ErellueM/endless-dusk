@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=27 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://506dfn3f56hi" path="res://main/ui/ingameUI/game_over_screen.tscn" id="7_o76ia"]
 [ext_resource type="PackedScene" uid="uid://ic3hmfvhlxmq" path="res://main/ui/ingameUI/game_ui.tscn" id="8_063jp"]
 [ext_resource type="Script" uid="uid://dociaqow5vvrf" path="res://game_manager.gd" id="8_jkpbc"]
-[ext_resource type="Script" uid="uid://dh28lijjw7q1w" path="res://maps/wave_manager.gd" id="9_jkpbc"]
-[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
+[ext_resource type="Script" uid="uid://cyyf8w4p782il" path="res://maps/wave_manager.gd" id="9_jkpbc"]
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
 [ext_resource type="Resource" uid="uid://d4f0sa0tgcbf7" path="res://main/entities/enemies/simple_enemy/slime/slime_data.tres" id="11_o76ia"]
 [ext_resource type="Resource" uid="uid://byoll1n8dn5vm" path="res://main/entities/enemies/simple_enemy/wheel/wheel_data.tres" id="12_y5lha"]
 [ext_resource type="Resource" uid="uid://ce0d75rgxkpuv" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper_data.tres" id="13_tdbau"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://b24oocjwprsh3" path="res://main/entities/enemies/miniboss/slime_king/slime_king.tscn" id="15_y5lha"]
 [ext_resource type="Resource" uid="uid://dn3di480hwma0" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor_data.tres" id="16_ylxxr"]
 [ext_resource type="Resource" uid="uid://bvibad2ji24hp" path="res://main/entities/enemies/miniboss/slime_king/slime_king_data.tres" id="17_5da34"]
+[ext_resource type="PackedScene" uid="uid://dbqfr87lrdt78" path="res://main/environments/destructables/barrel/barrel.tscn" id="19_m0juc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -2555,7 +2556,8 @@ texture = ExtResource("1_p5fey")
 14:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_nli1r"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 4
+physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_ae8pb")
 
 [sub_resource type="Environment" id="Environment_gdq6d"]
@@ -2641,8 +2643,9 @@ game_over_screen = NodePath("../GameUI/GameOverScreen")
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("9_jkpbc")
 enemy_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_o76ia"), ExtResource("12_y5lha"), ExtResource("13_tdbau"), ExtResource("14_5da34"), ExtResource("15_m0juc"), ExtResource("16_ylxxr"), ExtResource("17_5da34")])
-boss_scenes = Array[PackedScene]([ExtResource("15_y5lha")])
 base_spawn_interval = 1.0
+boss_scenes = Array[PackedScene]([ExtResource("15_y5lha")])
+prop_scene = ExtResource("19_m0juc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gdq6d")

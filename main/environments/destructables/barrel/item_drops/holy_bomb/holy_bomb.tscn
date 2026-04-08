@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://dfyyvbo3ycp4w"]
+
+[ext_resource type="Script" uid="uid://buaxnclfeys4i" path="res://main/environments/destructables/barrel/item_drops/holy_bomb/holy_bomb.gd" id="1_u5g5f"]
+[ext_resource type="Texture2D" uid="uid://dpeo104tajdue" path="res://assets/art/destructables/barrel/item_drops/globus_cruciger.png" id="2_jdd4p"]
+
+[sub_resource type="Gradient" id="Gradient_u5g5f"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jdd4p"]
+gradient = SubResource("Gradient_u5g5f")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.6, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u5g5f"]
+size = Vector2(11, 16)
+
+[node name="HolyBomb" type="Area2D"]
+collision_layer = 64
+script = ExtResource("1_u5g5f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_jdd4p")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.7534171, 0.4888292, 0, 1)
+energy = 0.8
+texture = SubResource("GradientTexture2D_jdd4p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_u5g5f")

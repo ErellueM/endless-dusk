@@ -15,8 +15,12 @@ func attack() -> bool:
 	var boom = Area2D.new()
 	boom.global_position = global_position
 	boom.top_level = true
-	boom.collision_layer = 0
-	boom.collision_mask = 4294967295
+	
+	
+	boom.collision_layer = 0 
+	boom.collision_mask = 0 
+	boom.set_collision_mask_value(2, true)
+	boom.set_collision_mask_value(4, true) 
 	
 	var shape = CollisionShape2D.new()
 	var circle = CircleShape2D.new()
@@ -31,21 +35,12 @@ func attack() -> bool:
 	var hit_enemies = []
 	
 	boom.body_entered.connect(func(body):
-		if body.is_in_group("Enemygroup") and not body in hit_enemies:
+		# NEU: Keine Gruppen-Checks mehr nötig! Die Maske regelt das!
+		if not body in hit_enemies and body.has_method("take_damage"):
 			hit_enemies.append(body)
-			
 			var dmg = get_actual_damage()
-			
-			if body.has_method("take_damage_typed"):
-				var true_dmg = body.take_damage_typed(dmg, false, Color(1, 1, 0))
-				add_damage_stat(true_dmg)
-			#var status_manager = body.get_node_or_null("StatusManager")
-			#if status_manager:
-				#var dps = dmg * 0.2 
-				#status_manager.add_effect(PoisonEffect.new(5.0, dps, 1.0, self))
-				#status_manager.add_effect(BurnEffect.new(3.0, 1.0, 0.4, self))
-				#status_manager.add_effect(VulnerableEffect.new(5.0, 1.5))
-				#status_manager.add_effect(StunEffect.new(1.5))
+			var true_dmg = body.take_damage(dmg) 
+			add_damage_stat(true_dmg)
 	)
 	
 	var spin_tween = create_tween().bind_node(visual).set_loops()
@@ -90,7 +85,7 @@ func get_nearest_enemy() -> Node2D:
 	var nearest = null
 	var shortest_dist = get_actual_range()
 	
-	for enemy in get_tree().get_nodes_in_group("Enemygroup"):
+	for enemy in (get_tree().get_nodes_in_group("Enemygroup") + get_tree().get_nodes_in_group("Props")):
 		if not enemy or not enemy.is_inside_tree() or enemy.get("is_dead"): 
 			continue
 			

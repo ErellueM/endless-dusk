@@ -16,6 +16,7 @@ size = Vector2(12, 18)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 50
+collision_mask = 44
 script = ExtResource("1_rp718")
 damage_number_scene = ExtResource("2_olhwn")
 starting_weapons = Array[PackedScene]([ExtResource("3_qvsdu"), ExtResource("4_nlgl6")])
@@ -30,6 +31,7 @@ script = ExtResource("3_k1fg7")
 [node name="MagnetArea" type="Area2D" parent="."]
 modulate = Color(1, 1, 0, 1)
 collision_layer = 0
+collision_mask = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetArea"]
 shape = SubResource("CircleShape2D_olhwn")

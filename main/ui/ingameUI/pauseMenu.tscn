@@ -13,6 +13,7 @@ shader_parameter/tint_color = Color(1, 1, 1, 1)
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
+layer = 101
 script = ExtResource("1_kacna")
 
 [node name="Control" type="Control" parent="."]

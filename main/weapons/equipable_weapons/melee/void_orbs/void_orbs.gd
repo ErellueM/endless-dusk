@@ -68,7 +68,7 @@ func attack() -> bool:
 	for orb in orbs:
 		var bodies = orb.get_overlapping_bodies()
 		for body in bodies:
-			if body.is_in_group("Enemygroup") and body.has_method("take_damage"):
+			if (body.is_in_group("Enemygroup") or body.is_in_group("Props")) and body.has_method("take_damage"):
 				body.take_damage(dmg)
 				add_damage_stat(dmg)
 				hit_someone = true

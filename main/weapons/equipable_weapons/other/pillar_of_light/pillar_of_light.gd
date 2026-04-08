@@ -5,12 +5,12 @@ extends Weapon
 @export var strike_radius: float = 60.0
 
 func attack() -> bool:
-	var enemies = get_tree().get_nodes_in_group("Enemygroup")
+	var all_targets = get_tree().get_nodes_in_group("Enemygroup") + get_tree().get_nodes_in_group("Props")
 	var valid_enemies = []
 	
 	var viewport_rect = get_viewport_rect()
 	
-	for e in enemies:
+	for e in all_targets:
 		if not e.get("is_dead"):
 			var screen_pos = e.get_global_transform_with_canvas().origin
 			if viewport_rect.has_point(screen_pos):
@@ -30,12 +30,12 @@ func attack() -> bool:
 		
 		_spawn_laser_visual(target.global_position)
 		
-		for e in get_tree().get_nodes_in_group("Enemygroup"):
+		for e in all_targets:
 			if not e.get("is_dead"):
 				if e.global_position.distance_to(target.global_position) <= strike_radius:
 					if e.has_method("take_damage"):
-						e.take_damage(dmg)
-						add_damage_stat(dmg)
+						var actual_dmg = e.take_damage(dmg)
+						add_damage_stat(actual_dmg)
 						
 	return true
 

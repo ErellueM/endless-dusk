@@ -1,4 +1,4 @@
-extends Weapon # Erbt von der Basis-Klasse!
+extends Weapon 
 
 @export_group("Lightning Specifics")
 @export var max_bounces: int = 3
@@ -22,8 +22,8 @@ func attack() -> bool:
 	
 	for enemy in targets:
 		if enemy.has_method("take_damage"):
-			enemy.take_damage(dmg)
-			add_damage_stat(dmg)
+			var actual_dmg = enemy.take_damage(dmg)
+			add_damage_stat(actual_dmg)
 			
 	draw_lightning(targets)
 	return true
@@ -31,13 +31,13 @@ func attack() -> bool:
 func get_chain_targets() -> Array:
 	var hits = []
 	var current_pos = global_position 
-	var all_enemies = get_tree().get_nodes_in_group("Enemygroup")
+	var all_targets = get_tree().get_nodes_in_group("Enemygroup") + get_tree().get_nodes_in_group("Props")
 	
 	for i in range(max_bounces + 1):
 		var closest_enemy = null
 		var min_dist = get_actual_range() if i == 0 else bounce_range
 		
-		for enemy in all_enemies:
+		for enemy in all_targets:
 			if enemy in hits or enemy.get("is_dead"):
 				continue
 				

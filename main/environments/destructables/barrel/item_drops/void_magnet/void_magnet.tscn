@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://sdmsi4ucl34q"]
+
+[ext_resource type="Script" uid="uid://bt4uxnfu2gpqf" path="res://main/environments/destructables/barrel/item_drops/void_magnet/void_magnet.gd" id="1_r7rq7"]
+[ext_resource type="Texture2D" uid="uid://dq4alst1jdbko" path="res://assets/art/destructables/barrel/item_drops/void_magnet.png" id="2_8gcst"]
+
+[sub_resource type="Gradient" id="Gradient_8gcst"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mve8r"]
+gradient = SubResource("Gradient_8gcst")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.6, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r7rq7"]
+
+[node name="VoidMagnet" type="Area2D"]
+collision_layer = 64
+script = ExtResource("1_r7rq7")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.5897365, 0.00025441914, 0.5897323, 1)
+energy = 0.8
+texture = SubResource("GradientTexture2D_mve8r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_r7rq7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8gcst")

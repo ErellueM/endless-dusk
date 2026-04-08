@@ -41,7 +41,7 @@ func attack() -> bool:
 		if is_instance_valid(puddle):
 			var dmg = get_actual_damage()
 			for body in puddle.get_overlapping_bodies():
-				if body.is_in_group("Enemygroup") and body.has_method("take_damage"):
+				if (body.is_in_group("Enemygroup") or body.is_in_group("Props")) and body.has_method("take_damage"):
 					body.take_damage(dmg)
 					add_damage_stat(dmg)
 	)
