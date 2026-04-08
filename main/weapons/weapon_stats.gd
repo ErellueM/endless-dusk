@@ -1,4 +1,4 @@
-extends Resource
+extends StatCollection
 class_name WeaponStats
 
 @export var damage := 10.0
