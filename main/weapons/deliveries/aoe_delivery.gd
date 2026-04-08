@@ -1,5 +1,5 @@
 class_name AoEDelivery
-extends Node
+extends Delivery
 
 func deliver(stats, effects):
 	apply_aoe(stats, effects)

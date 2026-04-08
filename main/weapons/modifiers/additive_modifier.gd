@@ -1,6 +1,6 @@
 # Modifier.gd
-class_name Modifier
-extends Resource
+class_name AdditiveModifier
+extends Modifier
 
 func apply(stats: WeaponStats):
 	pass

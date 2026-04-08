@@ -1,8 +1,9 @@
 class_name EffectComponent
 extends Node
 
-@export var effects: Array[Resource]
+@export var effects: Array[Effect]
 
-func apply(target):
+func apply(target, stats):
 	for effect in effects:
-		effect.apply_to(target)
+		effect.apply_to(target, stats)
+		
