@@ -33,104 +33,73 @@ var last_spawn_angle: float = 0.0
 var player: Node2D
 var dark_arena: Node2D 
 
+var pending_enemy_spawns: Array = []
+
 func set_player(p: Node2D) -> void:
 	player = p
 
 func _process(delta: float):
 	if not player: return
 	
+	if int(time_elapsed) % 1 == 0 and not Engine.get_frames_drawn() % 60:
+		print("Aktuelle Gegner: ", get_tree().get_nodes_in_group("Enemygroup").size())
+	
 	time_elapsed += delta
 	
 	check_for_miniboss()
 	check_for_boss()
 	
-	if current_state == State.PRE_BOSS:
-		return 
+	if current_state == State.PRE_BOSS: return 
 		
 	if current_state == State.BOSS:
 		var time_since_boss_spawn = time_elapsed - (bosses_spawned * boss_interval_minutes * 60.0)
-		if time_since_boss_spawn < 60.0:
-			return 
+		if time_since_boss_spawn < 60.0: return 
 			
-	# --- NEU: PROP SPAWNING ---
 	prop_timer += delta
 	if prop_timer >= prop_spawn_interval and prop_scene:
 		prop_timer = 0.0
 		try_spawn_prop()
 	
-	# --- PERFORMANCE FIX: Gegner-Spawning ---
+	# --- DER ENTSPANNTE SPAWNER ---
+	# 1. Wenn wir noch Feinde in der "Warteschlange" haben, spawnen wir EINEN pro Frame
+	if pending_enemy_spawns.size() > 0:
+		var spawn_info = pending_enemy_spawns.pop_front()
+		spawn_single_enemy(spawn_info.data, spawn_info.minute, spawn_info.angle)
+		return # WICHTIG: Wenn er einen spawnt, beendet er diesen Frame für das Spawnen!
+	
+	# 2. Normale Spawning-Prüfung (nur, wenn die Warteschlange leer ist)
 	spawn_timer += delta
 	if spawn_timer >= get_current_spawn_rate():
 		spawn_timer = 0.0
 		
-		# 1. Wir holen die Gegner-Liste NUR EINMAL pro Tick (Spart extrem viel CPU!)
 		var current_enemies = get_tree().get_nodes_in_group("Enemygroup")
 		var enemy_count = current_enemies.size()
 		
-		# 2. Laufband-System: Weit entfernte Gegner löschen
 		enemy_count = recycle_distant_enemies(current_enemies, enemy_count)
 		
-		# 3. Spawnen (Nur wenn Platz ist)
 		if enemy_count < max_enemies_on_screen:
 			var batch_size = 1 + int(time_elapsed / 30.0)
 			if current_state == State.BOSS: batch_size += 5 
 			
-			# Wir übergeben die aktuelle Liste, damit sie nicht neu berechnet werden muss
 			for i in range(batch_size):
 				if enemy_count >= max_enemies_on_screen: break
-				if try_spawn_enemy():
-					enemy_count += 1
+				# Queue_spawn_enemy packt sie jetzt nur noch in die Warteschlange!
+				enemy_count += queue_spawn_enemy(max_enemies_on_screen - enemy_count)
 
-# --- DAS NEUE RECYCLING SYSTEM ---
-func recycle_distant_enemies(enemies: Array, current_count: int) -> int:
-	# Wenn wir nicht am Limit sind, müssen wir auch niemanden löschen
-	if current_count < max_enemies_on_screen:
-		return current_count
-		
-	var despawned = 0
-	# Distanz im Quadrat ist viel schneller zu berechnen als echte Distanz!
-	# 90000 entspricht ca. 300 Pixeln (300 * 300) - Passe das an deine Bildschirmgröße an!
-	var max_dist_squared = 120000.0 
-	
-	for e in enemies:
-		if e.is_in_group("boss") or e.is_in_group("miniboss"):
-			continue
-			
-		if e.global_position.distance_squared_to(player.global_position) > max_dist_squared:
-			e.queue_free()
-			despawned += 1
-			
-			# Lösche maximal 5 pro Tick, um Ruckler zu vermeiden
-			if despawned >= 5: 
-				break
-				
-	return current_count - despawned
 
-func get_current_spawn_rate() -> float:
-	var current_minute = time_elapsed / 60.0
-	var speed_up = clamp(current_minute * 0.03, 0.0, 0.5) 
-	return base_spawn_interval * (1.0 - speed_up)
-
-# Gibt jetzt true zurück, wenn erfolgreich gespawnt wurde
-func try_spawn_enemy() -> bool:
+# --- Diese Funktion instanziiert NICHT mehr sofort, sondern plant es nur! ---
+func queue_spawn_enemy(allowed_space: int) -> int:
 	var current_minute = time_elapsed / 60.0
 	var valid_enemies = []
 	var total_weight = 0.0
 	
 	for data in enemy_database:
 		if data.spawn_type == SpawnData.SpawnType.MINIBOSS: continue
-			
 		if current_minute >= data.spawn_start_minute and current_minute <= data.spawn_end_minute:
-			# PERFORMANCE FIX: Wir prüfen max_active_count nur grob oder lassen es weg, 
-			# da das ständige Gruppenzählen langsam ist. (Falls es laggt, nimm diesen Check raus!)
-			if data.max_active_count > 0:
-				if get_tree().get_nodes_in_group(data.enemy_id).size() >= data.max_active_count:
-					continue 
-			
 			valid_enemies.append(data)
 			total_weight += data.weight
 			
-	if valid_enemies.size() == 0: return false
+	if valid_enemies.size() == 0: return 0
 	
 	var roll = randf_range(0.0, total_weight)
 	var chosen_data: SpawnData = null
@@ -141,20 +110,95 @@ func try_spawn_enemy() -> bool:
 			chosen_data = data
 			break
 			
-	if not chosen_data: return false
+	if not chosen_data: return 0
 	
 	var new_angle = last_spawn_angle + randf_range(PI / 2.0, PI * 1.5)
 	last_spawn_angle = new_angle 
 	
 	if chosen_data.spawn_type == SpawnData.SpawnType.SWARM:
 		var amount = randi_range(chosen_data.swarm_min_count, chosen_data.swarm_max_count)
+		amount = min(amount, allowed_space) 
+		
+		# Ab in den Puffer damit!
+		for i in amount:
+			pending_enemy_spawns.append({"data": chosen_data, "minute": current_minute, "angle": new_angle})
+		return amount
+	else:
+		pending_enemy_spawns.append({"data": chosen_data, "minute": current_minute, "angle": new_angle})
+		return 1
+
+
+func recycle_distant_enemies(enemies: Array, current_count: int) -> int:
+	if current_count < max_enemies_on_screen:
+		return current_count
+		
+	var despawned = 0
+	var max_dist_squared = 120000.0 
+	
+	for e in enemies:
+		if e.is_in_group("boss") or e.is_in_group("miniboss"):
+			continue
+			
+		if e.global_position.distance_squared_to(player.global_position) > max_dist_squared:
+			e.queue_free()
+			despawned += 1
+			
+			if despawned >= 5: 
+				break
+				
+	return current_count - despawned
+
+
+func get_current_spawn_rate() -> float:
+	var current_minute = time_elapsed / 60.0
+	var speed_up = clamp(current_minute * 0.03, 0.0, 0.5) 
+	return base_spawn_interval * (1.0 - speed_up)
+
+
+# --- FIX: GIBT JETZT DIE ANZAHL DER GESPAWNTEN GEGNER ZURÜCK ---
+# Wir übergeben allowed_space, damit ein Schwarm nicht das Limit überschreitet!
+func try_spawn_enemy(allowed_space: int) -> int:
+	var current_minute = time_elapsed / 60.0
+	var valid_enemies = []
+	var total_weight = 0.0
+	
+	for data in enemy_database:
+		if data.spawn_type == SpawnData.SpawnType.MINIBOSS: continue
+			
+		if current_minute >= data.spawn_start_minute and current_minute <= data.spawn_end_minute:
+			# PERFORMANCE: Die extrem langsame max_active_count Prüfung auskommentiert/entfernt,
+			# da sie bei 1000 Gegnern das Spiel killen würde.
+			valid_enemies.append(data)
+			total_weight += data.weight
+			
+	if valid_enemies.size() == 0: return 0
+	
+	var roll = randf_range(0.0, total_weight)
+	var chosen_data: SpawnData = null
+	
+	for data in valid_enemies:
+		roll -= data.weight
+		if roll <= 0:
+			chosen_data = data
+			break
+			
+	if not chosen_data: return 0
+	
+	var new_angle = last_spawn_angle + randf_range(PI / 2.0, PI * 1.5)
+	last_spawn_angle = new_angle 
+	
+	if chosen_data.spawn_type == SpawnData.SpawnType.SWARM:
+		var amount = randi_range(chosen_data.swarm_min_count, chosen_data.swarm_max_count)
+		# Wir cappen den Schwarm, damit er nicht das Limit sprengt
+		amount = min(amount, allowed_space) 
+		
 		for i in amount:
 			spawn_single_enemy(chosen_data, current_minute, new_angle)
+		return amount
 	else:
 		spawn_single_enemy(chosen_data, current_minute, new_angle)
+		return 1
 		
-	return true
-
 # --- NEU: PROP SPAWN LOGIK ---
 func try_spawn_prop():
 	var current_props = get_tree().get_nodes_in_group("Props").size()

@@ -27,7 +27,6 @@ var is_flashing: bool = false
 
 func _ready():
 	add_to_group("Enemygroup")
-	await get_tree().process_frame
 	player = get_tree().get_first_node_in_group("player")
 	# Leichte Speed-Variation
 	speed = speed * randf_range(0.8, 1.2)
@@ -87,28 +86,28 @@ func _on_tick_damage(amount: float, source: Node2D, color: Color):
 	if source and is_instance_valid(source) and source.has_method("add_damage_stat"):
 		source.add_damage_stat(true_damage_dealt)
 
-func take_damage(amount: float) -> float:
-	return take_damage_typed(amount, false, Color(1, 1, 0))
+func take_damage(amount: float, show_number: bool = true) -> float:
+	return take_damage_typed(amount, false, Color(1, 1, 0), show_number)
 
-func take_damage_typed(amount: float, is_dot: bool = false, dmg_color: Color = Color(1, 1, 0)) -> float:
+func take_damage_typed(amount: float, is_dot: bool = false, dmg_color: Color = Color(1, 1, 0), show_number: bool = true) -> float:
 	if is_dead: return 0.0
 	
 	var t_mult = status_manager.dmg_taken_mult if status_manager else 1.0
 	var display_damage = amount * t_mult 
 	var actual_damage = display_damage
-	if health and actual_damage > health.current_health:
-		actual_damage = health.current_health
-		
+	
+	if health and health.get("current_health") != null:
+		if actual_damage > health.current_health:
+			actual_damage = health.current_health
+	else:
+		if actual_damage > max_health:
+			actual_damage = max_health
+			
 	actual_damage = max(0.0, actual_damage)
 	
-	if SettingsManager.show_damage_numbers and damage_number_scene and display_damage > 0:
-		var dmg_num = damage_number_scene.instantiate()
-		var offset = Vector2(38, -20)
-		var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))
-		dmg_num.global_position = global_position + random_offset + offset
-		get_tree().current_scene.call_deferred("add_child", dmg_num)
-		
-		dmg_num.setup(display_damage, false, is_dot, dmg_color)
+	if show_number and SettingsManager.show_damage_numbers and display_damage > 0:
+		var offset = Vector2(-20, -10) + Vector2(randf_range(-5, 5), randf_range(-5, 5))
+		DamagePool.spawn_number(global_position + offset, display_damage, is_dot, dmg_color)
 	
 	if health and amount > 0:
 		health.take_damage(display_damage)
@@ -132,9 +131,6 @@ func _on_death():
 	queue_free()
 
 func drop_soul():
-	if xp_gem_scene != null:
-		var gem = xp_gem_scene.instantiate()
-		gem.xp_value = xp_reward
-		var offset = Vector2(38, 0)
-		gem.set_deferred("global_position", global_position + offset)
-		get_tree().current_scene.call_deferred("add_child", gem)
+	if xp_reward > 0:
+		var offset = Vector2(0, 0)
+		XpPool.spawn_gem(global_position + offset, xp_reward)

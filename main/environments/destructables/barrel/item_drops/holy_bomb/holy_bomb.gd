@@ -1,8 +1,10 @@
 extends BasePickup
 
 @export var damage: float = 9999.0 
+@export var enemies_per_frame: int = 10
 
 func _apply_effect(_player: Node2D):
+	# 1. Kamera Wackeln
 	var camera = get_tree().get_first_node_in_group("camera")
 	if camera and camera.has_method("shake"):
 		camera.shake(0.5, 15.0) 
@@ -22,7 +24,4 @@ func _apply_effect(_player: Node2D):
 	tween.tween_property(flash, "color:a", 0.0, 0.8).set_trans(Tween.TRANS_SINE)
 	tween.tween_callback(canvas_layer.queue_free)
 	
-	var enemies = get_tree().get_nodes_in_group("Enemygroup")
-	for enemy in enemies:
-		if not enemy.is_dead and enemy.has_method("take_damage"):
-			enemy.take_damage(damage)
+	DamagePool.wipe_enemies(damage, enemies_per_frame)

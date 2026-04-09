@@ -15,7 +15,7 @@ var has_dealt_damage = false
 
 func _ready():
 	super._ready()
-	current_speed = 0  # steht erstmal still
+	speed = 0  # steht erstmal still
 
 func _physics_process(delta):
 	if is_dead:

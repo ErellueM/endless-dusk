@@ -2643,7 +2643,7 @@ game_over_screen = NodePath("../GameUI/GameOverScreen")
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("9_jkpbc")
 enemy_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_o76ia"), ExtResource("12_y5lha"), ExtResource("13_tdbau"), ExtResource("14_5da34"), ExtResource("15_m0juc"), ExtResource("16_ylxxr"), ExtResource("17_5da34")])
-base_spawn_interval = 1.0
+max_enemies_on_screen = 800
 boss_scenes = Array[PackedScene]([ExtResource("15_y5lha")])
 prop_scene = ExtResource("19_m0juc")
 

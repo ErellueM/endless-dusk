@@ -23,6 +23,8 @@ SceneChanger="*res://main/ui/sceneChanger/scene_changer.tscn"
 MusicManager="*res://main/global/AudioManager.tscn"
 SettingsManager="*res://main/ui/general_menu/settings_menu/settings_manager.gd"
 FpsOverlay="*res://main/ui/overlays/fps_overlay.tscn"
+DamagePool="*res://main/global/damage_pool.gd"
+XpPool="*res://main/global/xp_pool.gd"
 
 [display]
 

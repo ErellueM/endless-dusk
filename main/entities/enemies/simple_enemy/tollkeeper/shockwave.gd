@@ -36,4 +36,4 @@ func _process(_delta):
 
 func _draw():
 	# draw_arc braucht 8 Parameter in Godot 4.
-	draw_arc(Vector2.ZERO, current_radius, 0, TAU, 64, dust_color, current_thickness, true)
+	draw_arc(Vector2.ZERO, current_radius, 0, TAU, 24, dust_color, current_thickness, true)

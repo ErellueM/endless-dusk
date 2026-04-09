@@ -161,13 +161,9 @@ func take_damage_typed(dmg_amount: float, is_dot: bool = false, dmg_color: Color
 	var pre_armor_dmg = dmg_amount * t_mult
 	var final_damage = max(0, pre_armor_dmg - armor)
 	
-	if SettingsManager.show_damage_numbers and damage_number_scene and final_damage > 0:
-		var dmg_num = damage_number_scene.instantiate()
-		var offset = Vector2(38, -20)
-		var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))
-		dmg_num.global_position = global_position + random_offset + offset
-		get_tree().current_scene.call_deferred("add_child", dmg_num)
-		dmg_num.setup(final_damage, true, is_dot, dmg_color)
+	if SettingsManager.show_damage_numbers and final_damage > 0:
+		var offset = Vector2(0, 0) + Vector2(randf_range(-5, 5), randf_range(-5, 5))
+		DamagePool.spawn_number(global_position + offset, final_damage, is_dot, dmg_color)
 	
 	if health_component and final_damage > 0:
 		health_component.take_damage(final_damage)
@@ -188,15 +184,10 @@ func heal(amount: float):
 		health_component.current_health += actual_heal
 		health_changed.emit(health_component.current_health, health_component.max_health)
 		
-		if SettingsManager.show_damage_numbers and damage_number_scene and actual_heal > 0:
-			var heal_num = damage_number_scene.instantiate()
-			var offset = Vector2(38, -20)
-			var random_offset = Vector2(randf_range(-5, 5), randf_range(-5, 5))
-			
-			heal_num.global_position = global_position + random_offset + offset
-			heal_num.setup(actual_heal, false, false, Color(0.2, 1.0, 0.2))
-			
-			get_tree().current_scene.call_deferred("add_child", heal_num)
+		# --- FIX: HEILUNG NUTZT JETZT AUCH DEN OBJEKT-POOL! ---
+		if SettingsManager.show_damage_numbers and actual_heal > 0:
+			var offset = Vector2(0,0) + Vector2(randf_range(-5, 5), randf_range(-5, 5))
+			DamagePool.spawn_number(global_position + offset, actual_heal, false, Color(0.2, 1.0, 0.2))
 
 func die():
 	print("Game Over!") 

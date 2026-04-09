@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://dn3di480hwma0"]
 
 [ext_resource type="PackedScene" uid="uid://du1kfn18sx4kf" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn" id="1_mee8r"]
-[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="1_qlo76"]
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="1_qlo76"]
 
 [resource]
 script = ExtResource("1_qlo76")
 enemy_scene = ExtResource("1_mee8r")
 enemy_id = "ranged"
 max_active_count = 20
-metadata/_custom_type_script = "uid://3g4hjl2knida"
+spawn_start_minute = 10.0

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgcdbqxidxx77"]
+
+[ext_resource type="Script" uid="uid://b17xu3h0o06x4" path="res://main/entities/enemies/dump_swarm_enemy/dump_swarm_enemy.gd" id="1_g6xtb"]
+
+[node name="DumpSwarmEnemy" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_g6xtb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
