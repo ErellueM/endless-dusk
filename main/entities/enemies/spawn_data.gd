@@ -1,7 +1,7 @@
 extends Resource
 class_name SpawnData
 
-enum SpawnType { NORMAL, SWARM, MINIBOSS }
+enum SpawnType { NORMAL, MINIBOSS }
 
 @export var enemy_scene: PackedScene
 @export var spawn_type: SpawnType = SpawnType.NORMAL
@@ -15,7 +15,3 @@ enum SpawnType { NORMAL, SWARM, MINIBOSS }
 @export_group("Time Limits (in Minutes)")
 @export var spawn_start_minute: float = 0.0
 @export var spawn_end_minute: float = 999.0
-
-@export_group("Swarm Settings (Nur für Typ SWARM)")
-@export var swarm_min_count: int = 15
-@export var swarm_max_count: int = 30

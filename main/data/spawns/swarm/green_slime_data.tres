@@ -6,6 +6,5 @@
 [resource]
 script = ExtResource("1_hrp3t")
 enemy_scene = ExtResource("1_86113")
-spawn_type = 1
-weight = 100.0
+weight = 50.0
 metadata/_custom_type_script = "uid://cbh7ils05gocm"

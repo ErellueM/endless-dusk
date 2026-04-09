@@ -16,11 +16,10 @@ func attack() -> bool:
 	boom.global_position = global_position
 	boom.top_level = true
 	
-	
 	boom.collision_layer = 0 
 	boom.collision_mask = 0 
-	boom.set_collision_mask_value(2, true)
-	boom.set_collision_mask_value(4, true) 
+	boom.set_collision_mask_value(2, true) # Layer 2 = Enemies
+	boom.set_collision_mask_value(4, true) # Layer 4 = Props/Fässer
 	
 	var shape = CollisionShape2D.new()
 	var circle = CircleShape2D.new()
@@ -34,14 +33,15 @@ func attack() -> bool:
 	
 	var hit_enemies = []
 	
-	boom.body_entered.connect(func(body):
-		# NEU: Keine Gruppen-Checks mehr nötig! Die Maske regelt das!
-		if not body in hit_enemies and body.has_method("take_damage"):
-			hit_enemies.append(body)
+	var hit_logic = func(hit_target: Node2D):
+		if not hit_target in hit_enemies and hit_target.has_method("take_damage"):
+			hit_enemies.append(hit_target)
 			var dmg = get_actual_damage()
-			var true_dmg = body.take_damage(dmg) 
+			var true_dmg = hit_target.take_damage(dmg) 
 			add_damage_stat(true_dmg)
-	)
+			
+	boom.body_entered.connect(hit_logic)
+	boom.area_entered.connect(hit_logic)
 	
 	var spin_tween = create_tween().bind_node(visual).set_loops()
 	spin_tween.tween_property(visual, "rotation", TAU, 0.3).as_relative()
@@ -51,7 +51,7 @@ func attack() -> bool:
 	
 	move_tween.tween_property(boom, "global_position", target_pos, flight_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	move_tween.tween_callback(func():
-		hit_enemies.clear()
+		hit_enemies.clear() # Genial: Auf dem Rückweg kann es nochmal treffen!
 		var return_tween = create_tween()
 		return_tween.tween_method(func(t):
 			if is_instance_valid(boom):

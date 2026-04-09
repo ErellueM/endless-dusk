@@ -66,10 +66,13 @@ func attack() -> bool:
 	var dmg = get_actual_damage()
 	
 	for orb in orbs:
-		var bodies = orb.get_overlapping_bodies()
-		for body in bodies:
-			if (body.is_in_group("Enemygroup") or body.is_in_group("Props")) and body.has_method("take_damage"):
-				body.take_damage(dmg)
+		# --- DER FIX: Areas und Bodies in einer Liste sammeln ---
+		var all_targets = orb.get_overlapping_bodies() + orb.get_overlapping_areas()
+		
+		for target in all_targets:
+			if (target.is_in_group("Enemygroup") or target.is_in_group("Props")) and target.has_method("take_damage"):
+				# false = Keine Schadenszahlen, da das sonst eine Zahlen-Flut gibt!
+				target.take_damage(dmg, false)
 				add_damage_stat(dmg)
 				hit_someone = true
 				

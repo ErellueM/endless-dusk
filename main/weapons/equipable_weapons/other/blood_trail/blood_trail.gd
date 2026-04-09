@@ -40,9 +40,12 @@ func attack() -> bool:
 	dmg_timer.timeout.connect(func():
 		if is_instance_valid(puddle):
 			var dmg = get_actual_damage()
-			for body in puddle.get_overlapping_bodies():
-				if (body.is_in_group("Enemygroup") or body.is_in_group("Props")) and body.has_method("take_damage"):
-					body.take_damage(dmg)
+			# --- DER FIX: Beide Arrays zusammenfassen! ---
+			var all_targets = puddle.get_overlapping_bodies() + puddle.get_overlapping_areas()
+			for target in all_targets:
+				if (target.is_in_group("Enemygroup") or target.is_in_group("Props")) and target.has_method("take_damage"):
+					# false = Keine Lag-Zahlen bei AoE!
+					target.take_damage(dmg, false) 
 					add_damage_stat(dmg)
 	)
 	

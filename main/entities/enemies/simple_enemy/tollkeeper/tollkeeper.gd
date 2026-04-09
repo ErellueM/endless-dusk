@@ -107,13 +107,20 @@ func apply_buff_to_all_in_radius():
 	var all_enemies = get_tree().get_nodes_in_group("Enemygroup")
 	
 	for e in all_enemies:
-		if e == self or e.is_dead: continue
-		if e.enemy_name == self.enemy_name: continue 
+		# Sich selbst, Tote und andere Tollkeeper ignorieren
+		if e == self or e.get("is_dead"): continue
+		if e.get("enemy_name") == self.get("enemy_name"): continue 
 		
 		if global_position.distance_to(e.global_position) <= buff_radius:
 			var s_manager = e.get_node_or_null("StatusManager")
+			
+			# 1. Für Elite Gegner (Nutzen den komplexen StatusManager)
 			if s_manager:
 				s_manager.add_effect(BloodlustEffect.new(buff_duration, buff_multiplier))
+				
+			# 2. Für unsere Slimes (Nutzen den performanten Lite-Buff)
+			elif e.has_method("apply_lite_buff"):
+				e.apply_lite_buff(buff_duration, buff_multiplier)
 
 func trigger_screenshake():
 	# HIER KOMMT DEIN KAMERA-SHAKE HIN. 

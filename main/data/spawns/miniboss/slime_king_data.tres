@@ -6,5 +6,4 @@
 [resource]
 script = ExtResource("1_kjilm")
 enemy_scene = ExtResource("1_hp6qi")
-spawn_type = 2
-enemy_id = "miniboss_slime_king"
+spawn_type = 1

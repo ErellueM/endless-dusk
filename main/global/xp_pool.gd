@@ -2,7 +2,7 @@ extends Node
 
 var pool: Array[Area2D] = []
 var active_gems: Array[Area2D] = []
-var max_active_gems: int = 300 
+var max_active_gems: int = 1500 
 var xp_scene: PackedScene = preload("res://main/entities/xp/xp.tscn")
 
 func _ready():
@@ -51,3 +51,10 @@ func return_to_pool(gem: Area2D):
 	gem.is_flying = false
 	active_gems.erase(gem)
 	pool.append(gem)
+
+func reset_pool():
+	for gem in active_gems:
+		gem.global_position = Vector2(-99999, -99999)
+		gem.is_flying = false
+		pool.append(gem)
+	active_gems.clear()

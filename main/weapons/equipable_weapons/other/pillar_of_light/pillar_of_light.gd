@@ -34,7 +34,7 @@ func attack() -> bool:
 			if not e.get("is_dead"):
 				if e.global_position.distance_to(target.global_position) <= strike_radius:
 					if e.has_method("take_damage"):
-						var actual_dmg = e.take_damage(dmg)
+						var actual_dmg = e.take_damage(dmg,false)
 						add_damage_stat(actual_dmg)
 						
 	return true

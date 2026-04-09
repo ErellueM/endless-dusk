@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://bu8y8gxs0msdk"]
+
+[ext_resource type="PackedScene" uid="uid://bxl61rgyqfkfy" path="res://main/entities/enemies/simple_enemy/mushroom_brute/mushroom_brute.tscn" id="1_x1erk"]
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="2_xm2id"]
+
+[resource]
+script = ExtResource("2_xm2id")
+enemy_scene = ExtResource("1_x1erk")
+weight = 15.0
+enemy_id = &"msuhroom"
+max_active_count = 20
+spawn_start_minute = 1.0

@@ -31,15 +31,23 @@ func _apply_stats_for_current_level():
 		2: base_area *= 1.2
 		3: slowness_factor -= 0.15 
 
-func apply_enter_effect(body: Node2D):
-	var status_manager = body.get_node_or_null("StatusManager")
+func apply_enter_effect(target: Node2D):
+	var status_manager = target.get_node_or_null("StatusManager")
+	
 	if status_manager:
 		status_manager.add_effect(SlowEffect.new(999.0, slowness_factor, ice_color))
+	elif "is_iced" in target:
+		target.is_iced = true
+		target.speed_modifier *= slowness_factor
 
-func apply_exit_effect(body: Node2D):
-	var status_manager = body.get_node_or_null("StatusManager")
+func apply_exit_effect(target: Node2D):
+	var status_manager = target.get_node_or_null("StatusManager")
+	
 	if status_manager and status_manager.has_method("remove_effect_by_id"):
 		status_manager.remove_effect_by_id("ice_slow")
+	elif "is_iced" in target:
+		target.is_iced = false
+		target.speed_modifier /= slowness_factor
 
 func _draw():
 	var inner_color = Color(0.2, 0.5, 1.0, 0.1) 

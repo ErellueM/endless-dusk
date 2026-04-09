@@ -20,7 +20,6 @@ collision_mask = 44
 script = ExtResource("1_rp718")
 damage_number_scene = ExtResource("2_olhwn")
 starting_weapons = Array[PackedScene]([ExtResource("3_qvsdu"), ExtResource("4_nlgl6")])
-armor = 10000.0
 
 [node name="WeaponInventory" type="Node2D" parent="."]
 script = ExtResource("3_k1fg7")

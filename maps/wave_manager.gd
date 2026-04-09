@@ -3,9 +3,14 @@ extends Node
 enum State { NORMAL, PRE_BOSS, BOSS }
 var current_state: State = State.NORMAL
 
-@export_group("Spawning & Waves")
-@export var enemy_database: Array[SpawnData] 
-@export var max_enemies_on_screen: int = 300 
+@export_group("Enemy Databases")
+@export var elite_database: Array[SpawnData] 
+@export var swarm_database: Array[SpawnData]
+@export var miniboss_database: Array[SpawnData] 
+
+@export_group("Spawning Limits")
+@export var max_swarm_enemies: int = 350  # Das Fleischwolf-Limit
+@export var max_elite_enemies: int = 50   # Das Taktik-Limit
 @export var base_spawn_interval: float = 0.5 
 
 @export_group("Bosses")
@@ -13,26 +18,25 @@ var current_state: State = State.NORMAL
 @export var boss_interval_minutes: float = 10.0 
 @export var miniboss_interval_minutes: float = 1.0
 
-# --- NEU: PROPS / FÄSSER ---
 @export_group("Props (Fässer)")
 @export var prop_scene: PackedScene
-@export var prop_spawn_interval: float = 8.0 # Alle 8 Sekunden ein Fass
+@export var prop_spawn_interval: float = 8.0 
 @export var max_props: int = 10
 
 var map_bounds: Rect2 = Rect2(-181, -171, 1536, 976)
 
 var time_elapsed: float = 0.0
 var spawn_timer: float = 0.0
-var prop_timer: float = 0.0 # NEU
+var prop_timer: float = 0.0 
 
 var bosses_spawned: int = 0
 var minibosses_spawned: int = 0 
 var scaling_factor: float = 1.05 
-var last_spawn_angle: float = 0.0 
 
 var player: Node2D
 var dark_arena: Node2D 
 
+# --- DER SPAWN-PUFFER (Verhindert Instanziierungs-Lags) ---
 var pending_enemy_spawns: Array = []
 
 func set_player(p: Node2D) -> void:
@@ -41,8 +45,9 @@ func set_player(p: Node2D) -> void:
 func _process(delta: float):
 	if not player: return
 	
+	# Status-Ausgabe alle 1 Sekunde in der Konsole
 	if int(time_elapsed) % 1 == 0 and not Engine.get_frames_drawn() % 60:
-		print("Aktuelle Gegner: ", get_tree().get_nodes_in_group("Enemygroup").size())
+		print("Swarm: ", get_tree().get_nodes_in_group("SwarmEnemies").size(), " | Elite: ", get_tree().get_nodes_in_group("EliteEnemies").size())
 	
 	time_elapsed += delta
 	
@@ -60,93 +65,121 @@ func _process(delta: float):
 		prop_timer = 0.0
 		try_spawn_prop()
 	
-	# --- DER ENTSPANNTE SPAWNER ---
-	# 1. Wenn wir noch Feinde in der "Warteschlange" haben, spawnen wir EINEN pro Frame
+	# --- 1. DER ENTSPANNTE SPAWNER (1 Gegner pro Frame bauen) ---
 	if pending_enemy_spawns.size() > 0:
 		var spawn_info = pending_enemy_spawns.pop_front()
-		spawn_single_enemy(spawn_info.data, spawn_info.minute, spawn_info.angle)
-		return # WICHTIG: Wenn er einen spawnt, beendet er diesen Frame für das Spawnen!
+		spawn_single_enemy(spawn_info.data, spawn_info.minute, spawn_info.angle, spawn_info.is_swarm)
+		return 
 	
-	# 2. Normale Spawning-Prüfung (nur, wenn die Warteschlange leer ist)
+	# --- 2. NORMALE SPAWNING-PRÜFUNG ---
 	spawn_timer += delta
 	if spawn_timer >= get_current_spawn_rate():
 		spawn_timer = 0.0
 		
-		var current_enemies = get_tree().get_nodes_in_group("Enemygroup")
-		var enemy_count = current_enemies.size()
+		recycle_distant_enemies()
 		
-		enemy_count = recycle_distant_enemies(current_enemies, enemy_count)
-		
-		if enemy_count < max_enemies_on_screen:
-			var batch_size = 1 + int(time_elapsed / 30.0)
-			if current_state == State.BOSS: batch_size += 5 
+		# --- ELITE GEGNER PRÜFEN ---
+		var current_elites = get_tree().get_nodes_in_group("EliteEnemies").size()
+		if current_elites < max_elite_enemies and elite_database.size() > 0:
+			var elite_deficit = max_elite_enemies - current_elites
+			var batch = min(1 + int(time_elapsed / 40.0), elite_deficit)
+			queue_spawn_from_array(elite_database, batch, false)
 			
-			for i in range(batch_size):
-				if enemy_count >= max_enemies_on_screen: break
-				# Queue_spawn_enemy packt sie jetzt nur noch in die Warteschlange!
-				enemy_count += queue_spawn_enemy(max_enemies_on_screen - enemy_count)
+		# --- SCHWARM GEGNER PRÜFEN ---
+		var current_swarms = get_tree().get_nodes_in_group("SwarmEnemies").size()
+		if current_swarms < max_swarm_enemies and swarm_database.size() > 0:
+			var swarm_deficit = max_swarm_enemies - current_swarms
+			var batch = 3 + int(time_elapsed / 15.0)
+			
+			# Aggressiver Refill, wenn der Schwarm weggebombt wurde
+			if swarm_deficit > max_swarm_enemies * 0.4:
+				batch *= 4 
+				
+			batch = min(batch, swarm_deficit)
+			queue_spawn_from_array(swarm_database, batch, true)
 
 
-# --- Diese Funktion instanziiert NICHT mehr sofort, sondern plant es nur! ---
-func queue_spawn_enemy(allowed_space: int) -> int:
+# --- DIE ALLROUND-FUNKTION (Mit 360-Grad Spawn & max_count Check) ---
+func queue_spawn_from_array(database: Array, amount: int, is_swarm: bool):
 	var current_minute = time_elapsed / 60.0
-	var valid_enemies = []
-	var total_weight = 0.0
 	
-	for data in enemy_database:
-		if data.spawn_type == SpawnData.SpawnType.MINIBOSS: continue
-		if current_minute >= data.spawn_start_minute and current_minute <= data.spawn_end_minute:
-			valid_enemies.append(data)
-			total_weight += data.weight
-			
-	if valid_enemies.size() == 0: return 0
-	
-	var roll = randf_range(0.0, total_weight)
-	var chosen_data: SpawnData = null
-	
-	for data in valid_enemies:
-		roll -= data.weight
-		if roll <= 0:
-			chosen_data = data
-			break
-			
-	if not chosen_data: return 0
-	
-	var new_angle = last_spawn_angle + randf_range(PI / 2.0, PI * 1.5)
-	last_spawn_angle = new_angle 
-	
-	if chosen_data.spawn_type == SpawnData.SpawnType.SWARM:
-		var amount = randi_range(chosen_data.swarm_min_count, chosen_data.swarm_max_count)
-		amount = min(amount, allowed_space) 
+	for i in range(amount):
+		var valid_enemies = []
+		var total_weight = 0.0
 		
-		# Ab in den Puffer damit!
-		for i in amount:
-			pending_enemy_spawns.append({"data": chosen_data, "minute": current_minute, "angle": new_angle})
-		return amount
+		for data in database:
+			if current_minute >= data.spawn_start_minute and current_minute <= data.spawn_end_minute:
+				
+				# WICHTIG: Das Limit-System für Eliten und Minibosse!
+				if not is_swarm and data.max_active_count > 0:
+					if get_tree().get_nodes_in_group(data.enemy_id).size() >= data.max_active_count:
+						continue # Limit erreicht, darf nicht spawnen!
+						
+				valid_enemies.append(data)
+				total_weight += data.weight
+				
+		if valid_enemies.size() == 0: return 
+		
+		var roll = randf_range(0.0, total_weight)
+		var chosen_data: SpawnData = null
+		
+		for data in valid_enemies:
+			roll -= data.weight
+			if roll <= 0:
+				chosen_data = data
+				break
+				
+		if chosen_data:
+			# JEDER Gegner bekommt einen völlig zufälligen Winkel off-screen!
+			var random_angle = randf() * TAU 
+			pending_enemy_spawns.append({
+				"data": chosen_data, 
+				"minute": current_minute, 
+				"angle": random_angle,
+				"is_swarm": is_swarm
+			})
+
+
+func spawn_single_enemy(data: SpawnData, current_minute: float, angle: float, is_swarm: bool):
+	var enemy = data.enemy_scene.instantiate()
+	
+	# Gruppen zuweisen
+	enemy.add_to_group("Enemygroup")
+	enemy.add_to_group(data.enemy_id) 
+	
+	if is_swarm:
+		enemy.add_to_group("SwarmEnemies")
 	else:
-		pending_enemy_spawns.append({"data": chosen_data, "minute": current_minute, "angle": new_angle})
-		return 1
-
-
-func recycle_distant_enemies(enemies: Array, current_count: int) -> int:
-	if current_count < max_enemies_on_screen:
-		return current_count
-		
-	var despawned = 0
-	var max_dist_squared = 120000.0 
+		enemy.add_to_group("EliteEnemies")
 	
-	for e in enemies:
-		if e.is_in_group("boss") or e.is_in_group("miniboss"):
-			continue
-			
+	# Stats skalieren
+	var current_multiplier = pow(scaling_factor, current_minute)
+	if "max_health" in enemy: enemy.max_health *= current_multiplier
+	if "damage" in enemy: enemy.damage *= current_multiplier
+	if "xp_reward" in enemy: enemy.xp_reward *= (current_multiplier * 0.5) 
+	
+	enemy.global_position = get_offscreen_position(angle)
+	enemy.scale = Vector2.ZERO
+	enemy.modulate = Color(0.0, 0.0, 0.0, 0.0) 
+	get_tree().current_scene.add_child(enemy)
+	
+	var spawn_tween = enemy.create_tween().set_parallel(true)
+	spawn_tween.tween_property(enemy, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	spawn_tween.tween_property(enemy, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.5)
+
+
+func recycle_distant_enemies():
+	var max_dist_squared = 120000.0 # Ca. 300-350 Pixel Distanz
+	var all_enemies = get_tree().get_nodes_in_group("Enemygroup")
+	var despawned = 0
+	
+	for e in all_enemies:
+		if e.is_in_group("boss") or e.is_in_group("miniboss"): continue
+		
 		if e.global_position.distance_squared_to(player.global_position) > max_dist_squared:
 			e.queue_free()
 			despawned += 1
-			
-			if despawned >= 5: 
-				break
-				
-	return current_count - despawned
+			if despawned >= 5: break
 
 
 func get_current_spawn_rate() -> float:
@@ -155,85 +188,19 @@ func get_current_spawn_rate() -> float:
 	return base_spawn_interval * (1.0 - speed_up)
 
 
-# --- FIX: GIBT JETZT DIE ANZAHL DER GESPAWNTEN GEGNER ZURÜCK ---
-# Wir übergeben allowed_space, damit ein Schwarm nicht das Limit überschreitet!
-func try_spawn_enemy(allowed_space: int) -> int:
-	var current_minute = time_elapsed / 60.0
-	var valid_enemies = []
-	var total_weight = 0.0
-	
-	for data in enemy_database:
-		if data.spawn_type == SpawnData.SpawnType.MINIBOSS: continue
-			
-		if current_minute >= data.spawn_start_minute and current_minute <= data.spawn_end_minute:
-			# PERFORMANCE: Die extrem langsame max_active_count Prüfung auskommentiert/entfernt,
-			# da sie bei 1000 Gegnern das Spiel killen würde.
-			valid_enemies.append(data)
-			total_weight += data.weight
-			
-	if valid_enemies.size() == 0: return 0
-	
-	var roll = randf_range(0.0, total_weight)
-	var chosen_data: SpawnData = null
-	
-	for data in valid_enemies:
-		roll -= data.weight
-		if roll <= 0:
-			chosen_data = data
-			break
-			
-	if not chosen_data: return 0
-	
-	var new_angle = last_spawn_angle + randf_range(PI / 2.0, PI * 1.5)
-	last_spawn_angle = new_angle 
-	
-	if chosen_data.spawn_type == SpawnData.SpawnType.SWARM:
-		var amount = randi_range(chosen_data.swarm_min_count, chosen_data.swarm_max_count)
-		# Wir cappen den Schwarm, damit er nicht das Limit sprengt
-		amount = min(amount, allowed_space) 
-		
-		for i in amount:
-			spawn_single_enemy(chosen_data, current_minute, new_angle)
-		return amount
-	else:
-		spawn_single_enemy(chosen_data, current_minute, new_angle)
-		return 1
-		
-# --- NEU: PROP SPAWN LOGIK ---
+# --- PROP SPAWN LOGIK ---
 func try_spawn_prop():
 	var current_props = get_tree().get_nodes_in_group("Props").size()
-	if current_props >= max_props:
-		return
+	if current_props >= max_props: return
 		
 	var random_angle = randf() * TAU
-	# Spawnt ca. 400 Pixel weit weg
 	var spawn_pos = player.global_position + Vector2(cos(random_angle), sin(random_angle)) * 400.0
 	
-	# Check ob es innerhalb der Map liegt
 	if map_bounds.has_point(spawn_pos):
 		var prop = prop_scene.instantiate()
 		prop.global_position = spawn_pos
 		get_tree().current_scene.add_child(prop)
 
-
-func spawn_single_enemy(data: SpawnData, current_minute: float, base_angle: float):
-	var enemy = data.enemy_scene.instantiate()
-	enemy.add_to_group(data.enemy_id)
-	enemy.add_to_group("Enemygroup")
-	
-	var current_multiplier = pow(scaling_factor, current_minute)
-	if "max_health" in enemy: enemy.max_health *= current_multiplier
-	if "damage" in enemy: enemy.damage *= current_multiplier
-	if "xp_reward" in enemy: enemy.xp_reward *= (current_multiplier * 0.5) 
-	
-	enemy.global_position = get_offscreen_position(base_angle)
-	enemy.scale = Vector2.ZERO
-	enemy.modulate = Color(0.0, 0.0, 0.0, 0.0) 
-	get_tree().current_scene.add_child(enemy)
-	
-	var spawn_tween = enemy.create_tween().set_parallel(true)
-	spawn_tween.tween_property(enemy, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	spawn_tween.tween_property(enemy, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.5)
 
 func get_offscreen_position(base_angle: float) -> Vector2:
 	if not player: return Vector2.ZERO
@@ -251,7 +218,7 @@ func get_offscreen_position(base_angle: float) -> Vector2:
 	var center_pos = player.global_position
 	if cam: center_pos = cam.get_screen_center_position()
 		
-	var current_angle = base_angle + randf_range(-0.35, 0.35) 
+	var current_angle = base_angle + randf_range(-0.15, 0.15) 
 	var distance = 350.0 
 	
 	var safe_bounds = map_bounds.grow(-20.0)
@@ -273,37 +240,17 @@ func check_for_miniboss():
 	if current_state != State.NORMAL: return
 	var current_minute = time_elapsed / 60.0
 	var expected_minibosses = int(current_minute / miniboss_interval_minutes)
+	
 	if expected_minibosses > minibosses_spawned:
 		spawn_random_miniboss(current_minute)
 
 func spawn_random_miniboss(current_minute: float):
-	var miniboss_pool: Array[SpawnData] = []
-	var total_weight = 0.0
-	
-	for data in enemy_database:
-		if data.spawn_type == SpawnData.SpawnType.MINIBOSS:
-			miniboss_pool.append(data)
-			total_weight += data.weight
-			
-	if miniboss_pool.size() == 0: return
+	if miniboss_database.size() == 0: return
 	minibosses_spawned += 1 
-		
-	var roll = randf_range(0.0, total_weight)
-	var chosen_miniboss: SpawnData = null
-	
-	for data in miniboss_pool:
-		roll -= data.weight
-		if roll <= 0:
-			chosen_miniboss = data
-			break
-			
-	if not chosen_miniboss: return
-	var random_angle = randf() * TAU
-	spawn_single_enemy(chosen_miniboss, current_minute, random_angle)
+	# Nutzt einfach die neue Allround-Funktion!
+	queue_spawn_from_array(miniboss_database, 1, false)
 
-# --- BOSS LOGIK & DUNKLE DIMENSION
-#var dark_arena: Node2D 
-
+# --- BOSS LOGIK & DUNKLE DIMENSION ---
 func check_for_boss():
 	var current_minute = time_elapsed / 60.0
 	var expected_boss_count = int(current_minute / boss_interval_minutes)
@@ -330,33 +277,26 @@ func start_pre_boss_warning():
 	arena_center.x = clamp(arena_center.x, arena_safe_bounds.position.x, arena_safe_bounds.end.x)
 	arena_center.y = clamp(arena_center.y, arena_safe_bounds.position.y, arena_safe_bounds.end.y)
 	
-	# --- FIX: ARENA WIRD SOFORT ERSTELLT ---
-	# Der Spieler kann jetzt während der 2.5 Sekunden Warnung nicht mehr fliehen!
 	create_dark_arena(arena_center)
 	
-	# --- FIX 1: SANFTER SOG & PARTIKEL EFFEKT ---
 	if player.global_position.distance_to(arena_center) > 160.0:
 		var pull_tween = player.create_tween()
 		pull_tween.tween_property(player, "global_position", arena_center, 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		
-		# Erschafft 15 "Void-Schlieren" (Schwarze Striche), die den Spieler in die Mitte saugen
 		for i in range(15):
 			var streak = ColorRect.new()
-			streak.color = Color(0.02, 0.0, 0.05, 0.8) # Void-Farbe
-			streak.size = Vector2(randf_range(40, 120), randf_range(3, 8)) # Unterschiedliche Länge/Dicke
+			streak.color = Color(0.02, 0.0, 0.05, 0.8) 
+			streak.size = Vector2(randf_range(40, 120), randf_range(3, 8)) 
 			
-			# Spawnen wild verteilt um den Spieler herum
 			var random_offset = Vector2(randf_range(-200, 200), randf_range(-200, 200))
 			streak.global_position = player.global_position + random_offset
 			
-			# Sie rotieren automatisch so, dass sie exakt in die Mitte zeigen
 			streak.rotation = (arena_center - streak.global_position).angle()
-			streak.z_index = 60 # Über dem Spieler
+			streak.z_index = 60 
 			get_tree().current_scene.add_child(streak)
 			
-			# Sie fliegen blitzschnell und nacheinander in das Zentrum
 			var s_tween = streak.create_tween()
-			var delay = randf_range(0.0, 1.5) # Wann der Strich losfliegt
+			var delay = randf_range(0.0, 1.5) 
 			s_tween.tween_interval(delay)
 			s_tween.tween_property(streak, "global_position", arena_center, 0.3).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_IN)
 			s_tween.tween_callback(streak.queue_free)

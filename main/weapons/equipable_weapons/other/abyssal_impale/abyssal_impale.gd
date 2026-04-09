@@ -79,9 +79,12 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 	
 	# 2. Trefferberechnung & Hochschießen
 	tween.tween_callback(func():
-		for body in area.get_overlapping_bodies():
-			if (body.is_in_group("Enemygroup") or body.is_in_group("Props")) and body.has_method("take_damage"):
-				body.take_damage(dmg)
+		# --- DER FIX: Beide Arrays zusammenfassen! ---
+		var all_targets = area.get_overlapping_bodies() + area.get_overlapping_areas()
+		for target in all_targets:
+			if (target.is_in_group("Enemygroup") or target.is_in_group("Props")) and target.has_method("take_damage"):
+				# false = Keine Zahlen
+				target.take_damage(dmg, false)
 				add_damage_stat(dmg)
 	)
 	# TRANS_BACK lässt ihn wuchtig nach oben knallen

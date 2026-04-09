@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://ce0d75rgxkpuv"]
+
+[ext_resource type="PackedScene" uid="uid://civ3xedadwekw" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.tscn" id="1_8mene"]
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="2_anpau"]
+
+[resource]
+script = ExtResource("2_anpau")
+enemy_scene = ExtResource("1_8mene")
+weight = 5.0
+enemy_id = &"buff"
+max_active_count = 3
+spawn_start_minute = 3.0
