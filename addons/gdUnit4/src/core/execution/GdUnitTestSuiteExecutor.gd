@@ -1,13 +1,13 @@
 ## The executor to run a test-suite
 class_name GdUnitTestSuiteExecutor
 
-
 # preload all asserts here
 @warning_ignore("unused_private_class_variable")
 var _assertions := GdUnitAssertions.new()
 var _executeStage := GdUnitTestSuiteExecutionStage.new()
-var _debug_mode : bool
+var _debug_mode: bool
 var _terminated := false
+
 
 func _init(debug_mode: bool = false) -> void:
 	_executeStage.set_debug_mode(debug_mode)
@@ -29,15 +29,17 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		prints("!!! Reporting orphan nodes is disabled. Please check GdUnit settings.")
 
 	# first we group all tests by resource path
-	var grouped_by_suites := GdArrayTools.group_by(tests, func(test: GdUnitTestCase) -> String:
-		return test.suite_resource_path
+	var grouped_by_suites := GdArrayTools.group_by(
+		tests, func(test: GdUnitTestCase) -> String: return test.suite_resource_path
 	)
 	var scanner := GdUnitTestSuiteScanner.new()
 	for suite_path: String in grouped_by_suites.keys():
 		if _terminated:
 			break
 		@warning_ignore("unsafe_call_argument")
-		var suite_tests: Array[GdUnitTestCase] = Array(grouped_by_suites[suite_path], TYPE_OBJECT, "RefCounted", GdUnitTestCase)
+		var suite_tests: Array[GdUnitTestCase] = Array(
+			grouped_by_suites[suite_path], TYPE_OBJECT, "RefCounted", GdUnitTestCase
+		)
 		var script := GdUnitTestSuiteScanner.load_with_disabled_warnings(suite_path)
 		if script.get_class() == "GDScript":
 			var context := GdUnitExecutionContext.new(suite_path)
@@ -52,5 +54,5 @@ func run_and_wait(tests: Array[GdUnitTestCase]) -> void:
 		GdUnitSignals.instance().gdunit_event.emit(GdUnitStop.new())
 
 
-func fail_fast(enabled :bool) -> void:
+func fail_fast(enabled: bool) -> void:
 	_executeStage.fail_fast(enabled)

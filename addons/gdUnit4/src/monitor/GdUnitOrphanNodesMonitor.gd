@@ -14,7 +14,7 @@ const excluded_frame_files: PackedStringArray = [
 ]
 
 var _child_monitors: Array[GdUnitOrphanNodesMonitor] = []
-var _orphan_detection_enabled :bool
+var _orphan_detection_enabled: bool
 var _initial_orphans: Array[int] = []
 var _orphan_ids_at_start: Array[int] = []
 var _orphan_ids_at_stop: Array[int] = []
@@ -45,12 +45,13 @@ func stop() -> void:
 	if not _orphan_detection_enabled:
 		return
 	# Collect only new detected orphan id's, we want only to collect orphans between start and stop time
-	_orphan_ids_at_stop = _get_orphan_node_ids().filter(func(element: int) -> bool:
-		# Excluding sub monitores orphans
-		if _collect_child_orphan_ids().has(element):
-			return false
-		# Excluding orphans at start
-		return not _orphan_ids_at_start.has(element) and not _initial_orphans.has(element)
+	_orphan_ids_at_stop = _get_orphan_node_ids().filter(
+		func(element: int) -> bool:
+			# Excluding sub monitores orphans
+			if _collect_child_orphan_ids().has(element):
+				return false
+			# Excluding orphans at start
+			return not _orphan_ids_at_start.has(element) and not _initial_orphans.has(element)
 	)
 
 
@@ -65,8 +66,8 @@ func _collect_child_orphan_ids() -> Array[int]:
 func detected_orphans() -> Array[GdUnitOrphanNodeInfo]:
 	if not _orphan_detection_enabled:
 		return []
-	return _collected_orphan_infos.filter(func(info: GdUnitOrphanNodeInfo) -> bool:
-		return info._id in _orphan_ids_at_stop
+	return _collected_orphan_infos.filter(
+		func(info: GdUnitOrphanNodeInfo) -> bool: return info._id in _orphan_ids_at_stop
 	)
 
 
@@ -94,7 +95,7 @@ func _collect_orphan_info(orphan_to_find: Object) -> void:
 		return
 
 	if Engine.has_meta("GdUnitSceneRunner"):
-		var current_scene_runner:GdUnitSceneRunner = Engine.get_meta("GdUnitSceneRunner")
+		var current_scene_runner: GdUnitSceneRunner = Engine.get_meta("GdUnitSceneRunner")
 		if is_instance_valid(current_scene_runner):
 			orphan_node = _find_orphan_at_node(orphan_to_find, current_scene_runner.scene())
 			if orphan_node:
@@ -106,12 +107,15 @@ func _collect_orphan_info(orphan_to_find: Object) -> void:
 	if not EngineDebugger.is_active():
 		message = "No details available. [color=yellow]Run tests in debug mode to collect details.[/color]"
 
-	_collected_orphan_infos.append(GdUnitOrphanNodeInfo.new(
-		GdUnitOrphanNodeInfo.GdUnitOrphanType.unknown,
-		orphan_to_find.get_instance_id(),
-		orphan_to_find.get_class(),
-		message,
-		""))
+	_collected_orphan_infos.append(
+		GdUnitOrphanNodeInfo.new(
+			GdUnitOrphanNodeInfo.GdUnitOrphanType.unknown,
+			orphan_to_find.get_instance_id(),
+			orphan_to_find.get_class(),
+			message,
+			""
+		)
+	)
 
 
 func _find_orphan_at_node(orphan_to_find: Object, node: Node) -> GdUnitOrphanNodeInfo:
@@ -136,7 +140,8 @@ func _find_orphan_at_node(orphan_to_find: Object, node: Node) -> GdUnitOrphanNod
 					orphan_to_find.get_instance_id(),
 					orphan_to_find.get_class(),
 					property_name,
-					script.resource_path)
+					script.resource_path
+				)
 
 			# Search on node childs
 			var orphan_node_info := _find_orphan_at_node(orphan_to_find, property_as_node)
@@ -146,7 +151,8 @@ func _find_orphan_at_node(orphan_to_find: Object, node: Node) -> GdUnitOrphanNod
 					orphan_to_find.get_instance_id(),
 					orphan_to_find.get_class(),
 					property_name,
-					script.resource_path)
+					script.resource_path
+				)
 				return orphan_node_info
 
 	# Second over all children
@@ -173,7 +179,9 @@ func _find_orphan_on_backtraces(orphan_to_find: Object) -> GdUnitOrphanNodeInfo:
 
 			# Scan function variables
 			for l_index in script_backtrace.get_local_variable_count(frame):
-				var variable_instance: Variant = script_backtrace.get_local_variable_value(frame, l_index)
+				var variable_instance: Variant = script_backtrace.get_local_variable_value(
+					frame, l_index
+				)
 				var variable_name := script_backtrace.get_local_variable_name(frame, l_index)
 				if typeof(variable_instance) in [TYPE_NIL, TYPE_OBJECT]:
 					@warning_ignore("unsafe_cast")
@@ -187,7 +195,8 @@ func _find_orphan_on_backtraces(orphan_to_find: Object) -> GdUnitOrphanNodeInfo:
 							orphan_to_find.get_class(),
 							variable_name,
 							script_backtrace.get_frame_file(frame),
-							script_backtrace.get_frame_function(frame))
+							script_backtrace.get_frame_function(frame)
+						)
 					else:
 						var orphan_node_info := _find_orphan_at_node(orphan_to_find, node)
 						if orphan_node_info:
@@ -195,7 +204,9 @@ func _find_orphan_on_backtraces(orphan_to_find: Object) -> GdUnitOrphanNodeInfo:
 
 			# Scan class members
 			for m_index in script_backtrace.get_member_variable_count(frame):
-				var member_instance: Variant = script_backtrace.get_member_variable_value(frame, m_index)
+				var member_instance: Variant = script_backtrace.get_member_variable_value(
+					frame, m_index
+				)
 				var member_name := script_backtrace.get_member_variable_name(frame, m_index)
 				if typeof(member_instance) in [TYPE_NIL, TYPE_OBJECT]:
 					@warning_ignore("unsafe_cast")
@@ -208,7 +219,8 @@ func _find_orphan_on_backtraces(orphan_to_find: Object) -> GdUnitOrphanNodeInfo:
 							orphan_to_find.get_instance_id(),
 							orphan_to_find.get_class(),
 							member_name,
-							script_backtrace.get_frame_file(frame))
+							script_backtrace.get_frame_file(frame)
+						)
 					else:
 						var orphan_node_info := _find_orphan_at_node(orphan_to_find, node)
 						if orphan_node_info:

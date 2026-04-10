@@ -2,6 +2,7 @@ extends Node2D
 
 const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
 
+
 # wenn go-back_button geklickt
 func _on_button_back_pressed():
 	if ResourceLoader.exists(SCENE_MAIN):

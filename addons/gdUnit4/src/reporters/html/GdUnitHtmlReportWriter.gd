@@ -7,7 +7,9 @@ func output_format() -> String:
 
 
 func write(report_path: String, report: GdUnitReportSummary) -> String:
-	var template := GdUnitHtmlPatterns.load_template("res://addons/gdUnit4/src/reporters/html/template/index.html")
+	var template := GdUnitHtmlPatterns.load_template(
+		"res://addons/gdUnit4/src/reporters/html/template/index.html"
+	)
 	var to_write := GdUnitHtmlPatterns.build(template, report, "")
 	to_write = _apply_path_reports(report_path, to_write, report.get_reports())
 	to_write = _apply_testsuite_reports(report_path, to_write, report.get_reports())
@@ -16,7 +18,9 @@ func write(report_path: String, report: GdUnitReportSummary) -> String:
 	var html_report_file := "%s/index.html" % report_path
 	FileAccess.open(html_report_file, FileAccess.WRITE).store_string(to_write)
 	@warning_ignore("return_value_discarded")
-	GdUnitFileAccess.copy_directory("res://addons/gdUnit4/src/reporters/html/template/css/", report_path + "/css")
+	GdUnitFileAccess.copy_directory(
+		"res://addons/gdUnit4/src/reporters/html/template/css/", report_path + "/css"
+	)
 	return html_report_file
 
 
@@ -36,7 +40,9 @@ func _apply_path_reports(report_dir: String, template: String, report_summaries:
 	return template.replace(GdUnitHtmlPatterns.TABLE_BY_PATHS, "\n".join(table_records))
 
 
-func _apply_testsuite_reports(report_dir: String, template: String, test_suite_reports: Array[GdUnitReportSummary]) -> String:
+func _apply_testsuite_reports(
+	report_dir: String, template: String, test_suite_reports: Array[GdUnitReportSummary]
+) -> String:
 	var table_records := PackedStringArray()
 	for report: GdUnitTestSuiteReport in test_suite_reports:
 		var report_link: String = _write(report_dir, report).replace(report_dir, ".")
@@ -45,8 +51,10 @@ func _apply_testsuite_reports(report_dir: String, template: String, test_suite_r
 	return template.replace(GdUnitHtmlPatterns.TABLE_BY_TESTSUITES, "\n".join(table_records))
 
 
-func _write(report_dir :String, report: GdUnitTestSuiteReport) -> String:
-	var template := GdUnitHtmlPatterns.load_template("res://addons/gdUnit4/src/reporters/html/template/suite_report.html")
+func _write(report_dir: String, report: GdUnitTestSuiteReport) -> String:
+	var template := GdUnitHtmlPatterns.load_template(
+		"res://addons/gdUnit4/src/reporters/html/template/suite_report.html"
+	)
 	template = GdUnitHtmlPatterns.build(template, report, "")
 
 	var report_output_path := create_output_path(report_dir, report.path(), report.name())
@@ -56,7 +64,9 @@ func _write(report_dir :String, report: GdUnitTestSuiteReport) -> String:
 		test_report_table.append(GdUnitHtmlPatterns.create_suite_failure_report(report))
 	for test_report: GdUnitTestCaseReport in report._reports:
 		@warning_ignore("return_value_discarded")
-		test_report_table.append(GdUnitHtmlPatterns.create_test_failure_report(report_output_path, test_report))
+		test_report_table.append(
+			GdUnitHtmlPatterns.create_test_failure_report(report_output_path, test_report)
+		)
 
 	template = template.replace(GdUnitHtmlPatterns.TABLE_BY_TESTCASES, "\n".join(test_report_table))
 
@@ -68,5 +78,5 @@ func _write(report_dir :String, report: GdUnitTestSuiteReport) -> String:
 	return report_output_path
 
 
-static func create_output_path(report_dir :String, path: String, name: String) -> String:
+static func create_output_path(report_dir: String, path: String, name: String) -> String:
 	return "%s/test_suites/%s.%s.html" % [report_dir, path.replace("/", "."), name]

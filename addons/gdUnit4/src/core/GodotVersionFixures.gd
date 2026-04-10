@@ -4,7 +4,9 @@ extends RefCounted
 
 
 # handle global_position fixed by https://github.com/godotengine/godot/pull/88473
-static func set_event_global_position(event: InputEventMouseMotion, global_position: Vector2) -> void:
+static func set_event_global_position(
+	event: InputEventMouseMotion, global_position: Vector2
+) -> void:
 	if Engine.get_version_info().hex >= 0x40202 or Engine.get_version_info().hex == 0x40104:
 		event.global_position = event.position
 	else:

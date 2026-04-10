@@ -1,16 +1,17 @@
 class_name GdUnitCommandInspectorDebugTests
 extends GdUnitBaseCommand
 
-const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
+const InspectorTreeMainPanel := preload(
+	"res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd"
+)
 const ID := "Debug Inspector Tests"
-
 
 var _test_session_command: GdUnitCommandTestSession
 
 
 func _init(test_session_command: GdUnitCommandTestSession) -> void:
 	super(ID, GdUnitShortcut.ShortCut.RERUN_TESTS_DEBUG)
-	icon =  GdUnitUiTools.get_icon("PlayStart")
+	icon = GdUnitUiTools.get_icon("PlayStart")
 	_test_session_command = test_session_command
 
 

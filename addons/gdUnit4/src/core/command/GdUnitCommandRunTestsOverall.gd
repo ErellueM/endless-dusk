@@ -3,7 +3,6 @@ extends GdUnitBaseCommand
 
 const ID := "Run Tests Overall"
 
-
 var _test_session_command: GdUnitCommandTestSession
 
 

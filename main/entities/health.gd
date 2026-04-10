@@ -5,8 +5,10 @@ var current_health = max_health
 
 signal died  # Signal for when health reaches zero
 
+
 func _ready():
 	current_health = max_health
+
 
 func take_damage(amount):
 	current_health -= amount

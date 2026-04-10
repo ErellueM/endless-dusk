@@ -4,9 +4,11 @@ class_name MeleeWeapon
 @onready var hitbox = $HitboxArea
 @onready var anim_player = $AnimationPlayer
 
+
 func _ready():
 	hitbox.monitoring = false
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
+
 
 func attack() -> bool:
 	if anim_player.has_animation("swing"):
@@ -16,6 +18,7 @@ func attack() -> bool:
 		hitbox.monitoring = false
 		return true
 	return false
+
 
 func _on_hitbox_body_entered(body: Node2D):
 	if body.is_in_group("Enemygroup") and body.has_method("take_damage"):

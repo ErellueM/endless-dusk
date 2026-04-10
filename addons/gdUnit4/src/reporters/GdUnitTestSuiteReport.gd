@@ -5,7 +5,9 @@ var _time_stamp: int
 var _failure_reports: Array[GdUnitReport] = []
 
 
-func _init(p_resource_path: String, p_name: String, p_test_count: int, text_formatter: Callable) -> void:
+func _init(
+	p_resource_path: String, p_name: String, p_test_count: int, text_formatter: Callable
+) -> void:
 	_resource_path = p_resource_path
 	_name = p_name
 	_test_count = p_test_count
@@ -20,7 +22,7 @@ func failure_report() -> String:
 	return report_message
 
 
-func set_duration(p_duration :int) -> void:
+func set_duration(p_duration: int) -> void:
 	_duration = p_duration
 
 
@@ -32,19 +34,19 @@ func duration() -> int:
 	return _duration
 
 
-func set_skipped(skipped :int) -> void:
+func set_skipped(skipped: int) -> void:
 	_skipped_count += skipped
 
 
-func set_orphans(orphans :int) -> void:
+func set_orphans(orphans: int) -> void:
 	_orphan_count = orphans
 
 
-func set_failed(count :int) -> void:
+func set_failed(count: int) -> void:
 	_failure_count += count
 
 
-func set_reports(failure_reports :Array[GdUnitReport]) -> void:
+func set_reports(failure_reports: Array[GdUnitReport]) -> void:
 	_failure_reports = failure_reports
 
 
@@ -58,7 +60,8 @@ func _update_testsuite_counters(
 	p_orphan_count: int,
 	p_skipped_count: int,
 	p_flaky_count: int,
-	p_duration: int) -> void:
+	p_duration: int
+) -> void:
 	_error_count += p_error_count
 	_failure_count += p_failure_count
 	_orphan_count += p_orphan_count
@@ -74,14 +77,19 @@ func set_testcase_counters(
 	p_orphan_count: int,
 	p_is_skipped: bool,
 	p_is_flaky: bool,
-	p_duration: int) -> void:
+	p_duration: int
+) -> void:
 	if _reports.is_empty():
 		return
-	var test_report: GdUnitTestCaseReport = _reports.filter(func (report: GdUnitTestCaseReport) -> bool:
-		return report.name() == test_name
-	).back()
+	var test_report: GdUnitTestCaseReport = (
+		_reports
+		. filter(func(report: GdUnitTestCaseReport) -> bool: return report.name() == test_name)
+		. back()
+	)
 	if test_report:
-		test_report.set_testcase_counters(p_error_count, p_failure_count, p_orphan_count, p_is_skipped, p_is_flaky, p_duration)
+		test_report.set_testcase_counters(
+			p_error_count, p_failure_count, p_orphan_count, p_is_skipped, p_is_flaky, p_duration
+		)
 
 
 func add_testcase_reports(test_name: String, reports: Array[GdUnitReport]) -> void:
@@ -89,8 +97,10 @@ func add_testcase_reports(test_name: String, reports: Array[GdUnitReport]) -> vo
 		return
 	# we lookup to latest matching report because of flaky tests could be retry the tests
 	# and resultis in multipe report entries with the same name
-	var test_report: GdUnitTestCaseReport = _reports.filter(func (report: GdUnitTestCaseReport) -> bool:
-		return report.name() == test_name
-	).back()
+	var test_report: GdUnitTestCaseReport = (
+		_reports
+		. filter(func(report: GdUnitTestCaseReport) -> bool: return report.name() == test_name)
+		. back()
+	)
 	if test_report:
 		test_report.add_testcase_reports(reports)

@@ -14,7 +14,6 @@
 class_name GdUnitTestSuite
 extends Node
 
-
 ### internal runtime variables that must not be overwritten!!!
 @warning_ignore("unused_private_class_variable")
 var __is_skipped := false
@@ -99,12 +98,17 @@ func error_as_string(error_number: int) -> String:
 func auto_free(obj: Variant) -> Variant:
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
 
-	assert(execution_context != null, "INTERNAL ERROR: The current execution_context is null! Please report this as bug.")
+	assert(
+		execution_context != null,
+		"INTERNAL ERROR: The current execution_context is null! Please report this as bug."
+	)
 	return execution_context.register_auto_free(obj)
 
 
 @warning_ignore("native_method_override")
-func add_child(node: Node, force_readable_name := false, internal := Node.INTERNAL_MODE_DISABLED) -> void:
+func add_child(
+	node: Node, force_readable_name := false, internal := Node.INTERNAL_MODE_DISABLED
+) -> void:
 	super.add_child(node, force_readable_name, internal)
 	var execution_context := GdUnitThreadManager.get_current_context().get_execution_context()
 	if execution_context != null:
@@ -137,7 +141,9 @@ func clean_temp_dir() -> void:
 ## Creates a new file under the temporary directory *user://tmp* + <relative_path>[br]
 ## with given name <file_name> and given file <mode> (default = File.WRITE)[br]
 ## If success the returned File is automatically closed after the execution of the test suite
-func create_temp_file(relative_path: String, file_name: String, mode := FileAccess.WRITE) -> FileAccess:
+func create_temp_file(
+	relative_path: String, file_name: String, mode := FileAccess.WRITE
+) -> FileAccess:
 	@warning_ignore("unsafe_method_access")
 	return __gdunit_file_access().create_temp_file(relative_path, file_name, mode)
 
@@ -165,7 +171,9 @@ func resource_as_var(resource_path: String) -> Variant:
 ## signal_name: signal name[br]
 ## args: the expected signal arguments as an array[br]
 ## timeout: the timeout in ms, default is set to 2000ms
-func await_signal_on(source: Object, signal_name: String, args: Array = [], timeout: int = 2000) -> Variant:
+func await_signal_on(
+	source: Object, signal_name: String, args: Array = [], timeout: int = 2000
+) -> Variant:
 	@warning_ignore("unsafe_method_access")
 	return await __awaiter.await_signal_on(source, signal_name, args, timeout)
 
@@ -239,7 +247,9 @@ func collect_orphan_node_details() -> void:
 ##    var runner := scene_runner("res://foo/my_scne.tscn")
 ## [/codeblock]
 func scene_runner(scene: Variant, verbose := false) -> GdUnitSceneRunner:
-	return auto_free(__lazy_load("res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd").new(scene, verbose))
+	return auto_free(
+		__lazy_load("res://addons/gdUnit4/src/core/GdUnitSceneRunnerImpl.gd").new(scene, verbose)
+	)
 
 
 # === Mocking  & Spy ===========================================================
@@ -256,7 +266,9 @@ const RETURN_DEEP_STUB = GdUnitMock.RETURN_DEEP_STUB
 ## Creates a mock for given class name
 func mock(clazz: Variant, mock_mode := RETURN_DEFAULTS) -> Variant:
 	@warning_ignore("unsafe_method_access")
-	return __lazy_load("res://addons/gdUnit4/src/mocking/GdUnitMockBuilder.gd").build(clazz, mock_mode)
+	return __lazy_load("res://addons/gdUnit4/src/mocking/GdUnitMockBuilder.gd").build(
+		clazz, mock_mode
+	)
 
 
 ## Creates a spy checked given object instance
@@ -313,10 +325,12 @@ func reset(obj: Variant) -> void:
 ##	[/codeblock]
 func monitor_signals(source: Object, _auto_free := true) -> Object:
 	@warning_ignore("unsafe_method_access")
-	__lazy_load("res://addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd")\
-		.get_current_context()\
-		.get_signal_collector()\
-		.register_emitter(source, true) # force recreate to start with a fresh monitoring
+	(
+		__lazy_load("res://addons/gdUnit4/src/core/thread/GdUnitThreadManager.gd")
+		. get_current_context()
+		. get_signal_collector()
+		. register_emitter(source, true)
+	)  # force recreate to start with a fresh monitoring
 	return auto_free(source) if _auto_free else source
 
 
@@ -360,14 +374,19 @@ func any_color() -> GdUnitArgumentMatcher:
 ## Argument matcher to match any Vector typed value
 func any_vector() -> GdUnitArgumentMatcher:
 	@warning_ignore("unsafe_method_access")
-	return __gdunit_argument_matchers().by_types([
-		TYPE_VECTOR2,
-		TYPE_VECTOR2I,
-		TYPE_VECTOR3,
-		TYPE_VECTOR3I,
-		TYPE_VECTOR4,
-		TYPE_VECTOR4I,
-	])
+	return (
+		__gdunit_argument_matchers()
+		. by_types(
+			[
+				TYPE_VECTOR2,
+				TYPE_VECTOR2I,
+				TYPE_VECTOR3,
+				TYPE_VECTOR3I,
+				TYPE_VECTOR4,
+				TYPE_VECTOR4I,
+			]
+		)
+	)
 
 
 ## Argument matcher to match any Vector2 value
@@ -533,7 +552,7 @@ func any_packed_color_array() -> GdUnitArgumentMatcher:
 
 
 ## Argument matcher to match any instance of given class
-func any_class(clazz :Object) -> GdUnitArgumentMatcher:
+func any_class(clazz: Object) -> GdUnitArgumentMatcher:
 	@warning_ignore("unsafe_method_access")
 	return __gdunit_argument_matchers().any_class(clazz)
 
@@ -541,7 +560,9 @@ func any_class(clazz :Object) -> GdUnitArgumentMatcher:
 # === value extract utils ======================================================
 ## Builds an extractor by given function name and optional arguments
 func extr(func_name: String, args := Array()) -> GdUnitValueExtractor:
-	return __lazy_load("res://addons/gdUnit4/src/extractors/GdUnitFuncValueExtractor.gd").new(func_name, args)
+	return __lazy_load("res://addons/gdUnit4/src/extractors/GdUnitFuncValueExtractor.gd").new(
+		func_name, args
+	)
 
 
 ## Creates a GdUnitTuple from the provided arguments for use in test assertions.
@@ -577,6 +598,7 @@ func tuple(...args: Array) -> GdUnitTuple:
 
 # === Asserts ==================================================================
 
+
 ## The common assertion tool to verify values.
 ## It checks the given value by type to fit to the best assert
 func assert_that(current: Variant) -> GdUnitAssert:
@@ -593,9 +615,7 @@ func assert_that(current: Variant) -> GdUnitAssert:
 			return assert_vector(current, false)
 		TYPE_DICTIONARY:
 			return assert_dict(current)
-		TYPE_ARRAY, TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY,\
-		TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY,\
-		TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY, TYPE_PACKED_COLOR_ARRAY:
+		TYPE_ARRAY, TYPE_PACKED_BYTE_ARRAY, TYPE_PACKED_INT32_ARRAY, TYPE_PACKED_INT64_ARRAY, TYPE_PACKED_FLOAT32_ARRAY, TYPE_PACKED_FLOAT64_ARRAY, TYPE_PACKED_STRING_ARRAY, TYPE_PACKED_VECTOR2_ARRAY, TYPE_PACKED_VECTOR3_ARRAY, TYPE_PACKED_COLOR_ARRAY:
 			return assert_array(current, false)
 		TYPE_OBJECT, TYPE_NIL:
 			return assert_object(current)
@@ -630,17 +650,23 @@ func assert_float(current: Variant) -> GdUnitFloatAssert:
 ##		assert_vector(Vector2(1.2, 1.000001)).is_equal(Vector2(1.2, 1.000001))
 ##     [/codeblock]
 func assert_vector(current: Variant, type_check := true) -> GdUnitVectorAssert:
-	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitVectorAssertImpl.gd").new(current, type_check)
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitVectorAssertImpl.gd").new(
+		current, type_check
+	)
 
 
 ## An assertion tool to verify arrays.
 func assert_array(current: Variant, type_check := true) -> GdUnitArrayAssert:
-	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd").new(current, type_check)
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitArrayAssertImpl.gd").new(
+		current, type_check
+	)
 
 
 ## An assertion tool to verify dictionaries.
 func assert_dict(current: Variant) -> GdUnitDictionaryAssert:
-	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitDictionaryAssertImpl.gd").new(current)
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitDictionaryAssertImpl.gd").new(
+		current
+	)
 
 
 ## An assertion tool to verify FileAccess.
@@ -659,7 +685,9 @@ func assert_result(current: Variant) -> GdUnitResultAssert:
 
 ## An assertion tool that waits until a certain time for an expected function return value
 func assert_func(instance: Object, func_name: String, args := Array()) -> GdUnitFuncAssert:
-	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd").new(instance, func_name, args)
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitFuncAssertImpl.gd").new(
+		instance, func_name, args
+	)
 
 
 ## An assertion tool to verify for emitted signals until a certain time.
@@ -676,7 +704,9 @@ func assert_signal(instance: Object) -> GdUnitSignalAssert:
 ##     [/codeblock]
 func assert_failure(assertion: Callable) -> GdUnitFailureAssert:
 	@warning_ignore("unsafe_method_access")
-	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitFailureAssertImpl.gd").new().execute(assertion)
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitFailureAssertImpl.gd").new().execute(
+		assertion
+	)
 
 
 ## An assertion tool to test for failing assertions.[br]
@@ -688,7 +718,11 @@ func assert_failure(assertion: Callable) -> GdUnitFailureAssert:
 ##     [/codeblock]
 func assert_failure_await(assertion: Callable) -> GdUnitFailureAssert:
 	@warning_ignore("unsafe_method_access")
-	return await __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitFailureAssertImpl.gd").new().execute_and_await(assertion)
+	return await (
+		__lazy_load("res://addons/gdUnit4/src/asserts/GdUnitFailureAssertImpl.gd")
+		. new()
+		. execute_and_await(assertion)
+	)
 
 
 ## An assertion tool to verify Godot errors.[br]
@@ -704,7 +738,9 @@ func assert_failure_await(assertion: Callable) -> GdUnitFailureAssert:
 ##		    .is_push_error('test error')
 ##     [/codeblock]
 func assert_error(current: Callable) -> GdUnitGodotErrorAssert:
-	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd").new(current)
+	return __lazy_load("res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd").new(
+		current
+	)
 
 
 ## Explicitly fails the current test indicating that the feature is not yet implemented.[br]

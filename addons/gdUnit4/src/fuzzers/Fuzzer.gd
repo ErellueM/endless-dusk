@@ -13,8 +13,7 @@
 ## [/codeblock]
 ## [br]
 ## @tutorial(Fuzzing on Wikipedia): https://en.wikipedia.org/wiki/Fuzzing
-@abstract
-class_name Fuzzer
+@abstract class_name Fuzzer
 extends RefCounted
 
 ## Default number of iterations for fuzz testing when not specified.
@@ -31,7 +30,6 @@ var _iteration_index := 0
 ## Maximum number of iterations to run for this fuzzer.
 var _iteration_limit := ITERATION_DEFAULT_COUNT
 
-
 ## Generates the next fuzz value.[br]
 ##
 ## This abstract method must be implemented by derived classes to provide
@@ -44,8 +42,7 @@ var _iteration_limit := ITERATION_DEFAULT_COUNT
 ## [/codeblock]
 ##
 ## @returns The next generated fuzz value. The type depends on the specific fuzzer implementation.
-@abstract
-func next_value() -> Variant
+@abstract func next_value() -> Variant
 
 
 ## Returns the current iteration index.[br]

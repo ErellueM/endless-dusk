@@ -2,15 +2,18 @@ extends Area2D
 
 @export var speed: float = 250.0
 @export var damage: float = 15.0
-var direction: Vector2 = Vector2.ZERO 
+var direction: Vector2 = Vector2.ZERO
+
 
 func _ready():
 	body_entered.connect(_on_body_entered)
 	$VisibleOnScreenNotifier2D.screen_exited.connect(queue_free)
 
+
 func _physics_process(delta):
 	position += direction * speed * delta
 	rotation = direction.angle()
+
 
 func _on_body_entered(body: Node2D):
 	if body.is_in_group("player"):

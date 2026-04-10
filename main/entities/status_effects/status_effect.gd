@@ -4,9 +4,9 @@ class_name StatusEffect extends RefCounted
 # 📖 STATUS EFFEKT CHEAT SHEET (Kopieren & Einfügen in deine Waffen)
 # =========================================================================================
 # WIE MAN EINEN EFFEKT ANWENDET:
-# 1. Prüfe, ob der Gegner den Manager hat: 
+# 1. Prüfe, ob der Gegner den Manager hat:
 #    var manager = enemy.get_node_or_null("StatusManager")
-# 2. Füge den Effekt hinzu: 
+# 2. Füge den Effekt hinzu:
 #    if manager: manager.add_effect( ... )
 #
 # --- 🔴 BURN (FEUER) ---
@@ -40,26 +40,46 @@ var duration: float = 0.0
 var target: Node2D = null
 var source: Node2D = null
 
-func _init(_base_id: String, _duration: float, _source: Node2D = null, _stack_per_source: bool = false):
+
+func _init(
+	_base_id: String, _duration: float, _source: Node2D = null, _stack_per_source: bool = false
+):
 	duration = _duration
 	source = _source
-	
+
 	if _stack_per_source and _source != null:
 		id = _base_id + "_" + str(_source.get_instance_id())
 	else:
 		id = _base_id
 
+
 func apply(_target: Node2D):
 	target = _target
+
 
 func tick(delta: float):
 	duration -= delta
 
+
 func remove():
 	pass
 
-func get_speed_mult() -> float: return 1.0
-func get_dmg_taken_mult() -> float: return 1.0
-func get_color() -> Color: return Color(1, 1, 1)
-func get_power() -> float: return 0.0
-func get_dmg_dealt_mult() -> float: return 1.0
+
+func get_speed_mult() -> float:
+	return 1.0
+
+
+func get_dmg_taken_mult() -> float:
+	return 1.0
+
+
+func get_color() -> Color:
+	return Color(1, 1, 1)
+
+
+func get_power() -> float:
+	return 0.0
+
+
+func get_dmg_dealt_mult() -> float:
+	return 1.0

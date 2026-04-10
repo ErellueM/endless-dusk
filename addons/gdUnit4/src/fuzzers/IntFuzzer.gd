@@ -20,14 +20,8 @@
 class_name IntFuzzer
 extends Fuzzer
 
-
 ## Generates any integer within the range.
-enum {
-	NORMAL, ## Generate any integer within the specified range.
-	EVEN,   ## Generate only even integers within the specified range.
-	ODD     ## Generate only odd integers within the specified range.
-}
-
+enum { NORMAL, EVEN, ODD }  ## Generate any integer within the specified range.  ## Generate only even integers within the specified range.  ## Generate only odd integers within the specified range.
 
 ## Minimum value (inclusive) for generated integers.
 var _from: int = 0

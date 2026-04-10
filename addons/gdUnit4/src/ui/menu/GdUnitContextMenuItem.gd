@@ -1,6 +1,5 @@
 class_name GdUnitContextMenuItem
 
-
 var command_id: String:
 	set(value):
 		command_id = value
@@ -25,7 +24,10 @@ var icon: Texture2D:
 
 
 func _init(p_command_id: String, p_name: StringName, p_is_visible: Callable) -> void:
-	assert(p_command_id != null and not p_command_id.is_empty(), "(%s) missing command id " % p_command_id)
+	assert(
+		p_command_id != null and not p_command_id.is_empty(),
+		"(%s) missing command id " % p_command_id
+	)
 	assert(p_is_visible != null, "(%s) missing parameter 'GdUnitCommand'" % p_name)
 
 	self.command_id = p_command_id

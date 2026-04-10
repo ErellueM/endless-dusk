@@ -4,7 +4,9 @@ extends RefCounted
 const TYPE_ANY = TYPE_MAX + 100
 
 
-static func to_matcher(arguments: Array[Variant], auto_deep_check_mode := false) -> ChainedArgumentMatcher:
+static func to_matcher(
+	arguments: Array[Variant], auto_deep_check_mode := false
+) -> ChainedArgumentMatcher:
 	var matchers: Array[Variant] = []
 	for arg: Variant in arguments:
 		# argument is already a matcher
@@ -17,7 +19,7 @@ static func to_matcher(arguments: Array[Variant], auto_deep_check_mode := false)
 
 
 static func any() -> GdUnitArgumentMatcher:
-	return  AnyArgumentMatcher.new()
+	return AnyArgumentMatcher.new()
 
 
 static func by_type(type: int) -> GdUnitArgumentMatcher:

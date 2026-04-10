@@ -9,16 +9,16 @@ func _init() -> void:
 		if script == null:
 			return false
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandFileSystemRunTests.ID,
-		"Run Testsuites",
-		is_test_suite.bind(true)
-	))
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandFileSystemDebugTests.ID,
-		"Debug Testsuites",
-		is_test_suite.bind(true)
-	))
+	_context_menus.append(
+		GdUnitContextMenuItem.new(
+			GdUnitCommandFileSystemRunTests.ID, "Run Testsuites", is_test_suite.bind(true)
+		)
+	)
+	_context_menus.append(
+		GdUnitContextMenuItem.new(
+			GdUnitCommandFileSystemDebugTests.ID, "Debug Testsuites", is_test_suite.bind(true)
+		)
+	)
 
 	# setup shortcuts
 	for menu_item in _context_menus:
@@ -32,6 +32,10 @@ func _init() -> void:
 func _popup_menu(paths: PackedStringArray) -> void:
 	for menu_item in _context_menus:
 		if menu_item.shortcut():
-			add_context_menu_item_from_shortcut(menu_item.name, menu_item.shortcut(), menu_item.icon)
+			add_context_menu_item_from_shortcut(
+				menu_item.name, menu_item.shortcut(), menu_item.icon
+			)
 		else:
-			add_context_menu_item(menu_item.name, menu_item.execute.bindv(paths).unbind(1), menu_item.icon)
+			add_context_menu_item(
+				menu_item.name, menu_item.execute.bindv(paths).unbind(1), menu_item.icon
+			)

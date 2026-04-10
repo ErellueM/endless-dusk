@@ -8,14 +8,18 @@ var target_node: Node2D
 var shake_timer: float = 0.0
 var shake_intensity: float = 0.0
 
+
 func _ready():
 	make_current()
-	add_to_group("camera") 
+	add_to_group("camera")
+
 
 func _process(delta: float) -> void:
 	if target_node:
 		if smoothing_enabled:
-			global_position = global_position.lerp(target_node.global_position, delta * smoothing_speed)
+			global_position = global_position.lerp(
+				target_node.global_position, delta * smoothing_speed
+			)
 		else:
 			global_position = target_node.global_position
 
@@ -29,8 +33,10 @@ func _process(delta: float) -> void:
 		else:
 			offset = Vector2.ZERO
 
+
 # --- 3. DIE FUNKTION, DIE VOM GEGNER AUFGERUFEN WIRD ---
 func shake(duration: float, intensity: float):
-	if  not SettingsManager.enable_screenshake: return
+	if not SettingsManager.enable_screenshake:
+		return
 	shake_timer = duration
 	shake_intensity = intensity

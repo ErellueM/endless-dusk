@@ -1,9 +1,7 @@
 class_name GdUnitCommandTestSession
 extends GdUnitBaseCommand
 
-
 const ID := "Start Test Session"
-
 
 var _current_runner_process_id: int
 var _is_running: bool
@@ -68,7 +66,9 @@ func stop() -> void:
 func force_pause_scene() -> bool:
 	var nodes := EditorInterface.get_base_control().find_children("*", "EditorRunBar", true, false)
 	if nodes.size() != 1:
-		push_error("GdUnitCommandTestSession:force_pause_scene() Can't find Editor component 'EditorRunBar'")
+		push_error(
+			"GdUnitCommandTestSession:force_pause_scene() Can't find Editor component 'EditorRunBar'"
+		)
 		return false
 	var editor_run_bar := nodes[0]
 	var containers := editor_run_bar.find_children("*", "HBoxContainer", true, false)
@@ -87,7 +87,9 @@ func force_pause_scene() -> bool:
 							var cb: Callable = signal_["callable"]
 							cb.call()
 						return true
-	push_error("GdUnitCommandTestSession:force_pause_scene() Can't find Editor component 'EditorRunBar'")
+	push_error(
+		"GdUnitCommandTestSession:force_pause_scene() Can't find Editor component 'EditorRunBar'"
+	)
 	return false
 
 
@@ -97,7 +99,9 @@ func execute(...parameters: Array) -> void:
 
 	_prepare_test_session(tests_to_execute)
 	if _is_debug:
-		EditorInterface.play_custom_scene("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
+		EditorInterface.play_custom_scene(
+			"res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn"
+		)
 	else:
 		var arguments := Array()
 		if OS.is_stdout_verbose():
@@ -106,17 +110,20 @@ func execute(...parameters: Array) -> void:
 		arguments.append("--path")
 		arguments.append(ProjectSettings.globalize_path("res://"))
 		arguments.append("res://addons/gdUnit4/src/core/runners/GdUnitTestRunner.tscn")
-		_current_runner_process_id = OS.create_process(OS.get_executable_path(), arguments, false);
+		_current_runner_process_id = OS.create_process(OS.get_executable_path(), arguments, false)
 	_is_running = true
 
 
 func _prepare_test_session(tests_to_execute: Array[GdUnitTestCase]) -> void:
 	var server_port: int = Engine.get_meta("gdunit_server_port")
-	var result := GdUnitRunnerConfig.new() \
-		.set_server_port(server_port) \
-		.do_fail_fast(_is_fail_fast) \
-		.add_test_cases(tests_to_execute) \
-		.save_config()
+	var result := (
+		GdUnitRunnerConfig
+		. new()
+		. set_server_port(server_port)
+		. do_fail_fast(_is_fail_fast)
+		. add_test_cases(tests_to_execute)
+		. save_config()
+	)
 	if result.is_error():
 		push_error(result.error_message())
 		return

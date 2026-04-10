@@ -16,7 +16,9 @@ extends Resource
 ## Generates random strings with length between [param min_length] and
 ## [param max_length] (inclusive), using characters from [param charset].
 ## See [StringFuzzer] for detailed documentation and examples.
-static func rand_str(min_length: int, max_length: int, charset := StringFuzzer.DEFAULT_CHARSET) -> StringFuzzer:
+static func rand_str(
+	min_length: int, max_length: int, charset := StringFuzzer.DEFAULT_CHARSET
+) -> StringFuzzer:
 	return StringFuzzer.new(min_length, max_length, charset)
 
 

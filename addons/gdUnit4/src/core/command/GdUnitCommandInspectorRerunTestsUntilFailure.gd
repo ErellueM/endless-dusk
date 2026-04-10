@@ -1,13 +1,12 @@
 class_name GdUnitCommandInspectorRerunTestsUntilFailure
 extends GdUnitBaseCommand
 
+signal session_closed
 
-signal session_closed()
-
-
-const InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
+const InspectorTreeMainPanel := preload(
+	"res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd"
+)
 const ID := "Rerun Inspector Tests Until Failure"
-
 
 var _test_session_command: GdUnitCommandTestSession
 var _current_execution_count := 0
@@ -48,10 +47,17 @@ func execute(..._parameters: Array) -> void:
 func _on_test_event(event: GdUnitEvent) -> void:
 	if event.type() == GdUnitEvent.SESSION_START:
 		_current_execution_count += 1
-		GdUnitSignals.instance().gdunit_message.emit("[color=RED]Execution Mode: ReRun until failure! (iteration %d)[/color]" % _current_execution_count)
+		GdUnitSignals.instance().gdunit_message.emit(
+			(
+				"[color=RED]Execution Mode: ReRun until failure! (iteration %d)[/color]"
+				% _current_execution_count
+			)
+		)
 	if event.type() == GdUnitEvent.SESSION_CLOSE:
 		session_closed.emit()
 	if event.type() == GdUnitEvent.TESTCASE_AFTER:
 		if not event.is_success():
-			GdUnitSignals.instance().gdunit_message.emit(" [color=RED](iteration: %d)[/color]" % _current_execution_count)
+			GdUnitSignals.instance().gdunit_message.emit(
+				" [color=RED](iteration: %d)[/color]" % _current_execution_count
+			)
 			_current_execution_count = 9999

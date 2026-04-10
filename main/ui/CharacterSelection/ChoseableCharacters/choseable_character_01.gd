@@ -5,10 +5,11 @@ extends Control
 @export var sprite_frames: SpriteFrames
 @export var unlocked: bool = true
 
+
 func _ready():
 	$Label.text = character_name
 	$TextureButton.connect("pressed", Callable(self, "_on_pressed"))
-	
+
 	if sprite_frames:
 		$TextureButton/CenterContainer/AnimatedSprite2D.sprite_frames = sprite_frames
 		var anims = sprite_frames.get_animation_names()
@@ -18,15 +19,16 @@ func _ready():
 	if not unlocked:
 		make_locked_visual()
 
+
 func _on_pressed():
 	if not unlocked:
 		return
 	Global.selected_character_scene = character_scene
 	SceneChanger.change_scene("res://maps/map_1.tscn")
 
+
 func make_locked_visual():
 	$TextureButton.modulate = Color(0, 0, 0, 0.5)
 	$Label.text = "???"
-
 
 # Zurück Zum Hauptmenü

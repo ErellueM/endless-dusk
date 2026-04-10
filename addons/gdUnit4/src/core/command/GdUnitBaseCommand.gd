@@ -1,14 +1,15 @@
 @abstract class_name GdUnitBaseCommand
 extends Node
 
-
 var id: String
 var icon: Texture2D
 var shortcut: Shortcut = null
 var shortcut_type: GdUnitShortcut.ShortCut
 
 
-func _init(p_id: String, p_shortcut: GdUnitShortcut.ShortCut = GdUnitShortcut.ShortCut.NONE) -> void:
+func _init(
+	p_id: String, p_shortcut: GdUnitShortcut.ShortCut = GdUnitShortcut.ShortCut.NONE
+) -> void:
 	id = p_id
 	shortcut_type = p_shortcut
 	_set_shortcut()

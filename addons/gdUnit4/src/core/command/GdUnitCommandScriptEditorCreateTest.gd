@@ -1,13 +1,12 @@
 class_name GdUnitCommandScriptEditorCreateTest
 extends GdUnitBaseCommand
 
-
 const ID := "Create Test"
 
 
 func _init() -> void:
 	super(ID, GdUnitShortcut.ShortCut.CREATE_TEST)
-	icon =  GdUnitUiTools.get_icon("New")
+	icon = GdUnitUiTools.get_icon("New")
 
 
 func is_running() -> bool:

@@ -1,17 +1,12 @@
 class_name GdUnitResult
 extends RefCounted
 
-enum {
-	SUCCESS,
-	WARN,
-	ERROR,
-	EMPTY
-}
+enum { SUCCESS, WARN, ERROR, EMPTY }
 
 var _state: int
 var _warn_message := ""
 var _error_message := ""
-var _value :Variant = null
+var _value: Variant = null
 
 
 static func empty() -> GdUnitResult:
@@ -29,7 +24,7 @@ static func success(p_value: Variant = "") -> GdUnitResult:
 
 
 static func warn(p_warn_message: String, p_value: Variant = null) -> GdUnitResult:
-	assert(not p_warn_message.is_empty()) #,"The message must not be empty")
+	assert(not p_warn_message.is_empty())  #,"The message must not be empty")
 	var result := GdUnitResult.new()
 	result._value = p_value
 	result._warn_message = p_warn_message
@@ -92,10 +87,10 @@ static func serialize(result: GdUnitResult) -> Dictionary:
 	if result == null:
 		push_error("Can't serialize a Null object from type GdUnitResult")
 	return {
-		"state" : result._state,
-		"value" : var_to_str(result._value),
-		"warn_msg" : result._warn_message,
-		"err_msg" : result._error_message
+		"state": result._state,
+		"value": var_to_str(result._value),
+		"warn_msg": result._warn_message,
+		"err_msg": result._error_message
 	}
 
 

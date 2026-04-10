@@ -5,14 +5,13 @@ var _client_id: int
 
 @onready var _server: GdUnitTcpServer = $TcpServer
 
-
 @warning_ignore("return_value_discarded")
 func _ready() -> void:
 	var result := _server.start()
 	if result.is_error():
 		push_error(result.error_message())
 		return
-	var server_port :int = result.value()
+	var server_port: int = result.value()
 	Engine.set_meta("gdunit_server_port", server_port)
 	_server.client_connected.connect(_on_client_connected)
 	_server.client_disconnected.connect(_on_client_disconnected)

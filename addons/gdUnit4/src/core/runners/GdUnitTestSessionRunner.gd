@@ -29,35 +29,39 @@ var _runner_config := GdUnitRunnerConfig.new()
 
 ## The test suite executor instance
 var _executor: GdUnitTestSuiteExecutor
-var _hooks : GdUnitTestSessionHookService
+var _hooks: GdUnitTestSessionHookService
 
 ## Current runner state
 var _state := READY
 
 ## Current tests to be processed
-var _test_cases: Array[GdUnitTestCase] =  []
-
+var _test_cases: Array[GdUnitTestCase] = []
 
 ## Configured report base path (can be set on CI test runner)
 var report_base_path: String = GdUnitFileAccess.current_dir() + "reports":
 	get:
 		return report_base_path
 
-
 ## Current session report path
 var report_path: String:
 	get:
-		return "%s/%s%d" % [report_base_path, GdUnitConstants.REPORT_DIR_PREFIX, current_report_history_index]
-
+		return (
+			"%s/%s%d"
+			% [report_base_path, GdUnitConstants.REPORT_DIR_PREFIX, current_report_history_index]
+		)
 
 ## Current report history index, if max_report_history > 1 we scan for the next index over the existing reports
 var current_report_history_index: int:
 	get:
 		if max_report_history > 1:
-			return  GdUnitFileAccess.find_last_path_index(report_base_path, GdUnitConstants.REPORT_DIR_PREFIX) + 1
+			return (
+				GdUnitFileAccess.find_last_path_index(
+					report_base_path, GdUnitConstants.REPORT_DIR_PREFIX
+				)
+				+ 1
+			)
 		else:
 			return 1
-
 
 ## Controls how many report historys will be hold
 var max_report_history: int = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT:
@@ -66,18 +70,12 @@ var max_report_history: int = GdUnitConstants.DEFAULT_REPORT_HISTORY_COUNT:
 	set(value):
 		max_report_history = value
 
-
 # holds the current test session context
 var _test_session: GdUnitTestSession
 
 ## Runner state machine
-enum {
-	READY,
-	INIT,
-	RUN,
-	STOP,
-	EXIT
-}
+enum { READY, INIT, RUN, STOP, EXIT }
+
 
 func _init() -> void:
 	if OS.get_cmdline_args().size() == 1:
@@ -146,7 +144,8 @@ func cleanup_report_history() -> int:
 	return GdUnitFileAccess.delete_path_index_lower_equals_than(
 		report_path.get_base_dir(),
 		GdUnitConstants.REPORT_DIR_PREFIX,
-		current_report_history_index-1-max_report_history)
+		current_report_history_index - 1 - max_report_history
+	)
 
 
 ## Returns the exit code when the test run is finished.[br]

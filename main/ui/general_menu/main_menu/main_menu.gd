@@ -6,8 +6,10 @@ const SCENE_SETTINGS = "res://main/ui/general_menu/settings_menu/settings_menu.t
 const SCENE_CREDITS = "res://main/ui/general_menu/credits_menu/credits.tscn"
 const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
 
+
 func _ready():
 	MusicManager.play_music(preload("res://assets/audio/soundtracks/Endless_Dusk_Main_Theme.ogg"))
+
 
 # wenn  Start-Button geklickt wird.
 func _on_button_start_game_pressed():
@@ -18,6 +20,7 @@ func _on_button_start_game_pressed():
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_CHARACTER_SELECTION)
 
+
 # wenn  Settings-Button geklickt wird.
 func _on_button_settings_pressed():
 	if ResourceLoader.exists(SCENE_SETTINGS):
@@ -26,6 +29,7 @@ func _on_button_settings_pressed():
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_SETTINGS)
+
 
 # wenn  Credits-Button geklickt wird.
 func _on_button_credits_pressed():
@@ -36,6 +40,7 @@ func _on_button_credits_pressed():
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_CREDITS)
 
+
 # wenn go-back_button geklickt
 func _on_button_back_pressed():
 	if ResourceLoader.exists(SCENE_MAIN):
@@ -44,6 +49,7 @@ func _on_button_back_pressed():
 	else:
 		# Falls  Pfad falsch ist
 		print("FEHLER: Zielszene nicht gefunden unter: ", SCENE_MAIN)
+
 
 func _on_quit_button_pressed():
 	get_tree().quit()

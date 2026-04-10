@@ -2,13 +2,7 @@
 ## It contains all the necessary information about the executed stage, such as memory observers, reports, orphan monitor
 class_name GdUnitExecutionContext
 
-enum GC_ORPHANS_CHECK {
-	NONE,
-	SUITE_HOOK_AFTER,
-	TEST_HOOK_AFTER,
-	TEST_CASE
-}
-
+enum GC_ORPHANS_CHECK { NONE, SUITE_HOOK_AFTER, TEST_HOOK_AFTER, TEST_CASE }
 
 var _parent_context: GdUnitExecutionContext
 var _sub_context: Array[GdUnitExecutionContext] = []
@@ -23,7 +17,6 @@ var _test_execution_iteration: int = 0
 var _flaky_test_check := GdUnitSettings.is_test_flaky_check_enabled()
 var _flaky_test_retries := GdUnitSettings.get_flaky_max_retries()
 
-
 var error_monitor: GodotGdErrorMonitor = null:
 	get:
 		if _parent_context != null:
@@ -32,13 +25,11 @@ var error_monitor: GodotGdErrorMonitor = null:
 			error_monitor = GodotGdErrorMonitor.new()
 		return error_monitor
 
-
 var test_suite: GdUnitTestSuite = null:
 	get:
 		if _parent_context != null:
 			return _parent_context.test_suite
 		return test_suite
-
 
 var test_case: _TestCase = null:
 	get:
@@ -94,14 +85,18 @@ static func of(pe: GdUnitExecutionContext) -> GdUnitExecutionContext:
 	return context
 
 
-static func of_test_case(pe: GdUnitExecutionContext, p_test_case: _TestCase) -> GdUnitExecutionContext:
+static func of_test_case(
+	pe: GdUnitExecutionContext, p_test_case: _TestCase
+) -> GdUnitExecutionContext:
 	assert(p_test_case, "test_case is null")
 	var context := GdUnitExecutionContext.new(p_test_case.test_name(), pe)
 	context.test_case = p_test_case
 	return context
 
 
-static func of_parameterized_test(pe: GdUnitExecutionContext, test_case_name: String, test_case_parameter_set: Array) -> GdUnitExecutionContext:
+static func of_parameterized_test(
+	pe: GdUnitExecutionContext, test_case_name: String, test_case_parameter_set: Array
+) -> GdUnitExecutionContext:
 	var context := GdUnitExecutionContext.new(test_case_name, pe)
 	context._test_case_name = test_case_name
 	context._test_case_parameter_set = test_case_parameter_set
@@ -175,9 +170,9 @@ func calculate_statistics(reports_: Array[GdUnitReport]) -> Dictionary:
 	var orphan_count := GdUnitTestReportCollector.count_orphans(reports_)
 	var is_failed := !is_success()
 	var elapsed_time := _timer.elapsed_since_ms()
-	var retries :=  1 if _parent_context == null else _sub_context.size()
+	var retries := 1 if _parent_context == null else _sub_context.size()
 	# Mark as flaky if it is successful, but errors were counted
-	var is_flaky := retries > 1  and not is_failed
+	var is_flaky := retries > 1 and not is_failed
 	# In the case of a flakiness test, we do not report an error counter, as an unreliable test is considered successful
 	# after a certain number of repetitions.
 	if is_flaky:
@@ -210,9 +205,12 @@ func is_success() -> bool:
 
 func is_skipped() -> bool:
 	return (
-		_sub_context.any(func(c :GdUnitExecutionContext) -> bool:
-			return c.is_skipped())
-		or test_case.is_skipped() if test_case != null else false
+		(
+			_sub_context.any(func(c: GdUnitExecutionContext) -> bool: return c.is_skipped())
+			or test_case.is_skipped()
+		)
+		if test_case != null
+		else false
 	)
 
 
@@ -225,7 +223,11 @@ func sum(accum: int, number: int) -> int:
 
 
 func retry_execution() -> bool:
-	var retry := _test_execution_iteration < 1 if not _flaky_test_check else _test_execution_iteration < _flaky_test_retries
+	var retry := (
+		_test_execution_iteration < 1
+		if not _flaky_test_check
+		else _test_execution_iteration < _flaky_test_retries
+	)
 	if retry:
 		_test_execution_iteration += 1
 	return retry
@@ -242,33 +244,69 @@ func gc(gc_orphan_check: GC_ORPHANS_CHECK = GC_ORPHANS_CHECK.NONE) -> void:
 	await _memory_observer.gc()
 	orphan_monitor_stop()
 
-	match(gc_orphan_check):
+	match gc_orphan_check:
 		GC_ORPHANS_CHECK.SUITE_HOOK_AFTER:
 			_orphan_monitor.collect()
 			var orphan_infos := _orphan_monitor.detected_orphans()
 			if orphan_infos.is_empty():
 				return
-			reports().push_front(GdUnitReport.new() \
-				.create(GdUnitReport.ORPHAN, 1, GdAssertMessages.orphan_detected_on_suite_setup(orphan_infos))
-				.with_current_value(orphan_infos.size()))
+			reports().push_front(
+				(
+					GdUnitReport
+					. new()
+					. create(
+						GdUnitReport.ORPHAN,
+						1,
+						GdAssertMessages.orphan_detected_on_suite_setup(orphan_infos)
+					)
+					. with_current_value(orphan_infos.size())
+				)
+			)
 
 		GC_ORPHANS_CHECK.TEST_HOOK_AFTER:
 			_orphan_monitor.collect()
 			var orphans := _orphan_monitor.detected_orphans()
 			if not orphans.is_empty():
-				reports().push_front(GdUnitReport.new()\
-					.create(GdUnitReport.ORPHAN, 1, GdAssertMessages.orphan_detected_on_test_setup(orphans))
-					.with_current_value(orphans.size()))
+				reports().push_front(
+					(
+						GdUnitReport
+						. new()
+						. create(
+							GdUnitReport.ORPHAN,
+							1,
+							GdAssertMessages.orphan_detected_on_test_setup(orphans)
+						)
+						. with_current_value(orphans.size())
+					)
+				)
 
 		GC_ORPHANS_CHECK.TEST_CASE:
 			var orphans := _orphan_monitor.detected_orphans()
 			if orphans.is_empty():
 				var orphans_count := _orphan_monitor.orphans_count()
 				if orphans_count > 0:
-					reports().push_front(GdUnitReport.new() \
-							.create(GdUnitReport.ORPHAN, test_case.line_number(), GdAssertMessages.orphan_warning(orphans_count))
-							.with_current_value(orphans_count))
+					reports().push_front(
+						(
+							GdUnitReport
+							. new()
+							. create(
+								GdUnitReport.ORPHAN,
+								test_case.line_number(),
+								GdAssertMessages.orphan_warning(orphans_count)
+							)
+							. with_current_value(orphans_count)
+						)
+					)
 			else:
-				reports().push_front(GdUnitReport.new()\
-					.create(GdUnitReport.ORPHAN, test_case.line_number(), GdAssertMessages.orphan_detected_on_test(orphans))
-					.with_current_value(orphans.size()))
+				reports().push_front(
+					(
+						GdUnitReport
+						. new()
+						. create(
+							GdUnitReport.ORPHAN,
+							test_case.line_number(),
+							GdAssertMessages.orphan_detected_on_test(orphans)
+						)
+						. with_current_value(orphans.size())
+					)
+				)

@@ -3,9 +3,8 @@
 class_name GdDiffTool
 extends RefCounted
 
-
-const DIV_ADD :int = 214
-const DIV_SUB :int = 215
+const DIV_ADD: int = 214
+const DIV_SUB: int = 215
 
 
 class Edit:
@@ -79,7 +78,9 @@ static func _myers_diff(a: PackedInt32Array, b: PackedInt32Array) -> Array[Edit]
 
 
 # Backtrack through the edit graph to build the edit script
-static func _backtrack(a: PackedInt32Array, b: PackedInt32Array, trace: Array, d: int, max_d: int) -> Array[Edit]:
+static func _backtrack(
+	a: PackedInt32Array, b: PackedInt32Array, trace: Array, d: int, max_d: int
+) -> Array[Edit]:
 	var edits: Array[Edit] = []
 	var x := a.size()
 	var y := b.size()
@@ -149,42 +150,45 @@ static func _edits_to_diff_format(edits: Array[Edit]) -> Array[PackedInt32Array]
 
 
 # prototype
-static func longestCommonSubsequence(text1 :String, text2 :String) -> PackedStringArray:
+static func longestCommonSubsequence(text1: String, text2: String) -> PackedStringArray:
 	var text1Words := text1.split(" ")
 	var text2Words := text2.split(" ")
 	var text1WordCount := text1Words.size()
 	var text2WordCount := text2Words.size()
 	var solutionMatrix := Array()
-	for i in text1WordCount+1:
+	for i in text1WordCount + 1:
 		var ar := Array()
-		for n in text2WordCount+1:
+		for n in text2WordCount + 1:
 			ar.append(0)
 		solutionMatrix.append(ar)
 
-	for i in range(text1WordCount-1, 0, -1):
-		for j in range(text2WordCount-1, 0, -1):
+	for i in range(text1WordCount - 1, 0, -1):
+		for j in range(text2WordCount - 1, 0, -1):
 			if text1Words[i] == text2Words[j]:
-				solutionMatrix[i][j] = solutionMatrix[i + 1][j + 1] + 1;
+				solutionMatrix[i][j] = solutionMatrix[i + 1][j + 1] + 1
 			else:
-				solutionMatrix[i][j] = max(solutionMatrix[i + 1][j], solutionMatrix[i][j + 1]);
+				solutionMatrix[i][j] = max(solutionMatrix[i + 1][j], solutionMatrix[i][j + 1])
 
 	var i := 0
 	var j := 0
-	var lcsResultList := PackedStringArray();
-	while (i < text1WordCount && j < text2WordCount):
+	var lcsResultList := PackedStringArray()
+	while i < text1WordCount && j < text2WordCount:
 		if text1Words[i] == text2Words[j]:
 			@warning_ignore("return_value_discarded")
 			lcsResultList.append(text2Words[j])
 			i += 1
 			j += 1
-		else: if (solutionMatrix[i + 1][j] >= solutionMatrix[i][j + 1]):
-			i += 1
 		else:
-			j += 1
+			if solutionMatrix[i + 1][j] >= solutionMatrix[i][j + 1]:
+				i += 1
+			else:
+				j += 1
 	return lcsResultList
 
 
-static func markTextDifferences(text1 :String, text2 :String, lcsList :PackedStringArray, insertColor :Color, deleteColor:Color) -> String:
+static func markTextDifferences(
+	text1: String, text2: String, lcsList: PackedStringArray, insertColor: Color, deleteColor: Color
+) -> String:
 	var stringBuffer := ""
 	if text1 == null and lcsList == null:
 		return stringBuffer
@@ -204,21 +208,47 @@ static func markTextDifferences(text1 :String, text2 :String, lcsList :PackedStr
 				i = text1Words.size()
 				j = text2Words.size()
 
-			else: if text1Words[i] != lcsList[k]:
-				while i < text1Words.size() and text1Words[i] != lcsList[k]:
-					stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + deleteColor.to_html() + "'>" + text1Words[i] + " </SPAN>"
-					i += 1
-			else: if text2Words[j] != lcsList[k]:
-				while j < text2Words.size() and text2Words[j] != lcsList[k]:
-					stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + insertColor.to_html() + "'>" + text2Words[j] + " </SPAN>"
-					j += 1
+			else:
+				if text1Words[i] != lcsList[k]:
+					while i < text1Words.size() and text1Words[i] != lcsList[k]:
+						stringBuffer += (
+							"<SPAN style='BACKGROUND-COLOR:"
+							+ deleteColor.to_html()
+							+ "'>"
+							+ text1Words[i]
+							+ " </SPAN>"
+						)
+						i += 1
+				else:
+					if text2Words[j] != lcsList[k]:
+						while j < text2Words.size() and text2Words[j] != lcsList[k]:
+							stringBuffer += (
+								"<SPAN style='BACKGROUND-COLOR:"
+								+ insertColor.to_html()
+								+ "'>"
+								+ text2Words[j]
+								+ " </SPAN>"
+							)
+							j += 1
 			i = word1LastIndex
 			j = word2LastIndex
 
 			while word1LastIndex < text1Words.size():
-				stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + deleteColor.to_html() + "'>" + text1Words[word1LastIndex] + " </SPAN>"
+				stringBuffer += (
+					"<SPAN style='BACKGROUND-COLOR:"
+					+ deleteColor.to_html()
+					+ "'>"
+					+ text1Words[word1LastIndex]
+					+ " </SPAN>"
+				)
 				word1LastIndex += 1
 			while word2LastIndex < text2Words.size():
-				stringBuffer += "<SPAN style='BACKGROUND-COLOR:" + insertColor.to_html() + "'>" + text2Words[word2LastIndex] + " </SPAN>"
+				stringBuffer += (
+					"<SPAN style='BACKGROUND-COLOR:"
+					+ insertColor.to_html()
+					+ "'>"
+					+ text2Words[word2LastIndex]
+					+ " </SPAN>"
+				)
 				word2LastIndex += 1
 	return stringBuffer

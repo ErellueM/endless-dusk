@@ -1,9 +1,10 @@
 class_name GdUnitCommandInspectorRunTests
 extends GdUnitBaseCommand
 
-const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
+const InspectorTreeMainPanel := preload(
+	"res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd"
+)
 const ID := "Run Inspector Tests"
-
 
 var _test_session_command: GdUnitCommandTestSession
 

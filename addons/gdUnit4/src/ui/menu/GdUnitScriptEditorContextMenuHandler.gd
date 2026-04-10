@@ -1,28 +1,27 @@
 @tool
 extends EditorContextMenuPlugin
 
-
 var _context_menus: Array[GdUnitContextMenuItem] = []
 
 
 func _init() -> void:
 	var is_test_suite := func is_visible(script: Script, is_ts: bool) -> bool:
 		return GdUnitTestSuiteScanner.is_test_suite(script) == is_ts
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandScriptEditorRunTests.ID,
-		"Run Tests",
-		is_test_suite.bind(true)
-	))
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandScriptEditorDebugTests.ID,
-		"Debug Tests",
-		is_test_suite.bind(true)
-	))
-	_context_menus.append(GdUnitContextMenuItem.new(
-		GdUnitCommandScriptEditorCreateTest.ID,
-		"Create Test",
-		is_test_suite.bind(false)
-	))
+	_context_menus.append(
+		GdUnitContextMenuItem.new(
+			GdUnitCommandScriptEditorRunTests.ID, "Run Tests", is_test_suite.bind(true)
+		)
+	)
+	_context_menus.append(
+		GdUnitContextMenuItem.new(
+			GdUnitCommandScriptEditorDebugTests.ID, "Debug Tests", is_test_suite.bind(true)
+		)
+	)
+	_context_menus.append(
+		GdUnitContextMenuItem.new(
+			GdUnitCommandScriptEditorCreateTest.ID, "Create Test", is_test_suite.bind(false)
+		)
+	)
 
 	# setup shortcuts
 	for menu_item in _context_menus:

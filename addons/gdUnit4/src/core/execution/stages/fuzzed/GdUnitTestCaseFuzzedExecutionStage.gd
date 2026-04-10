@@ -2,12 +2,12 @@
 class_name GdUnitTestCaseFuzzedExecutionStage
 extends IGdUnitExecutionStage
 
-var _stage_before :IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new(false)
-var _stage_after :IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new(false)
-var _stage_test :IGdUnitExecutionStage = GdUnitTestCaseFuzzedTestStage.new()
+var _stage_before: IGdUnitExecutionStage = GdUnitTestCaseBeforeStage.new(false)
+var _stage_after: IGdUnitExecutionStage = GdUnitTestCaseAfterStage.new(false)
+var _stage_test: IGdUnitExecutionStage = GdUnitTestCaseFuzzedTestStage.new()
 
 
-func _execute(context :GdUnitExecutionContext) -> void:
+func _execute(context: GdUnitExecutionContext) -> void:
 	fire_event(GdUnitEvent.new().test_before(context.test_case.id()))
 
 	while context.retry_execution():
@@ -23,11 +23,16 @@ func _execute(context :GdUnitExecutionContext) -> void:
 	if context.is_skipped():
 		fire_test_skipped(context)
 	else:
-		var reports: = context.collect_reports(true)
+		var reports := context.collect_reports(true)
 		var statistics := context.calculate_statistics(reports)
-		fire_event(GdUnitEvent.new().test_after(context.test_case.id(), context.test_case.test_name(), statistics, reports))
+		fire_event(
+			GdUnitEvent.new().test_after(
+				context.test_case.id(), context.test_case.test_name(), statistics, reports
+			)
+		)
 
-func set_debug_mode(debug_mode :bool = false) -> void:
+
+func set_debug_mode(debug_mode: bool = false) -> void:
 	super.set_debug_mode(debug_mode)
 	_stage_before.set_debug_mode(debug_mode)
 	_stage_after.set_debug_mode(debug_mode)
@@ -47,6 +52,11 @@ func fire_test_skipped(context: GdUnitExecutionContext) -> void:
 		GdUnitEvent.SKIPPED: true,
 		GdUnitEvent.SKIPPED_COUNT: 1,
 	}
-	var report := GdUnitReport.new() \
-		.create(GdUnitReport.SKIPPED, test_case.line_number(), GdAssertMessages.test_skipped(test_case.skip_info()))
-	fire_event(GdUnitEvent.new().test_after(test_case.id(), test_case.test_name(), statistics, [report]))
+	var report := GdUnitReport.new().create(
+		GdUnitReport.SKIPPED,
+		test_case.line_number(),
+		GdAssertMessages.test_skipped(test_case.skip_info())
+	)
+	fire_event(
+		GdUnitEvent.new().test_after(test_case.id(), test_case.test_name(), statistics, [report])
+	)

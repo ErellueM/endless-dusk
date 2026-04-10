@@ -5,20 +5,24 @@ extends Node2D
 @onready var wave_handler = $WaveManager
 
 var player: Node2D
+
+
 func _ready():
 	if Global.selected_character_scene:
 		player = Global.selected_character_scene.instantiate()
 		add_child(player)
 		player.global_position = $PlayerSpawn.global_position
-		
+
 		player.xp_changed.connect(game_ui._on_player_xp_changed)
-		player.health_changed.connect(game_ui._on_player_health_changed) 
-		
+		player.health_changed.connect(game_ui._on_player_health_changed)
+
 		player.leveled_up.connect(game_manager._on_player_leveled_up)
-		
+
 		game_ui._on_player_xp_changed(player.current_xp, player.max_xp)
 		if player.health_component:
-			game_ui._on_player_health_changed(player.health_component.current_health, player.health_component.max_health)
+			game_ui._on_player_health_changed(
+				player.health_component.current_health, player.health_component.max_health
+			)
 
 		# Camera
 		var cam = $Camera2D

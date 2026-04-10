@@ -1,8 +1,9 @@
 @tool
 extends PanelContainer
 
-
-const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd")
+const InspectorTreeMainPanel := preload(
+	"res://addons/gdUnit4/src/ui/parts/InspectorTreeMainPanel.gd"
+)
 
 @onready var _version_label: Control = %version
 @onready var _button_wiki: Button = %help
@@ -11,7 +12,6 @@ const  InspectorTreeMainPanel := preload("res://addons/gdUnit4/src/ui/parts/Insp
 @onready var _button_run: Button = %run
 @onready var _button_run_debug: Button = %debug
 @onready var _button_stop: Button = %stop
-
 
 var inspector: InspectorTreeMainPanel
 var command_handler: GdUnitCommandHandler
@@ -84,9 +84,13 @@ func _on_wiki_pressed() -> void:
 
 
 func _on_btn_tool_pressed() -> void:
-	var settings_dlg: Window = EditorInterface.get_base_control().find_child("GdUnitSettingsDialog", false, false)
+	var settings_dlg: Window = EditorInterface.get_base_control().find_child(
+		"GdUnitSettingsDialog", false, false
+	)
 	if settings_dlg == null:
-		settings_dlg = preload("res://addons/gdUnit4/src/ui/settings/GdUnitSettingsDialog.tscn").instantiate()
+		settings_dlg = (
+			preload("res://addons/gdUnit4/src/ui/settings/GdUnitSettingsDialog.tscn").instantiate()
+		)
 		EditorInterface.get_base_control().add_child(settings_dlg, true)
 	settings_dlg.popup_centered_ratio(.60)
 
@@ -99,6 +103,10 @@ func _on_settings_changed(property: GdUnitProperty) -> void:
 
 	if property.name().begins_with(GdUnitSettings.GROUP_SHORTCUT_INSPECTOR):
 		_button_run.shortcut = command_handler.command_shortcut(GdUnitCommandInspectorRunTests.ID)
-		_button_run_debug.shortcut = command_handler.command_shortcut(GdUnitCommandInspectorDebugTests.ID)
-		_button_run_overall.shortcut = command_handler.command_shortcut(GdUnitCommandRunTestsOverall.ID)
+		_button_run_debug.shortcut = command_handler.command_shortcut(
+			GdUnitCommandInspectorDebugTests.ID
+		)
+		_button_run_overall.shortcut = command_handler.command_shortcut(
+			GdUnitCommandRunTestsOverall.ID
+		)
 		_button_stop.shortcut = command_handler.command_shortcut(GdUnitCommandStopTestSession.ID)

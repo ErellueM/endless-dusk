@@ -1,22 +1,20 @@
 class_name GodotGdErrorMonitor
 extends GdUnitMonitor
 
-
 var _logger: GdUnitLogger
 
 
-class GdUnitLogger extends Logger:
+class GdUnitLogger:
+	extends Logger
 	var _entries: Array[ErrorLogEntry] = []
 	var _line_number: int
 	var _is_report_push_errors: bool
 	var _is_report_script_errors: bool
 
-
 	func _init(is_report_push_errors: bool, is_report_script_errors: bool) -> void:
 		_is_report_push_errors = is_report_push_errors
 		_is_report_script_errors = is_report_script_errors
 		OS.add_logger(self)
-
 
 	func entries() -> Array[ErrorLogEntry]:
 		return _entries
@@ -27,7 +25,6 @@ class GdUnitLogger extends Logger:
 				_entries.erase(entry)
 				return
 
-
 	func _log_error(
 		_function: String,
 		_file: String,
@@ -37,12 +34,14 @@ class GdUnitLogger extends Logger:
 		_editor_notify: bool,
 		error_type: int,
 		script_backtraces: Array[ScriptBacktrace]
-		) -> void:
+	) -> void:
 		match error_type:
 			ErrorType.ERROR_TYPE_WARNING:
 				if _is_report_push_errors:
 					var stack_trace := _build_stack_trace(script_backtraces)
-					_entries.append(ErrorLogEntry.of_push_warning(_line_number, message, stack_trace))
+					_entries.append(
+						ErrorLogEntry.of_push_warning(_line_number, message, stack_trace)
+					)
 
 			ErrorType.ERROR_TYPE_ERROR:
 				if _is_report_push_errors:
@@ -52,7 +51,9 @@ class GdUnitLogger extends Logger:
 			ErrorType.ERROR_TYPE_SCRIPT:
 				if _is_report_script_errors:
 					var stack_trace := _build_stack_trace(script_backtraces)
-					_entries.append(ErrorLogEntry.of_script_error(_line_number, message, stack_trace))
+					_entries.append(
+						ErrorLogEntry.of_script_error(_line_number, message, stack_trace)
+					)
 
 			ErrorType.ERROR_TYPE_SHADER:
 				pass
@@ -70,7 +71,15 @@ class GdUnitLogger extends Logger:
 					var stack_trace := PackedStringArray()
 					for test_case_frame in range(0, frame):
 						_line_number = sb.get_frame_line(test_case_frame)
-						stack_trace.append("	at %s:%s" % [sb.get_frame_file(test_case_frame), sb.get_frame_line(test_case_frame)])
+						stack_trace.append(
+							(
+								"	at %s:%s"
+								% [
+									sb.get_frame_file(test_case_frame),
+									sb.get_frame_line(test_case_frame)
+								]
+							)
+						)
 					return stack_trace
 		# if no stack trace collected, we in an await function call
 		var sb := script_backtraces[0]
@@ -79,7 +88,9 @@ class GdUnitLogger extends Logger:
 
 func _init() -> void:
 	super("GdUnitLoggerMonitor")
-	_logger = GdUnitLogger.new(GdUnitSettings.is_report_push_errors(), GdUnitSettings.is_report_script_errors())
+	_logger = GdUnitLogger.new(
+		GdUnitSettings.is_report_push_errors(), GdUnitSettings.is_report_script_errors()
+	)
 
 
 func start() -> void:
@@ -107,14 +118,22 @@ func to_reports() -> Array[GdUnitReport]:
 
 
 static func _to_report(errorLog: ErrorLogEntry) -> GdUnitReport:
-	var failure := """
+	var failure := (
+		(
+			"""
 		%s
 		%s %s
-		%s""".dedent().trim_prefix("\n") % [
-		GdAssertMessages._error("Godot Runtime Error !"),
-		GdAssertMessages._error("Error:"),
-		GdAssertMessages._colored_value(errorLog._message),
-		GdAssertMessages._colored(errorLog._details, GdAssertMessages.VALUE_COLOR)]
+		%s"""
+			. dedent()
+			. trim_prefix("\n")
+		)
+		% [
+			GdAssertMessages._error("Godot Runtime Error !"),
+			GdAssertMessages._error("Error:"),
+			GdAssertMessages._colored_value(errorLog._message),
+			GdAssertMessages._colored(errorLog._details, GdAssertMessages.VALUE_COLOR)
+		]
+	)
 	return GdUnitReport.new().create(GdUnitReport.ABORT, errorLog._line, failure)
 
 

@@ -1,12 +1,7 @@
 class_name GdUnitOrphanNodeInfo
 extends RefCounted
 
-enum GdUnitOrphanType {
-	member,
-	variable,
-	unknown
-}
-
+enum GdUnitOrphanType { member, variable, unknown }
 
 var _id: int
 var _orphan_type: GdUnitOrphanType
@@ -23,7 +18,14 @@ const engine_type_color := Color.LIGHT_GREEN
 const script_path_color := Color.CORNFLOWER_BLUE
 
 
-func _init(orphan_type: GdUnitOrphanType, id: int, type: String, name: String, script_ref: String, func_ref: String = "") -> void:
+func _init(
+	orphan_type: GdUnitOrphanType,
+	id: int,
+	type: String,
+	name: String,
+	script_ref: String,
+	func_ref: String = ""
+) -> void:
 	_orphan_type = orphan_type
 	_id = id
 	_type = type
@@ -35,25 +37,37 @@ func _init(orphan_type: GdUnitOrphanType, id: int, type: String, name: String, s
 func as_trace(info: GdUnitOrphanNodeInfo, show_orphan_id := true) -> String:
 	var trace := ""
 	if show_orphan_id:
-		trace += "• <%s> Id:%s\n" % [
-			_colored(info._type, engine_type_color),
-			_colored(info._id, engine_type_color)]
+		trace += (
+			"• <%s> Id:%s\n"
+			% [_colored(info._type, engine_type_color), _colored(info._id, engine_type_color)]
+		)
 	match info._orphan_type:
 		GdUnitOrphanType.member:
-			return trace + "	at  %s script: %s" % [
-				_colored(info._name, member_variable_color),
-				_colored(info._script_ref, script_path_color)
-				] + sub_info(info._next)
+			return (
+				trace
+				+ (
+					"	at  %s script: %s"
+					% [
+						_colored(info._name, member_variable_color),
+						_colored(info._script_ref, script_path_color)
+					]
+				)
+				+ sub_info(info._next)
+			)
 		GdUnitOrphanType.variable:
-			return trace + "	at %s script: %s.%s()" % [
-				_colored(info._name, member_variable_color),
-				_colored(info._script_ref, script_path_color),
-				_colored(info._func_ref, function_color),
-				]
+			return (
+				trace
+				+ (
+					"	at %s script: %s.%s()"
+					% [
+						_colored(info._name, member_variable_color),
+						_colored(info._script_ref, script_path_color),
+						_colored(info._func_ref, function_color),
+					]
+				)
+			)
 		GdUnitOrphanType.unknown:
-			return trace + "	%s" % [
-				_colored(info._name, member_variable_color)
-				]
+			return trace + "	%s" % [_colored(info._name, member_variable_color)]
 
 		_:
 			return trace + "	No details available"

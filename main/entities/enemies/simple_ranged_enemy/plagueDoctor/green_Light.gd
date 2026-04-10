@@ -6,10 +6,12 @@ extends PointLight2D
 var time_passed: float = 0.0
 var pulse_speed: float = 5.0
 
+
 func _ready():
 	time_passed = randf_range(0.0, 100.0)
 	pulse_speed = randf_range(4.0, 6.0)
 	base_energy = base_energy * randf_range(0.8, 1.2)
+
 
 func _process(delta):
 	time_passed += delta

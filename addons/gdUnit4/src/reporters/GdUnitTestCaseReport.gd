@@ -1,12 +1,13 @@
 class_name GdUnitTestCaseReport
 extends GdUnitReportSummary
 
-
 var _suite_name: String
 var _failure_reports: Array[GdUnitReport] = []
 
 
-func _init(p_resource_path: String, p_suite_name: String, p_test_name: String, text_formatter: Callable) -> void:
+func _init(
+	p_resource_path: String, p_suite_name: String, p_test_name: String, text_formatter: Callable
+) -> void:
 	_resource_path = p_resource_path
 	_suite_name = p_suite_name
 	_name = p_test_name
@@ -34,7 +35,8 @@ func set_testcase_counters(
 	p_orphan_count: int,
 	p_is_skipped: bool,
 	p_is_flaky: bool,
-	p_duration: int) -> void:
+	p_duration: int
+) -> void:
 	_error_count = p_error_count
 	_failure_count = p_failure_count
 	_orphan_count = p_orphan_count

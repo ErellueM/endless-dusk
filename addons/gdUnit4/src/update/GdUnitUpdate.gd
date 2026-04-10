@@ -11,17 +11,16 @@ const GDUNIT_TEMP := "user://tmp"
 @onready var _update_btn: Button = %update
 @onready var _spinner_img := GdUnitUiTools.get_spinner()
 
-
 var _debug_mode := false
-var _update_client :GdUnitUpdateClient
-var _download_url :String
+var _update_client: GdUnitUpdateClient
+var _download_url: String
 
 
 func _ready() -> void:
 	init_progress(6)
 
 
-func _process(_delta :float) -> void:
+func _process(_delta: float) -> void:
 	if _progress_content != null and _progress_content.is_visible_in_tree():
 		_progress_content.queue_redraw()
 
@@ -70,7 +69,7 @@ func run_update() -> void:
 	await update_progress("Extracting")
 	var zip_file := temp_dir() + "/update.zip"
 	var tmp_path := create_temp_dir("update")
-	var result :Variant = extract_zip(zip_file, tmp_path)
+	var result: Variant = extract_zip(zip_file, tmp_path)
 	if result == null:
 		await update_progress("Update failed! .. Rollback.", Color.INDIAN_RED)
 		await get_tree().create_timer(3).timeout
@@ -98,7 +97,9 @@ func run_update() -> void:
 
 	await rebuild_project()
 
-	await update_progress("New GdUnit version successfully installed, Restarting Godot please wait.")
+	await update_progress(
+		"New GdUnit version successfully installed, Restarting Godot please wait."
+	)
 	await get_tree().create_timer(3).timeout
 	enable_gdUnit()
 	hide()
@@ -140,7 +141,7 @@ func remove_uids_from_file(file_path: String) -> bool:
 
 	# Remove UIDs using regex
 	var regex := RegEx.new()
-	regex.compile("(\\[ext_resource[^\\]]*?)\\s+uid=\"uid://[^\"]*\"")
+	regex.compile('(\\[ext_resource[^\\]]*?)\\s+uid="uid://[^"]*"')
 
 	var modified_content := regex.sub(original_content, "$1", true)
 
@@ -187,7 +188,7 @@ func temp_dir() -> String:
 	return GDUNIT_TEMP
 
 
-func create_temp_dir(folder_name :String) -> String:
+func create_temp_dir(folder_name: String) -> String:
 	var new_folder := temp_dir() + "/" + folder_name
 	GdUnitFileAccess.delete_directory(new_folder)
 	if not DirAccess.dir_exists_absolute(new_folder):
@@ -238,7 +239,12 @@ func extract_zip(zip_package: String, dest_path: String) -> Variant:
 	var zip: ZIPReader = ZIPReader.new()
 	var err := zip.open(zip_package)
 	if err != OK:
-		printerr("Extracting `%s` failed! Please collect the error log and report this. Error Code: %s" % [zip_package, err])
+		printerr(
+			(
+				"Extracting `%s` failed! Please collect the error log and report this. Error Code: %s"
+				% [zip_package, err]
+			)
+		)
 		return null
 	var zip_entries: PackedStringArray = zip.get_files()
 	# Get base path and step over archive folder
@@ -260,7 +266,7 @@ func extract_zip(zip_package: String, dest_path: String) -> Variant:
 
 func download_release() -> void:
 	var zip_file := GdUnitFileAccess.temp_dir() + "/update.zip"
-	var response :GdUnitUpdateClient.HttpResponse
+	var response: GdUnitUpdateClient.HttpResponse
 	if _debug_mode:
 		response = GdUnitUpdateClient.HttpResponse.new(200, PackedByteArray())
 		zip_file = "res://update.zip"
@@ -268,7 +274,12 @@ func download_release() -> void:
 
 	response = await _update_client.request_zip_package(_download_url, zip_file)
 	if response.status() != 200:
-		push_warning("Update information cannot be retrieved from GitHub! \n Error code: %d : %s" % [response.status(), response.response()])
+		push_warning(
+			(
+				"Update information cannot be retrieved from GitHub! \n Error code: %d : %s"
+				% [response.status(), response.response()]
+			)
+		)
 		message_h4("Download the update failed! Try it later again.", Color.INDIAN_RED)
 		await get_tree().create_timer(3).timeout
 

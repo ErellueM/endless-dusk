@@ -16,7 +16,6 @@ class GdUnitMockDoublerState:
 	var return_values := Dictionary()
 	var return_value: Variant = null
 
-
 	func _init(working_mode_ := GdUnitMock.RETURN_DEFAULTS) -> void:
 		working_mode = working_mode_
 
@@ -72,7 +71,7 @@ static func __sort_dictionary(__unsorted_args: Dictionary) -> Dictionary:
 	__sorted_args.sort_custom(__sort_by_argument_matcher)
 	var __sorted_result := {}
 	for __index in __sorted_args.size():
-		var key :Variant = __sorted_args[__index]
+		var key: Variant = __sorted_args[__index]
 		__sorted_result[key] = __unsorted_args[key]
 	return __sorted_result
 
@@ -101,7 +100,11 @@ static func __is_mocked_args_match(__func_args: Array, __mocked_args: Array) -> 
 				@warning_ignore("unsafe_method_access")
 				__is_matching = __is_matching and __mock_arg.is_match(__func_arg)
 			else:
-				__is_matching = __is_matching and typeof(__func_arg) == typeof(__mock_arg) and __func_arg == __mock_arg
+				__is_matching = (
+					__is_matching
+					and typeof(__func_arg) == typeof(__mock_arg)
+					and __func_arg == __mock_arg
+				)
 			if not __is_matching:
 				break
 		if __is_matching:
@@ -109,7 +112,9 @@ static func __is_mocked_args_match(__func_args: Array, __mocked_args: Array) -> 
 	return __is_matching
 
 
-static func __return_mock_value(__func_name: String, __func_args: Array, __default_return_value: Variant) -> Variant:
+static func __return_mock_value(
+	__func_name: String, __func_args: Array, __default_return_value: Variant
+) -> Variant:
 	var doubler_state := __doubler_state()
 	if not doubler_state.return_values.has(__func_name):
 		return __default_return_value
@@ -124,7 +129,10 @@ static func __return_mock_value(__func_name: String, __func_args: Array, __defau
 
 static func __is_do_not_call_real_func(__func_name: String, __func_args := []) -> bool:
 	var doubler_state := __doubler_state()
-	var __is_call_real_func: bool = doubler_state.working_mode == GdUnitMock.CALL_REAL_FUNC  and not doubler_state.excluded_methods.has(__func_name)
+	var __is_call_real_func: bool = (
+		doubler_state.working_mode == GdUnitMock.CALL_REAL_FUNC
+		and not doubler_state.excluded_methods.has(__func_name)
+	)
 	# do not call real funcions for mocked functions
 	if __is_call_real_func and doubler_state.return_values.has(__func_name):
 		@warning_ignore("unsafe_method_access")

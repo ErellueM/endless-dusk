@@ -29,16 +29,28 @@ func _report_success() -> GdUnitAssert:
 
 
 func _report_error(error_message: String, failure_line_number: int = -1) -> GdUnitAssert:
-	var line_number := failure_line_number if failure_line_number != -1 else GdUnitAssertions.get_line_number()
-	_current_failure_message = GdAssertMessages.build_failure_message(error_message, _additional_failure_message, _custom_failure_message)
+	var line_number := (
+		failure_line_number if failure_line_number != -1 else GdUnitAssertions.get_line_number()
+	)
+	_current_failure_message = GdAssertMessages.build_failure_message(
+		error_message, _additional_failure_message, _custom_failure_message
+	)
 	GdAssertReports.report_error(_current_failure_message, line_number)
 	return self
 
 
-func _has_log_entry(log_entries: Array[ErrorLogEntry], type: ErrorLogEntry.TYPE, error: Variant) -> bool:
+func _has_log_entry(
+	log_entries: Array[ErrorLogEntry], type: ErrorLogEntry.TYPE, error: Variant
+) -> bool:
 	for entry in log_entries:
 		if entry._type == type and GdObjects.equals(entry._message, error):
-			GdUnitThreadManager.get_current_context().get_execution_context().error_monitor.erase_log_entry(entry)
+			(
+				GdUnitThreadManager
+				. get_current_context()
+				. get_execution_context()
+				. error_monitor
+				. erase_log_entry(entry)
+			)
 			return true
 	return false
 
@@ -86,10 +98,19 @@ func is_success() -> GdUnitGodotErrorAssert:
 	var log_entries := await _execute()
 	if log_entries.is_empty():
 		return _report_success()
-	return _report_error("""
+	return _report_error(
+		(
+			(
+				"""
 		Expecting: no error's are ocured.
 			but found: '%s'
-		""".dedent().trim_prefix("\n") % _to_list(log_entries))
+		"""
+				. dedent()
+				. trim_prefix("\n")
+			)
+			% _to_list(log_entries)
+		)
+	)
 
 
 func is_runtime_error(expected_error: Variant) -> GdUnitGodotErrorAssert:
@@ -102,11 +123,20 @@ func is_runtime_error(expected_error: Variant) -> GdUnitGodotErrorAssert:
 	var log_entries := await _execute()
 	if _has_log_entry(log_entries, ErrorLogEntry.TYPE.SCRIPT_ERROR, expected_error):
 		return _report_success()
-	return _report_error("""
+	return _report_error(
+		(
+			(
+				"""
 		Expecting: a runtime error is triggered.
 			expected: '%s'
 			current: '%s'
-		""".dedent().trim_prefix("\n") % [expected_error, _to_list(log_entries)])
+		"""
+				. dedent()
+				. trim_prefix("\n")
+			)
+			% [expected_error, _to_list(log_entries)]
+		)
+	)
 
 
 func is_push_warning(expected_warning: Variant) -> GdUnitGodotErrorAssert:
@@ -119,11 +149,20 @@ func is_push_warning(expected_warning: Variant) -> GdUnitGodotErrorAssert:
 	var log_entries := await _execute()
 	if _has_log_entry(log_entries, ErrorLogEntry.TYPE.PUSH_WARNING, expected_warning):
 		return _report_success()
-	return _report_error("""
+	return _report_error(
+		(
+			(
+				"""
 		Expecting: push_warning() is called.
 			expected: '%s'
 			current: '%s'
-		""".dedent().trim_prefix("\n") % [expected_warning, _to_list(log_entries)])
+		"""
+				. dedent()
+				. trim_prefix("\n")
+			)
+			% [expected_warning, _to_list(log_entries)]
+		)
+	)
 
 
 func is_push_error(expected_error: Variant) -> GdUnitGodotErrorAssert:
@@ -136,11 +175,20 @@ func is_push_error(expected_error: Variant) -> GdUnitGodotErrorAssert:
 	var log_entries := await _execute()
 	if _has_log_entry(log_entries, ErrorLogEntry.TYPE.PUSH_ERROR, expected_error):
 		return _report_success()
-	return _report_error("""
+	return _report_error(
+		(
+			(
+				"""
 		Expecting: push_error() is called.
 			expected: '%s'
 			current: '%s'
-		""".dedent().trim_prefix("\n") % [expected_error, _to_list(log_entries)])
+		"""
+				. dedent()
+				. trim_prefix("\n")
+			)
+			% [expected_error, _to_list(log_entries)]
+		)
+	)
 
 
 func _validate_callable() -> bool:

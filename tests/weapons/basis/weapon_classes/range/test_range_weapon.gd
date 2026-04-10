@@ -1,8 +1,10 @@
 extends GdUnitTestSuite
 
+
 class EnemyDouble:
 	extends Node2D
 	var is_dead: bool = false
+
 
 class ProjectileDouble:
 	extends Node2D
@@ -10,13 +12,16 @@ class ProjectileDouble:
 	var velocity: Vector2 = Vector2.ZERO
 	var weapon_ref: Node = null
 
+
 var weapon: RangeWeapon
 var spawned_enemies: Array[Node2D] = []
+
 
 func before_test() -> void:
 	weapon = RangeWeapon.new()
 	add_child(weapon)
 	await get_tree().process_frame
+
 
 func after_test() -> void:
 	for enemy in spawned_enemies:
@@ -25,6 +30,7 @@ func after_test() -> void:
 	spawned_enemies.clear()
 	if weapon and is_instance_valid(weapon):
 		weapon.queue_free()
+
 
 func _create_enemy(position: Vector2, dead: bool = false) -> EnemyDouble:
 	var enemy := EnemyDouble.new()
@@ -35,6 +41,7 @@ func _create_enemy(position: Vector2, dead: bool = false) -> EnemyDouble:
 	spawned_enemies.append(enemy)
 	return enemy
 
+
 func _make_projectile_scene() -> PackedScene:
 	var projectile_scene := PackedScene.new()
 	var projectile := ProjectileDouble.new()
@@ -42,11 +49,13 @@ func _make_projectile_scene() -> PackedScene:
 	projectile.free()
 	return projectile_scene
 
+
 func test_attack_returns_false_without_enemy() -> void:
 	weapon.projectile_scene = _make_projectile_scene()
 	var result := weapon.attack()
 	assert_that(result).is_false()
 	assert_that(weapon.get_child_count()).is_equal(0)
+
 
 func test_get_nearest_enemy_returns_closest_living_enemy() -> void:
 	var close_alive := _create_enemy(Vector2(50, 0), false)
@@ -54,7 +63,8 @@ func test_get_nearest_enemy_returns_closest_living_enemy() -> void:
 
 	var nearest := weapon.get_nearest_enemy()
 	assert_that(nearest).is_equal(close_alive)
-	
+
+
 func test_get_nearest_enemy_returns_null_if_no_living_enemies() -> void:
 	_create_enemy(Vector2(50, 0), true)
 	_create_enemy(Vector2(25, 0), true)
@@ -62,10 +72,12 @@ func test_get_nearest_enemy_returns_null_if_no_living_enemies() -> void:
 	var nearest := weapon.get_nearest_enemy()
 	assert_that(nearest).is_null()
 
+
 func test_get_nearest_enemy_returns_null_if_enemies_out_of_range() -> void:
-	_create_enemy(Vector2(weapon.get_actual_range() +1, 0), false)
+	_create_enemy(Vector2(weapon.get_actual_range() + 1, 0), false)
 	var nearest := weapon.get_nearest_enemy()
 	assert_that(nearest).is_null()
+
 
 func test_shoot_at_initializes_projectile_fields() -> void:
 	var target := _create_enemy(Vector2(100, 0), false)
@@ -88,6 +100,7 @@ func test_shoot_at_initializes_projectile_fields() -> void:
 	assert_that(projectile.scale).is_equal(
 		Vector2(weapon.get_actual_area(), weapon.get_actual_area())
 	)
+
 
 func test_shoot_at_does_not_spawn_projectile_without_scene() -> void:
 	var target := _create_enemy(Vector2(100, 0), false)

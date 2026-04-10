@@ -9,39 +9,67 @@ var _editor_code_context_menu: EditorContextMenuPlugin
 
 
 func _enter_tree() -> void:
-	var inferred_declaration: int = ProjectSettings.get_setting("debug/gdscript/warnings/inferred_declaration")
+	var inferred_declaration: int = ProjectSettings.get_setting(
+		"debug/gdscript/warnings/inferred_declaration"
+	)
 
 	var is_gdunit_excluded_warnings: bool = false
 	if Engine.get_version_info().hex >= 0x40600:
-		var dirctrory_rules: Dictionary = ProjectSettings.get_setting("debug/gdscript/warnings/directory_rules")
-		if dirctrory_rules.has("res://addons/gdUnit4") and dirctrory_rules["res://addons/gdUnit4"] == 0:
+		var dirctrory_rules: Dictionary = ProjectSettings.get_setting(
+			"debug/gdscript/warnings/directory_rules"
+		)
+		if (
+			dirctrory_rules.has("res://addons/gdUnit4")
+			and dirctrory_rules["res://addons/gdUnit4"] == 0
+		):
 			is_gdunit_excluded_warnings = true
 	else:
-		is_gdunit_excluded_warnings = ProjectSettings.get_setting("debug/gdscript/warnings/exclude_addons")
+		is_gdunit_excluded_warnings = ProjectSettings.get_setting(
+			"debug/gdscript/warnings/exclude_addons"
+		)
 	if !is_gdunit_excluded_warnings and inferred_declaration != 0:
 		printerr("GdUnit4: 'inferred_declaration' is set to Warning/Error!")
 		if Engine.get_version_info().hex >= 0x40600:
-			printerr("GdUnit4 is not 'inferred_declaration' save, you have to excluded the addon (debug/gdscript/warnings/directory_rules)")
+			printerr(
+				"GdUnit4 is not 'inferred_declaration' save, you have to excluded the addon (debug/gdscript/warnings/directory_rules)"
+			)
 		else:
-			printerr("GdUnit4 is not 'inferred_declaration' save, you have to excluded addons (debug/gdscript/warnings/exclude_addons)")
+			printerr(
+				"GdUnit4 is not 'inferred_declaration' save, you have to excluded addons (debug/gdscript/warnings/exclude_addons)"
+			)
 		printerr("Loading GdUnit4 Plugin failed.")
 		return
 
 	if check_running_in_test_env():
 		@warning_ignore("return_value_discarded")
-		GdUnitCSIMessageWriter.new().prints_warning("It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!")
+		(
+			GdUnitCSIMessageWriter
+			. new()
+			. prints_warning(
+				"It was recognized that GdUnit4 is running in a test environment, therefore the GdUnit4 plugin will not be executed!"
+			)
+		)
 		return
 
 	if Engine.get_version_info().hex < 0x40500:
-		prints("This GdUnit4 plugin version '%s' requires Godot version '4.5' or higher to run." % GdUnit4Version.current())
+		prints(
+			(
+				"This GdUnit4 plugin version '%s' requires Godot version '4.5' or higher to run."
+				% GdUnit4Version.current()
+			)
+		)
 		return
 	GdUnitSettings.setup()
 	# Install the GdUnit Inspector
-	_gd_inspector = (load("res://addons/gdUnit4/src/ui/GdUnitInspector.tscn") as PackedScene).instantiate()
+	_gd_inspector = (
+		(load("res://addons/gdUnit4/src/ui/GdUnitInspector.tscn") as PackedScene).instantiate()
+	)
 	_add_context_menus()
 	add_control_to_dock(EditorPlugin.DOCK_SLOT_LEFT_UR, _gd_inspector)
 	# Install the GdUnit Console
-	_gd_console = (load("res://addons/gdUnit4/src/ui/GdUnitConsole.tscn") as PackedScene).instantiate()
+	_gd_console = (
+		(load("res://addons/gdUnit4/src/ui/GdUnitConsole.tscn") as PackedScene).instantiate()
+	)
 	var control: Control = add_control_to_bottom_panel(_gd_console, "gdUnitConsole")
 	@warning_ignore("unsafe_method_access")
 	await _gd_console.setup_update_notification(control)
@@ -75,16 +103,36 @@ func _exit_tree() -> void:
 func check_running_in_test_env() -> bool:
 	var args: PackedStringArray = OS.get_cmdline_args()
 	args.append_array(OS.get_cmdline_user_args())
-	return DisplayServer.get_name() == "headless" or args.has("--selftest") or args.has("--add") or args.has("-a") or args.has("--quit-after") or args.has("--import")
+	return (
+		DisplayServer.get_name() == "headless"
+		or args.has("--selftest")
+		or args.has("--add")
+		or args.has("-a")
+		or args.has("--quit-after")
+		or args.has("--import")
+	)
 
 
 func _add_context_menus() -> void:
-	_filesystem_context_menu = preload("res://addons/gdUnit4/src/ui/menu/GdUnitEditorFileSystemContextMenuHandler.gd").new()
-	_editor_context_menu = preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd").new()
-	_editor_code_context_menu = preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd").new()
-	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_FILESYSTEM, _filesystem_context_menu)
-	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_SCRIPT_EDITOR, _editor_context_menu)
-	add_context_menu_plugin(EditorContextMenuPlugin.CONTEXT_SLOT_SCRIPT_EDITOR_CODE, _editor_code_context_menu)
+	_filesystem_context_menu = (
+		preload("res://addons/gdUnit4/src/ui/menu/GdUnitEditorFileSystemContextMenuHandler.gd")
+		. new()
+	)
+	_editor_context_menu = (
+		preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd").new()
+	)
+	_editor_code_context_menu = (
+		preload("res://addons/gdUnit4/src/ui/menu/GdUnitScriptEditorContextMenuHandler.gd").new()
+	)
+	add_context_menu_plugin(
+		EditorContextMenuPlugin.CONTEXT_SLOT_FILESYSTEM, _filesystem_context_menu
+	)
+	add_context_menu_plugin(
+		EditorContextMenuPlugin.CONTEXT_SLOT_SCRIPT_EDITOR, _editor_context_menu
+	)
+	add_context_menu_plugin(
+		EditorContextMenuPlugin.CONTEXT_SLOT_SCRIPT_EDITOR_CODE, _editor_code_context_menu
+	)
 
 
 func _remove_context_menus() -> void:
