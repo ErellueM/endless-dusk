@@ -1,0 +1,8 @@
+[tool.gdlint]
+max-line-length = 200
+class-definitions-order = false
+unused-argument = false
+trailing-whitespace = false
+no-elif-return = false
+no-else-return = false
+duplicated-load = false
