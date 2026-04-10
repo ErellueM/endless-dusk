@@ -25,6 +25,7 @@ SettingsManager="*res://main/ui/general_menu/settings_menu/settings_manager.gd"
 FpsOverlay="*res://main/ui/overlays/fps_overlay.tscn"
 DamagePool="*res://main/global/damage_pool.gd"
 XpPool="*res://main/global/xp_pool.gd"
+EnemyPool="*res://main/global/enemy_pool.gd"
 
 [display]
 

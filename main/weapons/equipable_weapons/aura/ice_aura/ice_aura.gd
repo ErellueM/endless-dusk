@@ -39,6 +39,7 @@ func apply_enter_effect(target: Node2D):
 	elif "is_iced" in target:
 		target.is_iced = true
 		target.speed_modifier *= slowness_factor
+		target._update_visual_state()
 
 func apply_exit_effect(target: Node2D):
 	var status_manager = target.get_node_or_null("StatusManager")
@@ -48,6 +49,7 @@ func apply_exit_effect(target: Node2D):
 	elif "is_iced" in target:
 		target.is_iced = false
 		target.speed_modifier /= slowness_factor
+		target._update_visual_state()
 
 func _draw():
 	var inner_color = Color(0.2, 0.5, 1.0, 0.1) 

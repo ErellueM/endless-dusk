@@ -128,7 +128,40 @@ func _on_death():
 	$CollisionShape2D.set_deferred("disabled", true) 
 	Global.register_kill(enemy_name)
 	drop_soul()
-	queue_free()
+	EnemyPool.return_enemy(self)
+
+# --- AUFWACHEN (Wird vom WaveManager gerufen) ---
+func revive(new_pos: Vector2, new_health: float, new_damage: float, new_xp: float):
+	is_dead = false
+	$CollisionShape2D.set_deferred("disabled", false)
+	
+	max_health = new_health
+	damage = new_damage
+	xp_reward = new_xp
+	can_attack = true
+	is_flashing = false
+	
+	if health:
+		health.max_health = new_health
+		health.current_health = new_health
+		
+	# Status-Effekte aus dem letzten Leben löschen!
+	if status_manager:
+		status_manager.effects.clear()
+		status_manager.speed_mult = 1.0
+		status_manager.dmg_taken_mult = 1.0
+		status_manager.dmg_dealt_mult = 1.0
+		status_manager.color_mod = Color(1, 1, 1)
+		
+	if is_instance_valid(anim):
+		anim.modulate = Color(1, 1, 1)
+		
+	global_position = new_pos
+	
+	# Wieder aufwecken!
+	visible = true
+	set_process(true)
+	set_physics_process(true)
 
 func drop_soul():
 	if xp_reward > 0:

@@ -27,10 +27,14 @@ func register_kill(enemy_name: String):
 	else:
 		lifetime_kills_by_type[enemy_name] = 1
 	
-	# Optional: Nach jedem Kill speichern (oder am Ende des Runs)
-	save_game()
+	# DIE HANDBREMSE WURDE GELÖST!
+	# Hier wird nicht mehr auf die Festplatte geschrieben!
 
 func reset_run_stats():
+	# Wir speichern die Lifetime-Stats EINMALIG am Ende des Runs, 
+	# kurz bevor die aktuellen Run-Stats gelöscht werden!
+	save_game()
+	
 	run_total_kills = 0
 	run_kills_by_type.clear()
 
@@ -41,6 +45,7 @@ func save_game():
 	config.set_value("Stats", "total_kills", lifetime_total_kills)
 	config.set_value("Stats", "kills_by_type", lifetime_kills_by_type)
 	config.save(SAVE_PATH)
+	print("Spiel erfolgreich gespeichert!") # Kleines Feedback für die Konsole
 
 func load_game():
 	var config = ConfigFile.new()

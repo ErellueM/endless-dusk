@@ -31,14 +31,27 @@ func attack() -> bool:
 func get_chain_targets() -> Array:
 	var hits = []
 	var current_pos = global_position 
-	var all_targets = get_tree().get_nodes_in_group("Enemygroup") + get_tree().get_nodes_in_group("Props")
 	
+	# 1. ALLE Gegner und Props holen
+	var raw_targets = get_tree().get_nodes_in_group("Enemygroup") + get_tree().get_nodes_in_group("Props")
+	
+	# 2. FILTERN (Der Performance-Retter!)
+	# Wir ignorieren alle toten und alle schlafenden (unsichtbaren) Gegner im Pool!
+	var active_targets = []
+	for t in raw_targets:
+		if t.visible and not t.get("is_dead"):
+			active_targets.append(t)
+			
+	# Wenn niemand auf dem Feld ist, direkt abbrechen
+	if active_targets.size() == 0: return hits
+	
+	# 3. Blitze berechnen (nur noch auf den echten Zielen!)
 	for i in range(max_bounces + 1):
 		var closest_enemy = null
 		var min_dist = get_actual_range() if i == 0 else bounce_range
 		
-		for enemy in all_targets:
-			if enemy in hits or enemy.get("is_dead"):
+		for enemy in active_targets:
+			if enemy in hits:
 				continue
 				
 			var dist = current_pos.distance_to(enemy.global_position)

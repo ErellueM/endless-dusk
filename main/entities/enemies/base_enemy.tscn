@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://q0ek71qn65ru" path="res://main/entities/status_effects/StatusManager.tscn" id="5_hon0s"]
 
 [node name="BaseEnemy" type="CharacterBody2D"]
-z_index = 1
+z_index = 11
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_36cyf")

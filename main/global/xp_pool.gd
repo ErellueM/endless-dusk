@@ -2,7 +2,7 @@ extends Node
 
 var pool: Array[Area2D] = []
 var active_gems: Array[Area2D] = []
-var max_active_gems: int = 1500 
+var max_active_gems: int = 700 
 var xp_scene: PackedScene = preload("res://main/entities/xp/xp.tscn")
 
 func _ready():

@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 	var current_fire_rate = get_actual_fire_rate()
 	
 	if cooldown_timer >= current_fire_rate:
-		if await attack(): 
+		if attack(): 
 			cooldown_timer = 0.0
 
 func get_actual_damage() -> float:

@@ -41,17 +41,12 @@ func _ready():
 func _physics_process(delta: float):
 	if is_dead or not player: return
 	
-	# Bewegung unter Berücksichtigung aller Modifier
 	var move_amount = (speed * speed_modifier) * delta
 	global_position = global_position.move_toward(player.global_position, move_amount)
 	
-	# Blickrichtung (Flip) mit Deadzone gegen Flackern
 	var dir_x = player.global_position.x - global_position.x
 	if abs(dir_x) > 1.0:
 		sprite.flip_h = dir_x < 0
-	
-	# Visuellen Status jeden Frame prüfen (wegen Color-Mixing)
-	_update_visual_state()
 
 # --- FARB-LOGIK (Mischen ohne Shader) ---
 func _update_visual_state():
@@ -74,13 +69,14 @@ func apply_lite_buff(duration: float, multiplier: float):
 	if is_dead: return
 	is_buffed = true
 	speed_modifier = multiplier
-	
+	_update_visual_state()
 	# Timer-Logik für das Ende des Buffs
 	var tween = create_tween()
 	tween.tween_interval(duration)
 	tween.tween_callback(func():
 		is_buffed = false
 		speed_modifier = 1.0
+		_update_visual_state()
 	)
 
 # --- SCHADEN NEHMEN ---
@@ -111,6 +107,7 @@ func take_damage(amount: float, show_number: bool = true) -> float:
 	return amount
 
 # --- STERBEN & XP ---
+# --- STERBEN (AB IN DEN POOL) ---
 func die():
 	if is_dead: return
 	is_dead = true
@@ -119,7 +116,30 @@ func die():
 	if xp_reward > 0:
 		XpPool.spawn_gem(global_position, xp_reward)
 		
-	queue_free()
+	# Anstatt queue_free() schicken wir ihn ins Lager!
+	EnemyPool.return_enemy(self)
+
+# --- AUFWACHEN (Wird vom WaveManager gerufen) ---
+func revive(new_pos: Vector2, new_health: float, new_damage: float, new_xp: float):
+	is_dead = false
+	current_health = new_health
+	max_health = new_health
+	damage = new_damage
+	xp_reward = new_xp
+	
+	# Alles zurücksetzen
+	speed_modifier = 1.0
+	is_iced = false
+	is_buffed = false
+	is_flashing = false
+	_update_visual_state() # Deine Farb-Funktion von vorhin!
+	
+	global_position = new_pos
+	
+	# Wieder aufwecken!
+	visible = true
+	set_process(true)
+	set_physics_process(true)
 
 # --- SPIELER BERÜHREN ---
 func _on_body_entered(body: Node2D):

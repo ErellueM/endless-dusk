@@ -1,44 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://dio6t5wi6pa6k"]
+[gd_scene load_steps=4 format=3 uid="uid://b8xa0msn8icxl"]
 
 [ext_resource type="PackedScene" uid="uid://bgcdbqxidxx77" path="res://main/entities/enemies/dump_swarm_enemy/dump_swarm_enemy.tscn" id="1_rm0os"]
 [ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="2_mkt50"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4044"]
-size = Vector2(11, 10)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yuosn"]
+size = Vector2(11, 9)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_chqjy"]
-atlas = ExtResource("2_mkt50")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fftbn"]
-atlas = ExtResource("2_mkt50")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_uhmk1"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_chqjy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fftbn")
-}],
-"loop": true,
-"name": &"default",
-"speed": 2.5
-}]
-
-[node name="Green_Slime" instance=ExtResource("1_rm0os")]
+[node name="GreenSlime" instance=ExtResource("1_rm0os")]
 max_health = 4.0
-speed = 30.0
+speed = 40.0
 damage = 1.0
-base_color = Color(0, 1, 0.24705882, 1)
+base_color = Color(0.49803922, 1, 0.47058824, 1)
 
 [node name="CollisionShape2D" parent="." index="0"]
-position = Vector2(0.5, 1)
-shape = SubResource("RectangleShape2D_f4044")
+position = Vector2(-0.5, -0.5)
+shape = SubResource("RectangleShape2D_yuosn")
 
 [node name="AnimatedSprite2D" parent="." index="1"]
-modulate = Color(0, 1, 0.56078434, 1)
-sprite_frames = SubResource("SpriteFrames_uhmk1")
-frame_progress = 0.39838633
+position = Vector2(-1, -2)
+texture = ExtResource("2_mkt50")
+hframes = 2
