@@ -25,7 +25,7 @@ jobs:
         run: pip install gdtoolkit
 
       # 4. Linter ausführen
-      # Dieser Befehl scannt alle .gd Dateien im Projekt.
-      # Er gibt einen Fehlercode zurück, wenn Style-Verstöße gefunden werden.
+      # Wir ignorieren addons/ und tests/ und erzwingen die Nutzung der .gdlintrc
       - name: Run gdlint
-        run: gdlint .
+        run: |
+          find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs -I {} gdlint -c .gdlintrc {}

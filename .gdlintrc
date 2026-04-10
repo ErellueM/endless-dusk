@@ -1,0 +1,14 @@
+max-line-length: 150
+
+rules:
+    class-definitions-order: false
+    unused-argument: false
+    trailing-whitespace: false
+    no-elif-return: false
+    no-else-return: false
+    duplicated-load: false
+    max-public-methods: false
+    max-returns: false
+    max-file-lines: false
+    function-argument-name: false
+    class-variable-name: false
