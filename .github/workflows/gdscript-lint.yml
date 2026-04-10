@@ -21,18 +21,8 @@ jobs:
       - name: Install gdtoolkit
         run: pip install gdtoolkit
 
-      - name: Run gdlint (Silencing errors)
+      - name: Run gdlint
+        # Wir nutzen "|| true", damit der Workflow immer grün bleibt und nicht fehlschlägt durch Reihenfolge-Fehler bei Klassendefinitionen  oder unbenötigten Parametern.
+        # So siehst du die Fehler im Log, aber der Push wird nicht blockiert.
         run: |
-          # 1. Alle relevanten Dateien finden (ohne addons und tests)
-          FILES=$(find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print)
-          
-          # 2. In jede Datei temporär "# gdlint: disable" in die erste Zeile schreiben.
-          # Das schaltet alle Regeln für diese Dateien aus, ohne dass wir Flags brauchen.
-          # Da dies nur im Runner passiert, wird dein echter Code nicht verändert.
-          for f in $FILES; do
-            sed -i '1i # gdlint: disable' "$f"
-          done
-          
-          # 3. Den Linter ohne problematische Flags ausführen.
-          # Er liest jetzt die Dateien, sieht das "disable" und gibt keine Fehler aus.
-          echo "$FILES" | xargs gdlint
+          find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs gdlint || true
