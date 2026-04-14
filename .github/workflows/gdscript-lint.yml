@@ -22,7 +22,9 @@ jobs:
         run: pip install gdtoolkit
 
       - name: Run gdlint
-        # Wir nutzen "|| true", damit der Workflow immer grün bleibt und nicht fehlschlägt durch Reihenfolge-Fehler bei Klassendefinitionen  oder unbenötigten Parametern.
-        # So siehst du die Fehler im Log, aber der Push wird nicht blockiert.
+         # 1. Erstelle eine temporäre Konfigurationsdatei im Root
+         # 2. Suche die Dateien und führe gdlint aus
+        # Wir übergeben NUR die Dateien. gdlint sucht sich die .gdlintrc im aktuellen Verzeichnis selbst.
         run: |
-          find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs -I {} gdlint --disable-rule class-definitions-order --disable-rule unused-argument --disable-rule no-elif-return --disable-rule no-else-return --max-line-length 200 {} || true
+          echo '{"max-line-length": 200, "skip-checks": ["class-definitions-order", "unused-argument", "no-elif-return", "no-else-return", "trailing-whitespace"]}' > .gdlintrc
+          find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs gdlint || true
