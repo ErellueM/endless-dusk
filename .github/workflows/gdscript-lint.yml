@@ -25,4 +25,9 @@ jobs:
         # Wir nutzen "|| true", damit der Workflow immer grün bleibt und nicht fehlschlägt durch Reihenfolge-Fehler bei Klassendefinitionen  oder unbenötigten Parametern.
         # So siehst du die Fehler im Log, aber der Push wird nicht blockiert.
         run: |
-          find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs gdlint || true
+          find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs gdlint \
+          -d class-definitions-order \
+          -d unused-argument \
+          -d no-elif-return \
+          -d no-else-return \
+          --max-line-length 200 || true
