@@ -1,24 +1,19 @@
-[gd_scene load_steps=12 format=3 uid="uid://cbkk4mdxwxopm"]
+[gd_scene load_steps=7 format=3 uid="uid://cbkk4mdxwxopm"]
 
 [ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="1_61muo"]
 [ext_resource type="PackedScene" uid="uid://cqulv6gr7h21f" path="res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn" id="2_cjqb1"]
 [ext_resource type="PackedScene" uid="uid://drsd0nyx0txmx" path="res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn" id="3_xm13f"]
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_a3rpa"]
 [ext_resource type="PackedScene" uid="uid://dbqfr87lrdt78" path="res://main/environments/destructables/barrel/barrel.tscn" id="5_slsko"]
-[ext_resource type="PackedScene" uid="uid://b65tcnwtedixj" path="res://main/entities/enemies/simple_enemy/charger_enemy/charger_enemy.tscn" id="6_xm13f"]
-[ext_resource type="PackedScene" uid="uid://dnewoqayxh5hp" path="res://main/entities/xp/xp.tscn" id="7_nkmex"]
-[ext_resource type="PackedScene" uid="uid://dy0s1l0wj007h" path="res://main/ui/ingameUI/damage_number.tscn" id="8_v60rc"]
-[ext_resource type="PackedScene" uid="uid://cebg2s8xsq7jv" path="res://main/entities/enemies/simple_enemy/exploder_enemy/exploder_enemy.tscn" id="9_nkmex"]
-[ext_resource type="Script" uid="uid://bwl2qjucegmej" path="res://main/entities/enemies/base_enemy.gd" id="10_7wawg"]
-[ext_resource type="PackedScene" uid="uid://c1uln2w3a0mgq" path="res://main/entities/enemies/simple_enemy/flying_skull/flying_skull.tscn" id="10_v60rc"]
+[ext_resource type="PackedScene" uid="uid://du1kfn18sx4kf" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn" id="12_poey4"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_61muo")]
 position = Vector2(122, 107)
 collision_mask = 1
+motion_mode = 0
 starting_weapons = Array[PackedScene]([ExtResource("2_cjqb1"), ExtResource("3_xm13f")])
-armor = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
 position = Vector2(597, 321)
@@ -37,13 +32,4 @@ position = Vector2(168, 291)
 [node name="Barrel2" parent="." instance=ExtResource("5_slsko")]
 position = Vector2(395, 91)
 
-[node name="BaseEnemy" parent="." instance=ExtResource("6_xm13f")]
-xp_gem_scene = ExtResource("7_nkmex")
-damage_number_scene = ExtResource("8_v60rc")
-
-[node name="BaseEnemy2" parent="." instance=ExtResource("9_nkmex")]
-script = ExtResource("10_7wawg")
-xp_gem_scene = ExtResource("7_nkmex")
-damage_number_scene = ExtResource("8_v60rc")
-
-[node name="FlyingSkull" parent="." instance=ExtResource("10_v60rc")]
+[node name="plagueDoctor" parent="." instance=ExtResource("12_poey4")]

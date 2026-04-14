@@ -13,7 +13,7 @@ func attack() -> bool:
 	puddle.global_position = global_position
 	puddle.top_level = true
 	puddle.collision_layer = 0
-	puddle.collision_mask = 4294967295
+	puddle.collision_mask = 10
 
 	var shape = CollisionShape2D.new()
 	var circle = CircleShape2D.new()

@@ -52,7 +52,6 @@ var pending_levelups: int = 0
 var is_flashing: bool = false
 var recovery_timer: float = 0.0
 
-
 func _ready():
 	if health_component:
 		health_component.max_health = max_health
@@ -72,113 +71,90 @@ func _ready():
 		for weapon in starting_weapons:
 			weapon_inventory.add_weapon(weapon)
 
-
 func _physics_process(delta):
-	# FARBE VOM MANAGER HOLEN
-	var c_mod = status_manager.color_mod if status_manager else Color(1, 1, 1)
-	if not is_flashing and is_instance_valid(anim):
-		anim.modulate = c_mod
+	_handle_status_colors()
+	_handle_recovery(delta)
+	_handle_movement(delta)
 
+func _handle_status_colors():
+	if not is_flashing and is_instance_valid(anim) and status_manager:
+		anim.modulate = status_manager.color_mod
+	elif not is_flashing:
+		anim.modulate = Color(1, 1, 1)
+
+func _handle_recovery(delta):
 	if health_component and recovery != 0:
 		recovery_timer += delta
-		if recovery_timer >= 1.0:  # Tickt jede Sekunde
+		if recovery_timer >= 1.0:
 			recovery_timer = 0.0
 			if recovery > 0:
-				heal(recovery)  # Heilt (Grün)
+				# Recovery-Heilung (Silent = true, damit nicht jede Sekunde eine Zahl kommt)
+				heal(recovery, true) 
 			elif recovery < 0:
+				# Negatives Recovery (wie Gift) ignoriert Rüstung!
 				take_damage_typed(abs(recovery), true, Color(0.8, 0.2, 0.2))
 
-	# --- HIER STARTET DIE NEUE BEWEGUNGS-LOGIK ---
+func _handle_movement(_delta):
 	var direction = Vector2.ZERO
-
-	# Option A: Die Maus-Steuerung ist in den Settings aktiviert
 	if SettingsManager.mouse_movement and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		var mouse_pos = get_global_mouse_position()
-
-		# Deadzone (10 Pixel reicht völlig, damit er nicht zittert)
 		if global_position.distance_to(mouse_pos) > 30.0:
 			direction = global_position.direction_to(mouse_pos)
-
-	# Option B: Klassische Tastatur-Steuerung (Nutzt jetzt DEINE neuen Action-Namen!)
 	else:
-		if Input.is_action_pressed("move_right"):
-			direction.x += 1
-		if Input.is_action_pressed("move_left"):
-			direction.x -= 1
-		if Input.is_action_pressed("move_down"):
-			direction.y += 1
-		if Input.is_action_pressed("move_up"):
-			direction.y -= 1
-
-		# Verhindert, dass man diagonal schneller läuft als geradeaus
+		direction.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+		direction.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 		if direction.length() > 0:
 			direction = direction.normalized()
 
-	# BEWEGUNG AUSFÜHREN (Speed mal Manager-Speed)
 	var s_mult = status_manager.speed_mult if status_manager else 1.0
 	velocity = direction * (speed * s_mult)
 	move_and_slide()
 
-	# ANIMATIONEN
 	if velocity.length() > 0:
 		anim.play("walk")
-		if velocity.x != 0:
-			anim.flip_h = velocity.x < 0
+		anim.flip_h = velocity.x < 0
 	else:
 		anim.play("idle")
 
-
 func gain_xp(amount: float):
-	var real_amount = amount * growth
-	current_xp += real_amount
-
-	var did_level_up = false
+	current_xp += amount * growth
 	while current_xp >= max_xp:
 		current_xp -= max_xp
 		level += 1
 		max_xp = int(max_xp * 1.2)
 		pending_levelups += 1
-		did_level_up = true
-
 	xp_changed.emit(current_xp, max_xp)
-	if did_level_up:
-		check_levelups()
-
+	check_levelups()
 
 func check_levelups():
 	if pending_levelups > 0:
 		pending_levelups -= 1
 		leveled_up.emit()
 
-
 func update_magnet():
 	if magnet_shape and magnet_shape.shape:
 		magnet_shape.shape.radius = base_magnet_radius * magnet_mult
-
 
 func _on_magnet_area_entered(area: Area2D):
 	if area.has_method("fly_to_player"):
 		area.fly_to_player(self)
 
-
 func _on_tick_damage(amount: float, _source: Node2D, color: Color):
-	var t_mult = status_manager.dmg_taken_mult if status_manager else 1.0
-	take_damage_typed(amount * t_mult, true, color)
-
+	# Tick-Schaden (Gift) sollte Rüstung ignorieren
+	take_damage_typed(amount, true, color)
 
 func take_damage(dmg_amount: float):
 	take_damage_typed(dmg_amount, false, Color(1.0, 0.2, 0.2))
 
-
-func take_damage_typed(
-	dmg_amount: float, is_dot: bool = false, dmg_color: Color = Color(1.0, 0.2, 0.2)
-):
-	var t_mult = status_manager.dmg_taken_mult if status_manager else 1.0
-	var pre_armor_dmg = dmg_amount * t_mult
-	var final_damage = max(0, pre_armor_dmg - armor)
-
+func take_damage_typed(dmg_amount: float, is_dot: bool = false, dmg_color: Color = Color(1.0, 0.2, 0.2)):
+	var final_damage = dmg_amount
+	
+	if not is_dot:
+		# NUR direkter Schaden wird durch Rüstung reduziert
+		final_damage = max(0.5, dmg_amount - armor)
+	
 	if SettingsManager.show_damage_numbers and final_damage > 0:
-		var offset = Vector2(0, 0) + Vector2(randf_range(-5, 5), randf_range(-5, 5))
+		var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
 		DamagePool.spawn_number(global_position + offset, final_damage, is_dot, dmg_color)
 
 	if health_component and final_damage > 0:
@@ -188,30 +164,26 @@ func take_damage_typed(
 	if not is_dot:
 		_flash_hit()
 
-
 func _flash_hit():
 	is_flashing = true
-	anim.modulate = Color(0.7, 0, 0)
-	await get_tree().create_timer(0.2).timeout
+	var prev_mod = anim.modulate
+	anim.modulate = Color(10, 10, 10) # Weißer HDR Flash ist deutlicher als Rot
+	await get_tree().create_timer(0.1).timeout
 	is_flashing = false
+	anim.modulate = prev_mod
 
-
-func heal(amount: float):
+func heal(amount: float, silent: bool = false):
 	if health_component and health_component.current_health < health_component.max_health:
 		var actual_heal = min(amount, health_component.max_health - health_component.current_health)
 		health_component.current_health += actual_heal
 		health_changed.emit(health_component.current_health, health_component.max_health)
 
-		# --- FIX: HEILUNG NUTZT JETZT AUCH DEN OBJEKT-POOL! ---
-		if SettingsManager.show_damage_numbers and actual_heal > 0:
-			var offset = Vector2(0, 0) + Vector2(randf_range(-5, 5), randf_range(-5, 5))
-			DamagePool.spawn_number(
-				global_position + offset, actual_heal, false, Color(0.2, 1.0, 0.2)
-			)
-
+		# Nur Zahlen zeigen, wenn nicht 'silent' (verhindert Spam durch Recovery)
+		if not silent and SettingsManager.show_damage_numbers and actual_heal > 0:
+			var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
+			DamagePool.spawn_number(global_position + offset, actual_heal, false, Color(0.2, 1.0, 0.2))
 
 func die():
-	print("Game Over!")
 	var manager = get_tree().get_first_node_in_group("Managers")
 	if manager:
 		manager.change_state(manager.GameState.DEAD)

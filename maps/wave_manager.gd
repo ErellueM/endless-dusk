@@ -43,12 +43,12 @@ var pending_enemy_spawns: Array = []
 func set_player(p: Node2D) -> void:
 	player = p
 
+var cached_swarm_count: int = 0
+var cache_timer: float = 0.0
 
-# --- NEU: DIE SCHLAUE ZÄHLFUNKTION ---
 func get_active_enemy_count(group_name: String) -> int:
 	var count = 0
 	for e in get_tree().get_nodes_in_group(group_name):
-		# Ignoriere alle Gegner, die im Pool schlafen (visible = false) oder tot sind!
 		if e.visible and not e.get("is_dead"):
 			count += 1
 	return count
@@ -173,29 +173,25 @@ func spawn_single_enemy(data: SpawnData, current_minute: float, angle: float, is
 	else:
 		enemy.add_to_group("EliteEnemies")
 
-	var current_multiplier = pow(scaling_factor, current_minute)
-	var scaled_health = (
-		enemy.get("max_health") * current_multiplier if "max_health" in enemy else 10.0
-	)
-	var scaled_damage = enemy.get("damage") * current_multiplier if "damage" in enemy else 2.0
-	var scaled_xp = (
-		enemy.get("xp_reward") * (current_multiplier * 0.5) if "xp_reward" in enemy else 1.0
-	)
+	var current_multiplier = 1.0
+	if current_minute >= 1.0:
+		current_multiplier = pow(scaling_factor, current_minute)
 
 	var spawn_pos = get_offscreen_position(angle)
 
+	# 1. REVIVE RUFEN: Das setzt beim Gegner scale = base_scale!
 	if enemy.has_method("revive"):
-		enemy.revive(spawn_pos, scaled_health, scaled_damage, scaled_xp)
+		enemy.revive(spawn_pos, current_multiplier)
 	else:
 		enemy.global_position = spawn_pos
-		if "max_health" in enemy:
-			enemy.max_health = scaled_health
-		if "damage" in enemy:
-			enemy.damage = scaled_damage
 		enemy.visible = true
 		enemy.set_process(true)
 		enemy.set_physics_process(true)
 
+	# 2. TARGET SCALE ABGREIFEN: Jetzt ist enemy.scale sicher nicht mehr Zero
+	var target_scale = enemy.scale
+	
+	# 3. FÜR ANIMATION AUF NULL SETZEN
 	enemy.scale = Vector2.ZERO
 	enemy.modulate.a = 0.0
 
@@ -203,12 +199,7 @@ func spawn_single_enemy(data: SpawnData, current_minute: float, angle: float, is
 		get_tree().current_scene.add_child(enemy)
 
 	var spawn_tween = enemy.create_tween().set_parallel(true)
-	(
-		spawn_tween
-		. tween_property(enemy, "scale", Vector2.ONE, 0.5)
-		. set_trans(Tween.TRANS_BACK)
-		. set_ease(Tween.EASE_OUT)
-	)
+	spawn_tween.tween_property(enemy, "scale", target_scale, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	spawn_tween.tween_property(enemy, "modulate:a", 1.0, 0.5)
 
 

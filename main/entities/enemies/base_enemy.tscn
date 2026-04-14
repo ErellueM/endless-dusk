@@ -8,6 +8,7 @@
 z_index = 11
 collision_layer = 2
 collision_mask = 0
+motion_mode = 1
 script = ExtResource("1_36cyf")
 
 [node name="Health" parent="." instance=ExtResource("2_qfhq1")]

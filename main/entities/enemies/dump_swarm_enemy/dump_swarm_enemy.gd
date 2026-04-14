@@ -9,156 +9,126 @@ class_name DumbSwarmEnemy
 @export var xp_reward: float = 0.5
 
 @export_group("Visuals")
-# WICHTIG: Stell hier im Inspektor die Farbe deines Slimes ein (z.B. Blau oder Grün)
 @export var base_color: Color = Color(1, 1, 1)
+
+@export_group("Status Immunities")
+@export var immune_to_all_status: bool = false
+@export var status_immunities: Array[String] = []
 
 var current_health: float
 var player: Node2D
 var is_dead: bool = false
 
-# --- STATUS VARIABLEN (Für performantes Color-Mixing) ---
-var speed_modifier: float = 1.0
-var is_iced: bool = false
-var is_buffed: bool = false
-var is_flashing: bool = false  # Für den Hit-Flash (Schaden nehmen)
+# --- NEU: Status Manager Objekt (Keine Node!) ---
+var status_manager: StatusManagerLight
+
+var base_max_health: float
+var base_damage: float
+var base_scale: Vector2 = Vector2.ONE
+var is_flashing: bool = false
 
 @onready var sprite = $AnimatedSprite2D
-
 
 func _ready():
 	add_to_group("Enemygroup")
 	add_to_group("SwarmEnemies")
 	player = get_tree().get_first_node_in_group("player")
+	
+	# Manager instanziieren
+	status_manager = StatusManagerLight.new(self)
+	
+	base_max_health = max_health
+	base_damage = damage
+	base_scale = scale
 	current_health = max_health
 
-	# Kleiner Speed-Zufall, damit sie nicht alle exakt gleich schnell sind
 	speed = speed * randf_range(0.9, 1.1)
-
 	body_entered.connect(_on_body_entered)
-
-	# Initialfarbe setzen
 	_update_visual_state()
-
 
 func _physics_process(delta: float):
 	if is_dead or not player:
 		return
 
-	var move_amount = (speed * speed_modifier) * delta
+	# Status-Logik verarbeiten
+	status_manager.process_logic(delta)
+
+	# Bewegung mit Speed-Multiplikator vom Status Manager
+	var move_amount = (speed * status_manager.speed_mult) * delta
 	global_position = global_position.move_toward(player.global_position, move_amount)
 
 	var dir_x = player.global_position.x - global_position.x
 	if abs(dir_x) > 1.0:
 		sprite.flip_h = dir_x < 0
-
-
-# --- FARB-LOGIK (Mischen ohne Shader) ---
-func _update_visual_state():
-	if is_flashing:
-		return  # Während des Hit-Flashs keine Statusfarben erzwingen
-
-	var final_color = base_color
-
-	# EIS-EFFEKT: Macht das Sprite bläulich (Multiplikation)
-	if is_iced:
-		final_color *= Color(0.6, 0.6, 2.5)  # Verstärkt Blau-Kanal (HDR)
-
-	# BUFF-EFFEKT: Macht das Sprite rötlich-leuchtend (HDR)
-	if is_buffed:
-		final_color *= Color(2.5, 0.5, 0.5)  # Verstärkt Rot-Kanal massiv
-
-	sprite.modulate = final_color
-
-
-# --- EFFEKT-STEUERUNG (Wird von Waffen/Buffern aufgerufen) ---
-func apply_lite_buff(duration: float, multiplier: float):
-	if is_dead:
-		return
-	is_buffed = true
-	speed_modifier = multiplier
+	
+	# Farben aktualisieren
 	_update_visual_state()
-	# Timer-Logik für das Ende des Buffs
-	var tween = create_tween()
-	tween.tween_interval(duration)
-	tween.tween_callback(
-		func():
-			is_buffed = false
-			speed_modifier = 1.0
-			_update_visual_state()
-	)
 
+func _update_visual_state():
+	if is_flashing: return
+	
+	# Wir nutzen die Farbe direkt vom Status Manager
+	sprite.modulate = base_color * status_manager.color_mod
 
-# --- SCHADEN NEHMEN ---
+# Schnittstelle für Waffen
+func add_status_effect(effect):
+	if status_manager:
+		status_manager.add_effect(effect)
+
 func take_damage(amount: float, show_number: bool = true) -> float:
-	if is_dead:
-		return 0.0
+	if is_dead: return 0.0
 
-	current_health -= amount
+	# Schaden mit dmg_taken_mult vom Status Manager verrechnen
+	var final_amount = amount * status_manager.dmg_taken_mult
+	current_health -= final_amount
 
-	# Schadenszahlen (Nur wenn gewünscht)
-	if show_number and SettingsManager.show_damage_numbers and amount > 0:
+	if show_number and SettingsManager.show_damage_numbers and final_amount > 0:
 		var offset = Vector2(randf_range(-10, 10), randf_range(-20, -10))
-		DamagePool.spawn_number(global_position + offset, amount, false, Color(1, 1, 1))
+		DamagePool.spawn_number(global_position + offset, final_amount, false, Color(1, 1, 0))
 
-	# HIT-FLASH (Kurzes Aufleuchten)
 	is_flashing = true
-	sprite.modulate = Color(10, 10, 10)  # Extremes HDR-Weiß für den Flash
-
+	sprite.modulate = Color(10, 10, 10)
 	var flash_tween = create_tween()
 	flash_tween.tween_interval(0.1)
-	flash_tween.tween_callback(
-		func():
-			is_flashing = false
-			_update_visual_state()
+	flash_tween.tween_callback(func(): 
+		is_flashing = false
+		_update_visual_state()
 	)
 
 	if current_health <= 0:
 		die()
+	return final_amount
 
-	return amount
-
-
-# --- STERBEN & XP ---
-# --- STERBEN (AB IN DEN POOL) ---
-func die():
-	if is_dead:
-		return
-	is_dead = true
-	Global.register_kill(enemy_name)
-
-	if xp_reward > 0:
-		XpPool.spawn_gem(global_position, xp_reward)
-
-	# Anstatt queue_free() schicken wir ihn ins Lager!
-	EnemyPool.return_enemy(self)
-
-
-# --- AUFWACHEN (Wird vom WaveManager gerufen) ---
-func revive(new_pos: Vector2, new_health: float, new_damage: float, new_xp: float):
+# Hilfsmethode für das Pooling
+func revive(new_pos: Vector2, difficulty_multiplier: float):
 	is_dead = false
-	current_health = new_health
-	max_health = new_health
-	damage = new_damage
-	xp_reward = new_xp
+	scale = base_scale
+	modulate.a = 1.0
+	
+	max_health = base_max_health * difficulty_multiplier
+	current_health = max_health
+	damage = base_damage * difficulty_multiplier
 
-	# Alles zurücksetzen
-	speed_modifier = 1.0
-	is_iced = false
-	is_buffed = false
-	is_flashing = false
-	_update_visual_state()  # Deine Farb-Funktion von vorhin!
+	# Status Effekte beim Revive löschen!
+	if status_manager:
+		status_manager.effects.clear()
 
 	global_position = new_pos
-
-	# Wieder aufwecken!
+	force_update_transform()
 	visible = true
 	set_process(true)
 	set_physics_process(true)
+	_update_visual_state()
 
+func die():
+	if is_dead: return
+	is_dead = true
+	Global.register_kill(enemy_name)
+	if xp_reward > 0:
+		XpPool.spawn_gem(global_position, xp_reward)
+	EnemyPool.return_enemy(self)
 
-# --- SPIELER BERÜHREN ---
 func _on_body_entered(body: Node2D):
-	if is_dead:
-		return
+	if is_dead: return
 	if body.is_in_group("player") and body.has_method("take_damage_typed"):
 		body.take_damage_typed(damage)

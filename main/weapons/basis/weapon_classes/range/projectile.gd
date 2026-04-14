@@ -28,8 +28,7 @@ func _on_hit(target: Node2D):
 			weapon_ref.add_damage_stat(actual_damage)
 
 		if weapon_ref and weapon_ref.get("applies_poison") == true:
-			var manager = target.get_node_or_null("StatusManager")
-			if manager:
-				manager.add_effect(PoisonEffect.new(3, 3, 0.5))
+			if target.has_method("add_status_effect"):
+				target.add_status_effect(PoisonEffect.new(3, 3, 0.5))
 
 		queue_free()

@@ -11,6 +11,7 @@ var current_state = GameState.PLAYING
 func _ready():
 	Global.reset_run_stats()
 	XpPool.reset_pool()
+	EnemyPool.clear_pools()
 	if pause_menu:
 		pause_menu.hide()
 	if level_up_screen:
@@ -57,6 +58,8 @@ func change_state(new_state):
 
 		GameState.DEAD:
 			get_tree().paused = true
+			XpPool.reset_pool()
+			EnemyPool.clear_pools()
 			pause_menu.hide()
 			level_up_screen.hide()
 			if game_over_screen:

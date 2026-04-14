@@ -40,14 +40,8 @@ func _apply_stats_for_current_level():
 
 
 func apply_enter_effect(target: Node2D):
-	var status_manager = target.get_node_or_null("StatusManager")
-
-	if status_manager:
-		status_manager.add_effect(SlowEffect.new(999.0, slowness_factor, ice_color))
-	elif "is_iced" in target:
-		target.is_iced = true
-		target.speed_modifier *= slowness_factor
-		target._update_visual_state()
+	if target.has_method("add_status_effect"):
+		target.add_status_effect(SlowEffect.new(999.0, slowness_factor, ice_color))
 
 
 func apply_exit_effect(target: Node2D):

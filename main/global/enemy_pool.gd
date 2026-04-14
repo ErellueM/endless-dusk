@@ -4,7 +4,13 @@ extends Node
 # z.B.: { "res://.../green_slime.tscn": [slime1, slime2], "res://.../blue_slime.tscn": [slime3] }
 var pools: Dictionary = {}
 
-
+func clear_pools():
+	for path in pools:
+		for enemy in pools[path]:
+			if is_instance_valid(enemy):
+				enemy.queue_free()
+	pools.clear()
+	
 func get_enemy(scene: PackedScene) -> Node2D:
 	var path = scene.resource_path
 

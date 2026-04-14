@@ -2562,7 +2562,6 @@ sources/0 = SubResource("TileSetAtlasSource_ae8pb")
 [sub_resource type="Environment" id="Environment_gdq6d"]
 background_mode = 3
 glow_enabled = true
-glow_blend_mode = 1
 
 [node name="Map1" type="Node2D"]
 position = Vector2(-37, 5)

@@ -25,12 +25,18 @@ var can_attack: bool = true
 
 var is_flashing: bool = false
 
+var base_max_health: float
+var base_damage: float
+var base_scale: Vector2 = Vector2.ONE
 
 func _ready():
 	add_to_group("Enemygroup")
 	player = get_tree().get_first_node_in_group("player")
 	# Leichte Speed-Variation
 	speed = speed * randf_range(0.8, 1.2)
+	base_max_health = max_health
+	base_damage = damage
+	base_scale = scale
 
 	if health:
 		health.max_health = max_health
@@ -128,6 +134,9 @@ func take_damage_typed(
 
 	return actual_damage
 
+func add_status_effect(effect: StatusEffect):
+	if status_manager:
+		status_manager.add_effect(effect)
 
 func _flash_hit():
 	is_flashing = true
@@ -145,21 +154,25 @@ func _on_death():
 
 
 # --- AUFWACHEN (Wird vom WaveManager gerufen) ---
-func revive(new_pos: Vector2, new_health: float, new_damage: float, new_xp: float):
+func revive(new_pos: Vector2, difficulty_multiplier: float):
 	is_dead = false
 	$CollisionShape2D.set_deferred("disabled", false)
+	
+	scale = base_scale 
+	modulate.a = 1.0
 
-	max_health = new_health
-	damage = new_damage
-	xp_reward = new_xp
+	# SKALIERUNG NUR VON BASISWERTEN
+	max_health = base_max_health * difficulty_multiplier
+	damage = base_damage * difficulty_multiplier
+	
+	# XP bleibt der ursprüngliche Inspektor-Wert!
 	can_attack = true
 	is_flashing = false
 
 	if health:
-		health.max_health = new_health
-		health.current_health = new_health
+		health.max_health = max_health
+		health.current_health = max_health
 
-	# Status-Effekte aus dem letzten Leben löschen!
 	if status_manager:
 		status_manager.effects.clear()
 		status_manager.speed_mult = 1.0
@@ -167,12 +180,8 @@ func revive(new_pos: Vector2, new_health: float, new_damage: float, new_xp: floa
 		status_manager.dmg_dealt_mult = 1.0
 		status_manager.color_mod = Color(1, 1, 1)
 
-	if is_instance_valid(anim):
-		anim.modulate = Color(1, 1, 1)
-
 	global_position = new_pos
-
-	# Wieder aufwecken!
+	force_update_transform()
 	visible = true
 	set_process(true)
 	set_physics_process(true)

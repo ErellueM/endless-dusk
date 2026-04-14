@@ -8,12 +8,10 @@ var orb_count: int = 1
 var orb_container: Node2D
 var orbs: Array = []
 
-
 func _ready():
 	orb_container = Node2D.new()
 	add_child(orb_container)
 	_rebuild_orbs()
-
 
 func _physics_process(delta: float) -> void:
 	if not orb_container:
@@ -28,7 +26,6 @@ func _physics_process(delta: float) -> void:
 		var angle = i * step
 		orbs[i].position = Vector2(cos(angle), sin(angle)) * current_radius
 
-
 func _rebuild_orbs():
 	for child in orb_container.get_children():
 		child.queue_free()
@@ -36,8 +33,9 @@ func _rebuild_orbs():
 
 	for i in range(orb_count):
 		var orb = Area2D.new()
+		# Layer 0, aber wir scannen nach Layer 2 (Gegner)
 		orb.collision_layer = 0
-		orb.collision_mask = 4294967295
+		orb.collision_mask = 10 # Nur Gegner scannen (Layer 2)
 
 		var shape = CollisionShape2D.new()
 		var circle = CircleShape2D.new()
@@ -45,6 +43,7 @@ func _rebuild_orbs():
 		shape.shape = circle
 		orb.add_child(shape)
 
+		# Visuals
 		var glow = Polygon2D.new()
 		glow.color = Color(0.6, 0.1, 0.9, 0.3)
 		glow.polygon = _create_circle_points(8.0)
@@ -55,9 +54,33 @@ func _rebuild_orbs():
 		core.polygon = _create_circle_points(2.5)
 		orb.add_child(core)
 
+		# --- NEU: SIGNALE FÜR SOFORT-SCHADEN ---
+		orb.body_entered.connect(_on_target_entered)
+		orb.area_entered.connect(_on_target_entered)
+
 		orb_container.add_child(orb)
 		orbs.append(orb)
 
+func _on_target_entered(target: Node2D):
+	# Wird sofort aufgerufen, wenn die Orb einen Gegner berührt
+	_apply_orb_damage(target)
+
+func _apply_orb_damage(target: Node2D):
+	if (target.is_in_group("Enemygroup") or target.is_in_group("Props")) and target.has_method("take_damage"):
+		var dmg = get_actual_damage()
+		# true = Schadenszahlen werden angezeigt!
+		var actual_dmg = target.take_damage(dmg, true)
+		add_damage_stat(actual_dmg)
+
+func attack() -> bool:
+	# Dieser Teil läuft über den Waffen-Timer (für Gegner, die in der Orb stehen bleiben)
+	var hit_someone = false
+	for orb in orbs:
+		var targets = orb.get_overlapping_bodies() + orb.get_overlapping_areas()
+		for target in targets:
+			_apply_orb_damage(target)
+			hit_someone = true
+	return hit_someone
 
 func _create_circle_points(radius: float) -> PackedVector2Array:
 	var pts = PackedVector2Array()
@@ -66,45 +89,17 @@ func _create_circle_points(radius: float) -> PackedVector2Array:
 		pts.append(Vector2(cos(a), sin(a)) * radius)
 	return pts
 
-
-func attack() -> bool:
-	var hit_someone = false
-	var dmg = get_actual_damage()
-
-	for orb in orbs:
-		# --- DER FIX: Areas und Bodies in einer Liste sammeln ---
-		var all_targets = orb.get_overlapping_bodies() + orb.get_overlapping_areas()
-
-		for target in all_targets:
-			if (
-				(target.is_in_group("Enemygroup") or target.is_in_group("Props"))
-				and target.has_method("take_damage")
-			):
-				# false = Keine Schadenszahlen, da das sonst eine Zahlen-Flut gibt!
-				target.take_damage(dmg, false)
-				add_damage_stat(dmg)
-				hit_someone = true
-
-	return hit_someone
-
-
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
 		2:
 			return {"desc": "[color=green]+1 Orb[/color]\nDouble the trouble.", "rarity": "Common"}
 		3:
-			return {
-				"desc": "[color=green]-0.2s Hit Cooldown[/color]\nZaps faster.", "rarity": "Rare"
-			}
+			return {"desc": "[color=green]-0.2s Hit Cooldown[/color]\nZaps faster.", "rarity": "Rare"}
 		4:
 			return {"desc": "[color=green]+2 Orbs[/color]\nA proper swarm.", "rarity": "Legendary"}
 		5:
-			return {
-				"desc": "[color=green]+15 Base Damage, +1 Orb[/color]\nVoid mastery.",
-				"rarity": "Legendary"
-			}
+			return {"desc": "[color=green]+15 Base Damage, +1 Orb[/color]\nVoid mastery.", "rarity": "Legendary"}
 	return {"desc": "MAX", "rarity": "Common"}
-
 
 func _apply_stats_for_current_level():
 	match level:
@@ -117,5 +112,4 @@ func _apply_stats_for_current_level():
 		5:
 			base_damage += 15.0
 			orb_count += 1
-
 	_rebuild_orbs()
