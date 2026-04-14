@@ -2,9 +2,9 @@ name: GDScript Linting (gdlint)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   lint:
@@ -21,10 +21,10 @@ jobs:
       - name: Install gdtoolkit
         run: pip install gdtoolkit
 
-      - name: Run gdlint
-         # 1. Erstelle eine temporäre Konfigurationsdatei im Root
-         # 2. Suche die Dateien und führe gdlint aus
+      - name:
+          Run gdlint
+          # 1. Erstelle eine temporäre Konfigurationsdatei im Root
+          # 2. Suche die Dateien und führe gdlint aus
         # Wir übergeben NUR die Dateien. gdlint sucht sich die .gdlintrc im aktuellen Verzeichnis selbst.
         run: |
-          echo '{"max-line-length": 200, "skip-checks": ["class-definitions-order", "unused-argument", "no-elif-return", "no-else-return", "trailing-whitespace"]}' > .gdlintrc
           find . -type d \( -path "./addons" -o -path "./tests" \) -prune -o -name "*.gd" -print | xargs gdlint || true

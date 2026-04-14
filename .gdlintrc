@@ -1,0 +1,2 @@
+disable: ["class-definitions-order", "unused-argument", "no-elif-return", "no-else-return", "trailing-whitespace"]
+max-line-length: 200
