@@ -62,6 +62,7 @@ func change_state(new_state):
 
 		GameState.DEAD:
 			get_tree().paused = true
+			Global.save_game()
 			XpPool.reset_pool()
 			EnemyPool.clear_pools()
 			pause_menu.hide()

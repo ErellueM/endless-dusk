@@ -3,6 +3,7 @@ extends StaticBody2D
 @export var heal_scene: PackedScene
 @export var magnet_scene: PackedScene
 @export var bomb_scene: PackedScene
+@export var coin_scene: PackedScene
 
 
 func _ready():
@@ -43,6 +44,8 @@ func spawn_loot():
 		drop_instance = bomb_scene.instantiate()
 	elif roll <= 0.50 and magnet_scene:
 		drop_instance = magnet_scene.instantiate()
+	elif roll <= 0.9 and coin_scene:
+		drop_instance = coin_scene.instantiate()
 	elif heal_scene:
 		drop_instance = heal_scene.instantiate()
 

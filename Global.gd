@@ -13,6 +13,13 @@ var run_kills_by_type: Dictionary = {}
 var lifetime_total_kills: int = 0
 var lifetime_kills_by_type: Dictionary = {}
 
+signal gold_changed(new_amount)
+
+var gold: int = 0:
+	set(value):
+		gold = value
+		gold_changed.emit(gold) 
+
 
 func _ready():
 	load_game()  # Lädt die Lifetime-Stats direkt beim Spielstart
@@ -51,6 +58,7 @@ func save_game():
 	var config = ConfigFile.new()
 	config.set_value("Stats", "total_kills", lifetime_total_kills)
 	config.set_value("Stats", "kills_by_type", lifetime_kills_by_type)
+	config.set_value("Economy", "gold", gold)
 	config.save(SAVE_PATH)
 	print("Spiel erfolgreich gespeichert!")  # Kleines Feedback für die Konsole
 
@@ -62,3 +70,4 @@ func load_game():
 	if err == OK:
 		lifetime_total_kills = config.get_value("Stats", "total_kills", 0)
 		lifetime_kills_by_type = config.get_value("Stats", "kills_by_type", {})
+		gold = config.get_value("Economy", "gold", 0)

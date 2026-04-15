@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dbqfr87lrdt78"]
+[gd_scene load_steps=11 format=3 uid="uid://dbqfr87lrdt78"]
 
 [ext_resource type="Script" uid="uid://dnwnww6j8xfa" path="res://main/environments/destructables/barrel/barrel.gd" id="1_16qu8"]
 [ext_resource type="Texture2D" uid="uid://dd264yieg2sb8" path="res://assets/art/destructables/barrel/barrel.png" id="2_1wryi"]
 [ext_resource type="PackedScene" uid="uid://1wa3a4vfa1pr" path="res://main/environments/destructables/barrel/item_drops/blood_vial/blood_vial.tscn" id="2_77wbi"]
 [ext_resource type="PackedScene" uid="uid://sdmsi4ucl34q" path="res://main/environments/destructables/barrel/item_drops/void_magnet/void_magnet.tscn" id="3_6tbmv"]
 [ext_resource type="PackedScene" uid="uid://dfyyvbo3ycp4w" path="res://main/environments/destructables/barrel/item_drops/holy_bomb/holy_bomb.tscn" id="4_ix5la"]
+[ext_resource type="PackedScene" uid="uid://gvtdanpwdun3" path="res://main/environments/destructables/barrel/item_drops/coin/coin.tscn" id="5_6tbmv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iyolm"]
 size = Vector2(14, 16)
@@ -37,6 +38,7 @@ script = ExtResource("1_16qu8")
 heal_scene = ExtResource("2_77wbi")
 magnet_scene = ExtResource("3_6tbmv")
 bomb_scene = ExtResource("4_ix5la")
+coin_scene = ExtResource("5_6tbmv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_iyolm")
