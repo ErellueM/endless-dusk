@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://drsd0nyx0txmx" path="res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn" id="3_xm13f"]
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_a3rpa"]
 [ext_resource type="PackedScene" uid="uid://dbqfr87lrdt78" path="res://main/environments/destructables/barrel/barrel.tscn" id="5_slsko"]
-[ext_resource type="PackedScene" uid="uid://du1kfn18sx4kf" path="res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn" id="12_poey4"]
+[ext_resource type="PackedScene" uid="uid://bdv3jkshikrwm" path="res://main/entities/grave_chest/grave_chest.tscn" id="6_slsko"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -32,4 +32,5 @@ position = Vector2(168, 291)
 [node name="Barrel2" parent="." instance=ExtResource("5_slsko")]
 position = Vector2(395, 91)
 
-[node name="plagueDoctor" parent="." instance=ExtResource("12_poey4")]
+[node name="GraveChest" parent="." instance=ExtResource("6_slsko")]
+position = Vector2(351, 241)

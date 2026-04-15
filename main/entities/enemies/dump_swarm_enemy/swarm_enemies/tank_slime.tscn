@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://buhoik4j28p11"]
+
+[ext_resource type="PackedScene" uid="uid://bgcdbqxidxx77" path="res://main/entities/enemies/dump_swarm_enemy/dump_swarm_enemy.tscn" id="1_oejie"]
+[ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="2_eorpl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yuosn"]
+size = Vector2(11, 9)
+
+[node name="TankSlime" instance=ExtResource("1_oejie")]
+enemy_name = "Tank Slime"
+max_health = 40.0
+speed = 10.0
+damage = 3.0
+xp_reward = 2.0
+base_color = Color(0.3527787, 0.28843683, 0.36812547, 1)
+
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2(-0.5, -0.5)
+shape = SubResource("RectangleShape2D_yuosn")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+position = Vector2(-1, -2)
+texture = ExtResource("2_eorpl")
+hframes = 2

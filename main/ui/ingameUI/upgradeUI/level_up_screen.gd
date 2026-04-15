@@ -1,6 +1,7 @@
 extends CanvasLayer
 
-@onready var card_container = $Control/VBoxContainer/CardContainer
+@onready var card_container = $Control/VBoxContainer/MarginContainer/CardContainer
+@onready var title_label = $Control/VBoxContainer/Label
 var card_scene = preload("res://main/ui/ingameUI/upgradeUI/UpgradeCard.tscn")
 
 @export_group("Balancing & Loot Chances")
@@ -11,6 +12,10 @@ var card_scene = preload("res://main/ui/ingameUI/upgradeUI/UpgradeCard.tscn")
 @export var weight_rare: float = 25.0
 @export var weight_epic: float = 10.0
 @export var weight_legendary: float = 3.0
+
+var remaining_picks: int = 1
+var cards_to_generate: int = 3
+var is_chest_mode: bool = false
 
 var unowned_weapons_db = {
 	"knife":
@@ -85,12 +90,32 @@ var unowned_weapons_db = {
 
 
 func _ready():
-	visibility_changed.connect(_on_visibility_changed)
+	pass
 
 
-func _on_visibility_changed():
-	if visible:
-		generate_cards()
+func open_for_levelup():
+	remaining_picks = 1
+	cards_to_generate = 3
+	is_chest_mode = false
+	if title_label:
+		title_label.text = "ASCENSION"
+		title_label.show()
+	generate_cards()
+	show()
+
+# Wird vom Grab-Skript aufgerufen
+func open_for_chest(is_boss: bool):
+	is_chest_mode = true
+	if is_boss:
+		remaining_picks = 2
+		cards_to_generate = 5
+	else:
+		remaining_picks = 1
+		cards_to_generate = 3
+	if title_label:
+		title_label.hide()
+	generate_cards()
+	show()
 
 
 func get_weight(item: Dictionary, player_luck: float) -> float:
@@ -172,7 +197,7 @@ func generate_cards():
 	var current_luck = player.luck if player and "luck" in player else 1.0
 
 	var loop_failsafe = 0
-	while options.size() < 3 and loop_failsafe < 100:
+	while options.size() < cards_to_generate and loop_failsafe < 100:
 		loop_failsafe += 1
 
 		var chosen_pool = stat_pool
@@ -219,11 +244,11 @@ func generate_cards():
 			icon_tex = option.get("icon", null)
 
 		card_instance.set_item_data(option["name"], option["desc"], option["rarity"], icon_tex)
-		card_instance.selected.connect(_on_upgrade_selected.bind(option))
+		card_instance.selected.connect(_on_upgrade_selected.bind(option, card_instance))
 		card_instance.appear(i * 0.2)
 
 
-func _on_upgrade_selected(option_data):
+func _on_upgrade_selected(option_data, card_instance):
 	var player = get_tree().get_first_node_in_group("player")
 
 	if player:
@@ -239,10 +264,23 @@ func _on_upgrade_selected(option_data):
 			var w_node = option_data["weapon_node"]
 			if w_node.has_method("apply_level_upgrade"):
 				w_node.apply_level_upgrade(option_data["new_level"])
-
-	var manager = get_tree().get_first_node_in_group("Managers")
-	if manager:
-		manager.change_state(manager.GameState.PLAYING)
+	
+	remaining_picks -= 1
+	
+	if is_instance_valid(card_instance):
+		card_instance.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		for child in card_instance.find_children("*", "BaseButton", true, false):
+			child.disabled = true
+		var fade = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		fade.tween_property(card_instance, "modulate:a", 0.0, 0.2) 
+		#if remaining_picks > 0 and title_label:
+			#title_label.text = "CHOOSE " + str(remaining_picks) + " MORE!"
+			#title_label.show()
+	
+	if remaining_picks <= 0:
+		var manager = get_tree().get_first_node_in_group("Managers")
+		if manager:
+			manager.change_state(manager.GameState.PLAYING)
 
 
 func apply_stat_upgrade(player, data):
@@ -257,7 +295,10 @@ func apply_stat_upgrade(player, data):
 			"luck":
 				player.luck += amount
 			"speed":
-				player.speed += amount
+				if (player.speed + amount) <= 0:
+					player.speed = 0
+				else:
+					player.speed += amount
 			"armor":
 				player.armor += amount
 			"might":

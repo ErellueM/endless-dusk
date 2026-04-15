@@ -23,7 +23,7 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 	area.global_position = spawn_pos
 	area.top_level = true
 	area.collision_layer = 0
-	area.collision_mask = 4294967295
+	area.collision_mask = 10
 
 	var shape = CollisionShape2D.new()
 	var circle = CircleShape2D.new()
@@ -31,13 +31,11 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 	shape.shape = circle
 	area.add_child(shape)
 
-	# Der dunkle Warn-Schatten auf dem Boden
 	var shadow = Polygon2D.new()
 	shadow.color = Color(0.05, 0.0, 0.1, 0.0)
 	shadow.polygon = _create_ground_shadow(20.0)
 	area.add_child(shadow)
 
-	# Container für den Stachel
 	var spike_visual = Node2D.new()
 	spike_visual.scale.y = 0.0
 	area.add_child(spike_visual)
@@ -67,40 +65,28 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 
 	get_tree().current_scene.add_child(area)
 
-	# --- DIE NEUE ANIMATION ---
 	var tween = create_tween()
 
-	# 1. Schatten fadet ein (Warnung)
 	tween.tween_property(shadow, "color:a", 0.7, erupt_delay)
 
-	# 2. Trefferberechnung & Hochschießen
 	tween.tween_callback(
 		func():
-			# --- DER FIX: Beide Arrays zusammenfassen! ---
 			var all_targets = area.get_overlapping_bodies() + area.get_overlapping_areas()
 			for target in all_targets:
 				if (
 					(target.is_in_group("Enemygroup") or target.is_in_group("Props"))
 					and target.has_method("take_damage")
 				):
-					# false = Keine Zahlen
-					target.take_damage(dmg, false)
+					target.take_damage(dmg, true)
 					add_damage_stat(dmg)
 	)
-	# TRANS_BACK lässt ihn wuchtig nach oben knallen
 	tween.tween_property(spike_visual, "scale:y", 1.0, 0.15).set_trans(Tween.TRANS_BACK).set_ease(
 		Tween.EASE_OUT
 	)
-
-	# 3. Kurz stehen bleiben, damit man ihn sieht
 	tween.tween_interval(0.25)
-
-	# 4. Kristall rammt sich wieder in den Boden (scale:y auf 0)
 	tween.tween_property(spike_visual, "scale:y", 0.0, 0.1).set_trans(Tween.TRANS_CUBIC).set_ease(
 		Tween.EASE_IN
 	)
-
-	# 5. Schatten schrumpft auf Null zusammen und Area löscht sich
 	tween.tween_property(shadow, "scale", Vector2.ZERO, 0.15)
 	tween.tween_callback(area.queue_free)
 

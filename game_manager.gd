@@ -1,6 +1,6 @@
 extends Node
 
-enum GameState { PLAYING, PAUSED, LEVEL_UP, DEAD }
+enum GameState { PLAYING, PAUSED, LEVEL_UP, CHEST, DEAD }
 var current_state = GameState.PLAYING
 
 @export var pause_menu: CanvasLayer
@@ -52,9 +52,13 @@ func change_state(new_state):
 
 		GameState.LEVEL_UP:
 			get_tree().paused = true
-			level_up_screen.show()
+			level_up_screen.open_for_levelup()
 			pause_menu.hide()
 			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+		GameState.CHEST:
+					get_tree().paused = true
+					pause_menu.hide()
 
 		GameState.DEAD:
 			get_tree().paused = true
@@ -69,3 +73,8 @@ func change_state(new_state):
 
 func _on_player_leveled_up():
 	change_state(GameState.LEVEL_UP)
+
+func trigger_chest_loot(is_boss: bool):
+	change_state(GameState.CHEST)
+	if level_up_screen and level_up_screen.has_method("open_for_chest"):
+		level_up_screen.open_for_chest(is_boss)

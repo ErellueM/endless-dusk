@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://mwaha8q4dlkd"]
+[gd_scene load_steps=7 format=3 uid="uid://mwaha8q4dlkd"]
 
-[ext_resource type="PackedScene" uid="uid://dyaajs1lvmg6g" path="res://main/ui/ingameUI/upgradeUI/UpgradeCard.tscn" id="1_8epuf"]
 [ext_resource type="Script" uid="uid://bh0tagwgqkv43" path="res://main/ui/ingameUI/upgradeUI/level_up_screen.gd" id="1_ndms1"]
 [ext_resource type="Shader" uid="uid://skaojwxi8vj" path="res://main/effects/shader/blur.gdshader" id="2_yda51"]
 [ext_resource type="FontFile" uid="uid://bi8yhuhuvn611" path="res://assets/fonts/Bitmgothic/Bitmgothic.ttf" id="3_0jnsf"]
@@ -74,20 +73,13 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="CardContainer" type="HBoxContainer" parent="Control/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+
+[node name="CardContainer" type="HFlowContainer" parent="Control/VBoxContainer/MarginContainer"]
 z_index = 10
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-theme_override_constants/separation = 20
 alignment = 1
-
-[node name="UpgradeCard" parent="Control/VBoxContainer/CardContainer" instance=ExtResource("1_8epuf")]
-process_mode = 0
-layout_mode = 2
-
-[node name="UpgradeCard2" parent="Control/VBoxContainer/CardContainer" instance=ExtResource("1_8epuf")]
-process_mode = 0
-layout_mode = 2
-
-[node name="UpgradeCard3" parent="Control/VBoxContainer/CardContainer" instance=ExtResource("1_8epuf")]
-process_mode = 0
-layout_mode = 2

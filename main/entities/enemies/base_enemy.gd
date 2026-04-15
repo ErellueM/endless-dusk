@@ -6,9 +6,9 @@ class_name BaseEnemy
 @export var max_health: float = 50.0
 @export var speed: float = 100.0
 @export var damage: float = 10.0
-@export var xp_gem_scene: PackedScene = preload("res://main/entities/xp/xp.tscn")
 @export var xp_reward: float = 1.0
 @export var damage_number_scene: PackedScene = preload("res://main/ui/ingameUI/damage_number.tscn")
+@export var chest_scene: PackedScene
 
 @export_group("Status Immunities")
 @export var immune_to_all_status: bool = false
@@ -150,7 +150,10 @@ func _on_death():
 	$CollisionShape2D.set_deferred("disabled", true)
 	Global.register_kill(enemy_name)
 	drop_soul()
-	EnemyPool.return_enemy(self)
+	if is_miniboss:
+		queue_free()
+	else:
+		EnemyPool.return_enemy(self)
 
 
 # --- AUFWACHEN (Wird vom WaveManager gerufen) ---
@@ -188,6 +191,9 @@ func revive(new_pos: Vector2, difficulty_multiplier: float):
 
 
 func drop_soul():
-	if xp_reward > 0:
-		var offset = Vector2(0, 0)
-		XpPool.spawn_gem(global_position + offset, xp_reward)
+	if is_miniboss and chest_scene:
+		var chest = chest_scene.instantiate()
+		get_tree().current_scene.call_deferred("add_child", chest)
+		chest.set_deferred("global_position", global_position)
+	elif xp_reward > 0:
+		XpPool.spawn_gem(global_position, xp_reward)

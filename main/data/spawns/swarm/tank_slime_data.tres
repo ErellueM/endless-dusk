@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://d1i2ikev5utml"]
+
+[ext_resource type="PackedScene" uid="uid://buhoik4j28p11" path="res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/tank_slime.tscn" id="1_awqxw"]
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="1_t2xxu"]
+
+[resource]
+script = ExtResource("1_t2xxu")
+enemy_scene = ExtResource("1_awqxw")
+spawn_start_minute = 1.0
+metadata/_custom_type_script = "uid://cbh7ils05gocm"

@@ -7,12 +7,10 @@ var xp_value: float = 1.0
 var target_player: Node2D = null
 var is_flying: bool = false
 var base_scale: Vector2 = Vector2.ONE
-
+var pop_tween: Tween 
 
 func _ready():
-	# Standardmäßig auf Schlafmodus setzen
 	set_process(false)
-
 
 func setup(amount: float):
 	xp_value = amount
@@ -20,24 +18,20 @@ func setup(amount: float):
 	is_flying = false
 	target_player = null
 	_update_visuals()
-
-	# WICHTIG: Der Stein liegt auf dem Boden -> Tiefschlaf!
-	# Die Engine berechnet diesen Stein jetzt überhaupt nicht mehr.
 	set_process(false)
-
 
 func add_xp_silently(extra_amount: float):
 	xp_value += extra_amount
 	_update_visuals()
 
-	# Tween für das Ploppen ist völlig in Ordnung (Tweens sind sehr effizient)
-	var pop = create_tween()
-	pop.tween_property(self, "scale", base_scale * 1.3, 0.05).set_trans(Tween.TRANS_SINE)
-	pop.tween_property(self, "scale", base_scale, 0.1).set_trans(Tween.TRANS_SINE)
+	if pop_tween and pop_tween.is_valid():
+		pop_tween.kill()
 
+	pop_tween = create_tween()
+	pop_tween.tween_property(self, "scale", base_scale * 1.3, 0.05).set_trans(Tween.TRANS_SINE)
+	pop_tween.tween_property(self, "scale", base_scale, 0.1).set_trans(Tween.TRANS_SINE)
 
 func _process(delta):
-	# Diese Funktion läuft JETZT NUR NOCH, wenn der Stein fliegt!
 	if is_flying and target_player:
 		fly_speed += 2500.0 * delta
 		var move_amount = fly_speed * delta
@@ -51,13 +45,10 @@ func _process(delta):
 
 		global_position = global_position.move_toward(target_player.global_position, move_amount)
 
-
 func fly_to_player(player_node: Node2D):
 	target_player = player_node
 	is_flying = true
-	# WICHTIG: Der Magnet hat den Stein erfasst -> Aufwachen!
 	set_process(true)
-
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
@@ -65,27 +56,32 @@ func _on_body_entered(body: Node2D) -> void:
 			body.gain_xp(xp_value)
 			XpPool.return_to_pool(self)
 
-
 func _update_visuals():
 	var target_color = Color(1, 1, 1)
 	var target_scale_mult = 1.0
 
+	# Tipp: Wenn ein normaler Slime 0.5 XP droppt, braucht er 20 Kills für den 10er Stein!
 	if xp_value >= 100:
 		target_color = Color(0.8, 0.2, 1.0)
-		target_scale_mult = 1.8
+		target_scale_mult = 1.2
 	elif xp_value >= 50:
 		target_color = Color(1.0, 0.2, 0.2)
-		target_scale_mult = 1.6
+		target_scale_mult = 1.1
 	elif xp_value >= 25:
 		target_color = Color(1.0, 0.8, 0.1)
-		target_scale_mult = 1.4
+		target_scale_mult = 1
 	elif xp_value >= 10:
 		target_color = Color(0.2, 1.0, 0.2)
-		target_scale_mult = 1.2
+		target_scale_mult = 0.9
 	elif xp_value >= 5:
 		target_color = Color(0.2, 0.6, 1.0)
-		target_scale_mult = 1.1
+		target_scale_mult = 0.8
+	else:
+		target_scale_mult = 0.7
 
-	modulate = target_color
+	# WICHTIG: Modulate direkt aufs Sprite anwenden!
+	if sprite:
+		sprite.modulate = target_color
+		
 	base_scale = Vector2(1, 1) * target_scale_mult
-	scale = base_scale  # Setze die Skalierung sofort
+	scale = base_scale

@@ -33,17 +33,18 @@ func get_enemy(scene: PackedScene) -> Node2D:
 
 
 func return_enemy(enemy: Node2D):
-	# Sicherheits-Check: Hat er ein Namensschild?
 	if not enemy.has_meta("scene_path"):
-		enemy.queue_free()  # Wenn nicht, einfach normal löschen!
+		enemy.queue_free()
 		return
-
-	# Ab in den Tiefschlaf!
+		
 	enemy.set_process(false)
 	enemy.set_physics_process(false)
 	enemy.visible = false
 	enemy.global_position = Vector2(-9999, -9999)
-
-	# Lies das Namensschild und leg ihn in die richtige Kiste zurück
+	
 	var path = enemy.get_meta("scene_path")
+	
+	if not pools.has(path):
+		pools[path] = []
+		
 	pools[path].append(enemy)

@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdv3jkshikrwm"]
+
+[ext_resource type="Script" uid="uid://dx0syrwfmjkfq" path="res://main/entities/grave_chest/grave_chest.gd" id="1_85p0p"]
+[ext_resource type="Texture2D" uid="uid://byp7fubrqsen1" path="res://assets/art/chest/grave_base.png" id="1_a8bsu"]
+[ext_resource type="Texture2D" uid="uid://cg2l3vlft2022" path="res://assets/art/chest/grave_lit.png" id="2_85p0p"]
+
+[sub_resource type="Gradient" id="Gradient_83j38"]
+offsets = PackedFloat32Array(0, 0.7689243, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.03187251, 0.03187251, 0.03187251, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1p7k6"]
+gradient = SubResource("Gradient_83j38")
+width = 32
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_83j38"]
+size = Vector2(27, 13)
+
+[node name="GraveChest" type="Area2D"]
+collision_layer = 64
+script = ExtResource("1_85p0p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("1_a8bsu")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(-3.735, -0.79)
+color = Color(1, 1, 0.54509807, 1)
+energy = 0.0
+range_z_max = 1
+texture = SubResource("GradientTexture2D_1p7k6")
+offset = Vector2(3.845, -1.145)
+
+[node name="Lid" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("2_85p0p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_83j38")

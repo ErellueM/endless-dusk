@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgw5b4q62q6un"]
+
+[ext_resource type="PackedScene" uid="uid://bgcdbqxidxx77" path="res://main/entities/enemies/dump_swarm_enemy/dump_swarm_enemy.tscn" id="1_gkq02"]
+[ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="2_44tfl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yuosn"]
+size = Vector2(11, 9)
+
+[node name="RedSlime" instance=ExtResource("1_gkq02")]
+enemy_name = "Red Slime"
+max_health = 2.0
+speed = 70.0
+xp_reward = 1.0
+base_color = Color(0.89008427, 0.31266612, 0.35970426, 1)
+
+[node name="CollisionShape2D" parent="." index="0"]
+position = Vector2(-0.5, -0.5)
+shape = SubResource("RectangleShape2D_yuosn")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+position = Vector2(-1, -2)
+texture = ExtResource("2_44tfl")
+hframes = 2
