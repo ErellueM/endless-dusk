@@ -203,6 +203,7 @@ func populate_armory():
 	for weapon_id in sorted_weapon_ids:
 		var w_data = UpgradeDatabase.weapons_db[weapon_id]
 		var is_discovered = weapon_id in Global.discovered_weapons
+		var is_locked = w_data.has("unlock_req") and not Global.unlocked_items.has(weapon_id)
 		
 		# Wenn unentdeckt, ist alles dunkel. Wenn entdeckt, nutzen wir die Rarity-Farbe.
 		var rarity = w_data.get("rarity", "Common")
@@ -231,7 +232,21 @@ func populate_armory():
 		
 		var name_lbl = Label.new()
 		
-		if is_discovered:
+		if is_locked:
+			# WAFFE IST GESPERRT (LOCKED)
+			icon.texture = preload("res://assets/art/ui/padlock.png") # Achte darauf, dass dieser Pfad in deinem Projekt existiert!
+			icon.modulate = Color(0.3, 0.3, 0.3)
+			
+			name_lbl.text = "LOCKED WEAPON"
+			name_lbl.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4))
+			text_vbox.add_child(name_lbl)
+			
+			var desc_lbl = Label.new()
+			desc_lbl.text = "This weapon is currently locked."
+			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
+			text_vbox.add_child(desc_lbl)
+			
+		elif is_discovered: # <--- WICHTIG: Hier MUSS ein elif stehen!
 			# WAFFE IST BEKANNT: Zeige volle Stats!
 			var temp_weapon = w_data["scene"].instantiate()
 			var w_damage = temp_weapon.base_damage
@@ -255,34 +270,45 @@ func populate_armory():
 			text_vbox.add_child(desc_lbl)
 			
 		else:
-			# WAFFE IST UNBEKANNT: Nur "???" anzeigen
+			# WAFFE IST UNBEKANNT ABER FREIGESCHALTET: Nur "???" anzeigen
 			name_lbl.text = "??? [Unknown Weapon]"
-			name_lbl.add_theme_color_override("font_color", r_color) # Das ist unser dunkles Grau von oben
+			name_lbl.add_theme_color_override("font_color", r_color) 
 			text_vbox.add_child(name_lbl)
 			
 			var desc_lbl = Label.new()
 			desc_lbl.text = "Find this weapon during a run to unlock its details."
-			desc_lbl.modulate = Color(0.3, 0.3, 0.3) # Sehr schwaches Grau
+			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
 			text_vbox.add_child(desc_lbl)
-		
 		armory_list.add_child(row)
 
 # --- HELPER: CUSTOM SORTING FOR RELICS ---
+# --- HELPER: CUSTOM SORTING FOR RELICS ---
 func _sort_relics(a: Dictionary, b: Dictionary) -> bool:
+	# Status 1: Sind die Relics gesperrt?
+	var is_a_locked = a.has("unlock_req") and not Global.unlocked_achievements.has(a["unlock_req"])
+	var is_b_locked = b.has("unlock_req") and not Global.unlocked_achievements.has(b["unlock_req"])
+	
+	# REGEL 1: Gesperrte Relics MÜSSEN immer ganz nach unten!
+	if not is_a_locked and is_b_locked: return true
+	if is_a_locked and not is_b_locked: return false
+	
+	# Status 2: Entdeckt oder Unentdeckt?
 	var is_a_unlocked = a["name"] in Global.discovered_upgrades
 	var is_b_unlocked = b["name"] in Global.discovered_upgrades
 	
+	# REGEL 2: Entdeckte Items vor Unentdeckten (???)
 	if is_a_unlocked and not is_b_unlocked: return true
 	if not is_a_unlocked and is_b_unlocked: return false
 	
+	# REGEL 3: Nach Seltenheit
 	var val_a = rarity_values.get(a.get("rarity", "Common"), 1)
 	var val_b = rarity_values.get(b.get("rarity", "Common"), 1)
 	
 	if val_a != val_b:
 		return val_a > val_b 
 		
+	# REGEL 4: Alphabetisch
 	return a["name"] < b["name"]
-
 
 # --- POPULATE RELICS (PASSIVES) ---
 func populate_relics():
@@ -298,6 +324,9 @@ func populate_relics():
 		var u_name = u_data["name"]
 		var is_discovered = u_name in Global.discovered_upgrades
 		
+		# --- NEU: LOCK CHECK ---
+		var is_locked = u_data.has("unlock_req") and not Global.unlocked_achievements.has(u_data["unlock_req"])
+		
 		var rarity = u_data.get("rarity", "Common")
 		var r_color = rarity_colors.get(rarity, Color.WHITE) if is_discovered else Color(0.4, 0.4, 0.4)
 		
@@ -305,7 +334,6 @@ func populate_relics():
 		
 		# --- ICON ZUWEISEN ---
 		var icon = TextureRect.new()
-		# Finde das richtige Icon basierend auf dem ersten Stat-Key
 		if u_data.has("stats") and u_data["stats"].size() > 0:
 			var primary_stat_key = u_data["stats"][0]["key"]
 			icon.texture = UpgradeDatabase.stat_icons.get(primary_stat_key)
@@ -314,7 +342,8 @@ func populate_relics():
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		
-		if not is_discovered:
+		# Wenn unentdeckt ODER gesperrt, machen wir das Bild dunkel
+		if not is_discovered or is_locked:
 			icon.modulate = Color(0.0, 0.0, 0.0, 0.5) 
 		
 		row.add_child(icon)
@@ -327,7 +356,22 @@ func populate_relics():
 		
 		var name_lbl = Label.new()
 		
-		if is_discovered:
+		if is_locked:
+			# ZUSTAND 1: GESPERRT (LOCKED)
+			icon.texture = preload("res://assets/art/ui/padlock.png") # Achte auf deinen korrekten Pfad!
+			icon.modulate = Color(0.3, 0.3, 0.3)
+			
+			name_lbl.text = "LOCKED RELIC"
+			name_lbl.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4))
+			text_vbox.add_child(name_lbl)
+			
+			var desc_lbl = Label.new()
+			desc_lbl.text = "This Relic is currently locked."
+			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
+			text_vbox.add_child(desc_lbl)
+			
+		elif is_discovered:
+			# ZUSTAND 2: ENTDECKT
 			name_lbl.text = u_name + " [" + rarity + "]"
 			name_lbl.add_theme_color_override("font_color", r_color)
 			name_lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 1))
@@ -340,7 +384,9 @@ func populate_relics():
 			
 			text_vbox.add_child(name_lbl)
 			text_vbox.add_child(desc_lbl)
+			
 		else:
+			# ZUSTAND 3: UNBEKANNT (???)
 			name_lbl.text = "??? [Unknown Relic]"
 			name_lbl.add_theme_color_override("font_color", r_color) 
 			text_vbox.add_child(name_lbl)
@@ -452,24 +498,34 @@ func _format_number_dotted(val: float) -> String:
 	return result
 	
 func _sort_weapons(a: String, b: String) -> bool:
-	var is_a_unlocked = a in Global.discovered_weapons
-	var is_b_unlocked = b in Global.discovered_weapons
-	
-	# Regel 1: Entdeckte Items kommen VOR unentdeckten
-	if is_a_unlocked and not is_b_unlocked: return true
-	if not is_a_unlocked and is_b_unlocked: return false
-	
 	var data_a = UpgradeDatabase.weapons_db[a]
 	var data_b = UpgradeDatabase.weapons_db[b]
 	
-	# Regel 2: Wenn beide den gleichen Status haben, sortiere nach Seltenheit (Legendary zuerst!)
+	# Status 1: Sind die Waffen gesperrt? (Nutzt jetzt korrekt unlocked_achievements!)
+	# Wir prüfen, ob die Waffe eine unlock_req hat UND ob diese NICHT in den erreichten Achievements steht.
+	var is_a_locked = data_a.has("unlock_req") and not Global.unlocked_achievements.has(data_a["unlock_req"])
+	var is_b_locked = data_b.has("unlock_req") and not Global.unlocked_achievements.has(data_b["unlock_req"])
+	
+	# REGEL 1: Gesperrte Waffen MÜSSEN immer ganz nach unten!
+	if not is_a_locked and is_b_locked: return true
+	if is_a_locked and not is_b_locked: return false
+	
+	# Status 2: Sind die Waffen schon im Run gefunden worden?
+	var is_a_discovered = a in Global.discovered_weapons
+	var is_b_discovered = b in Global.discovered_weapons
+	
+	# REGEL 2: Entdeckte Items kommen vor unentdeckten (???) Items
+	if is_a_discovered and not is_b_discovered: return true
+	if not is_a_discovered and is_b_discovered: return false
+	
+	# REGEL 3: Wenn Status gleich, sortiere nach Seltenheit (Legendary zuerst!)
 	var val_a = rarity_values.get(data_a.get("rarity", "Common"), 1)
 	var val_b = rarity_values.get(data_b.get("rarity", "Common"), 1)
 	
 	if val_a != val_b:
 		return val_a > val_b 
 		
-	# Regel 3: Wenn Status UND Seltenheit gleich sind, sortiere Alphabetisch (A-Z)
+	# REGEL 4: Wenn auch die Seltenheit gleich ist, sortiere Alphabetisch (A-Z)
 	return data_a["name"] < data_b["name"]
 	
 # --- BUTTON SIGNALS ---

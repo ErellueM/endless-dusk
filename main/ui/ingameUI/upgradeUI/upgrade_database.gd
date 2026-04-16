@@ -49,6 +49,7 @@ static var weapons_db = {
 		"name": "Blood Trail",
 		"desc": "[color=green]New Weapon[/color]\n ...",
 		"rarity": "Uncommon",
+		"unlock_req": "survive_10_min",
 		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/blood_trail.png")
 	},
@@ -159,6 +160,14 @@ static var stat_upgrades = [
 		"rarity": "Legendary",
 		"type": "stat",
 		"stats": [{"key": "might", "amount": 0.6}, {"key": "armor", "amount": -5.0}]
+	},
+	{
+		"name": "Pact of the Void",
+		"desc": "[color=green]+150% Damage[/color]\n[color=red]-80 Max Health[/color]",
+		"rarity": "Legendary",
+		"type": "stat",
+		"unlock_req": "survive_10_min", 
+		"stats": [{"key": "might", "amount": 1.5}, {"key": "max_health", "amount": -80.0}]
 	},
 	# ==========================================
 	# --- ATTACK SPEED (HASTE) ---

@@ -76,7 +76,12 @@ func generate_cards():
 	var player = get_tree().get_first_node_in_group("player")
 	var weapons_manager = player.get_node_or_null("WeaponInventory") if player else null
 
-	var stat_pool = UpgradeDatabase.stat_upgrades.duplicate()
+	var stat_pool = []
+	for stat_upg in UpgradeDatabase.stat_upgrades:
+		if stat_upg.has("unlock_req") and not Global.unlocked_achievements.has(stat_upg["unlock_req"]):
+			continue
+			
+		stat_pool.append(stat_upg)
 	var weapon_pool = []
 
 	var current_weapons = []
@@ -109,6 +114,10 @@ func generate_cards():
 			for w_id in UpgradeDatabase.weapons_db:
 				if not owned_weapon_ids.has(w_id):
 					var w_data = UpgradeDatabase.weapons_db[w_id]
+					if w_data.has("unlock_req"):
+						var req = w_data["unlock_req"]
+						if not req in Global.unlocked_achievements:
+							continue
 					weapon_pool.append(
 						{
 							"name": w_data["name"],

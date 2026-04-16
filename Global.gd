@@ -8,6 +8,8 @@ const SAVE_PATH = "user://savegame.cfg"
 var unlocked_characters: Array = ["Soilder"]
 var discovered_weapons: Array = []
 var discovered_upgrades: Array = []
+var unlocked_items: Array = []
+var unlocked_achievements: Array = []
 
 var total_runs_played: int = 0
 var lifetime_damage_dealt: float = 0.0
@@ -99,6 +101,27 @@ func discover_upgrade(upgrade_name: String):
 		discovered_upgrades.append(upgrade_name)
 		save_game()
 
+func unlock_item(item_id: String):
+	if not item_id in unlocked_items:
+		unlocked_items.append(item_id)
+		save_game()
+
+func check_achievements():
+	var newly_unlocked = false
+	
+	if highest_survival_time >= 600.0 and not "survive_10_min" in unlocked_achievements:
+		unlocked_achievements.append("survive_10_min")
+		newly_unlocked = true
+		print("ACHIEVEMENT UNLOCKED: 10 Minutes Survival!")
+
+	if lifetime_total_kills >= 5000 and not "kills_5000" in unlocked_achievements:
+		unlocked_achievements.append("kills_5000")
+		newly_unlocked = true
+
+	# Wenn etwas freigeschaltet wurde, speichern!
+	if newly_unlocked:
+		save_game()
+
 func reset_run_stats():
 	save_game()
 	run_total_kills = 0
@@ -114,6 +137,7 @@ func end_run(final_time: float, final_level: int):
 		
 	lifetime_damage_dealt += run_damage_dealt
 	run_damage_dealt = 0.0 
+	check_achievements()
 	reset_run_stats()
 	
 # --- SPEICHERN & LADEN ---
@@ -133,6 +157,8 @@ func save_game():
 	config.set_value("Economy", "unlocked_chars", unlocked_characters)
 	config.set_value("Economy", "discovered_weapons", discovered_weapons)
 	config.set_value("Economy", "discovered_upgrades", discovered_upgrades)
+	config.set_value("Economy", "unlocked_items", unlocked_items)
+	config.set_value("Economy", "unlocked_achievements", unlocked_achievements)
 	config.save(SAVE_PATH)
 	print("Spiel erfolgreich gespeichert!")  # Kleines Feedback für die Konsole
 
@@ -156,3 +182,5 @@ func load_game():
 		unlocked_characters = config.get_value("Economy", "unlocked_chars", ["Soilder"])
 		discovered_weapons = config.get_value("Economy", "discovered_weapons", ["knife"])
 		discovered_upgrades = config.get_value("Economy", "discovered_upgrades", [])
+		unlocked_items = config.get_value("Economy", "unlocked_items", [])
+		unlocked_achievements = config.get_value("Economy", "unlocked_achievements", [])
