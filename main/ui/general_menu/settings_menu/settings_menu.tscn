@@ -1,12 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://d1k2ql1tav3mb"]
+[gd_scene load_steps=16 format=3 uid="uid://d1k2ql1tav3mb"]
 
 [ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="1_13n8v"]
-[ext_resource type="Script" uid="uid://cb0hovp55vyva" path="res://main/ui/general_menu/settings_menu/settings_menu.gd" id="1_gewyu"]
+[ext_resource type="Script" uid="uid://fiol3wyo8aum" path="res://main/ui/general_menu/settings_menu/settings_menu.gd" id="1_gewyu"]
+[ext_resource type="Theme" uid="uid://b8pphsuclay7a" path="res://main/ui/main_theme.tres" id="2_ji8lt"]
 [ext_resource type="Texture2D" uid="uid://dl14ytnld1n1p" path="res://assets/art/ui/x_checkbox.png" id="2_qy8ck"]
 [ext_resource type="Texture2D" uid="uid://ojiv0cp0nnsa" path="res://assets/art/ui/slider.png" id="2_rewnd"]
 [ext_resource type="Texture2D" uid="uid://ddw20k3wafa5u" path="res://assets/art/ui/arrow_down.png" id="3_py3ce"]
 [ext_resource type="Texture2D" uid="uid://bjb71533alhyt" path="res://assets/art/ui/radio_checked.png" id="5_ji8lt"]
-[ext_resource type="Texture2D" uid="uid://chqo0vfskaciv" path="res://assets/art/ui/radio_unchecked.png" id="6_tk3my"]
+[ext_resource type="Texture2D" uid="uid://cmhpijjhb2y6c" path="res://assets/art/ui/radio_unchecked.png" id="6_tk3my"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_py3ce"]
 bg_color = Color(1, 1, 1, 1)
@@ -80,6 +81,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_ji8lt")
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30

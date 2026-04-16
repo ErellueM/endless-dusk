@@ -68,7 +68,6 @@ func change_state(new_state):
 			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func reset_game():
-	Global.save_game()
 	XpPool.reset_pool()
 	EnemyPool.clear_pools()
 	Global.reset_run_stats()

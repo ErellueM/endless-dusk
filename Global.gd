@@ -8,7 +8,7 @@ const SAVE_PATH = "user://savegame.cfg"
 var unlocked_characters: Array = ["Soilder"]
 
 var total_runs_played: int = 0
-var total_gold_earned: int = 0
+
 var highest_survival_time: float = 0.0
 
 # --- RUN STATS ---
@@ -21,10 +21,49 @@ var lifetime_kills_by_type: Dictionary = {}
 
 signal gold_changed(new_amount)
 
+var total_gold_earned: int = 0
 var gold: int = 0:
 	set(value):
+		if value > gold:
+			total_gold_earned += (value - gold)
 		gold = value
 		gold_changed.emit(gold) 
+
+# We ONLY store the scene path now!
+var monsters_db = {
+	"Green Slime": {
+		"scene": preload("res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/green_slime.tscn"),
+		"category": "Swarm"
+	},
+	"Red Slime": {
+		"scene": preload("res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/red_slime.tscn"),
+		"category": "Swarm"
+	},
+	"Tank Slime": {
+		"scene": preload("res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/tank_slime.tscn"),
+		"category": "Swarm"
+	},
+	"Mushroom Brute": {
+		"scene": preload("res://main/entities/enemies/simple_enemy/mushroom_brute/mushroom_brute.tscn"),
+		"category": "Normal"
+	},
+	"Wheel": {
+		"scene": preload("res://main/entities/enemies/simple_enemy/wheel/wheel.tscn"),
+		"category": "Normal"
+	},
+	"Tollkeeper": {
+		"scene": preload("res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.tscn"),
+		"category": "Normal"
+	},
+	"Plague Doctor": {
+		"scene": preload("res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn"),
+		"category": "Normal"
+	},
+	"Slime King": {
+		"scene": preload("res://main/entities/enemies/miniboss/slime_king/slime_king.tscn"),
+		"category": "Miniboss"
+	}
+}
 
 
 func _ready():
@@ -44,15 +83,9 @@ func register_kill(enemy_name: String):
 	else:
 		lifetime_kills_by_type[enemy_name] = 1
 
-	# DIE HANDBREMSE WURDE GELÖST!
-	# Hier wird nicht mehr auf die Festplatte geschrieben!
-
 
 func reset_run_stats():
-	# Wir speichern die Lifetime-Stats EINMALIG am Ende des Runs,
-	# kurz bevor die aktuellen Run-Stats gelöscht werden!
 	save_game()
-
 	run_total_kills = 0
 	run_kills_by_type.clear()
 

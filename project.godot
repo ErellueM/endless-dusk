@@ -50,6 +50,7 @@ player=""
 theme/default_font_antialiasing=0
 theme/default_font_hinting=0
 theme/default_font_subpixel_positioning=0
+theme/custom="uid://b8pphsuclay7a"
 theme/custom_font="uid://6ejtcaxqg1gg"
 
 [input]

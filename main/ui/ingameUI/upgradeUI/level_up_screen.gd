@@ -17,78 +17,6 @@ var remaining_picks: int = 1
 var cards_to_generate: int = 3
 var is_chest_mode: bool = false
 
-var unowned_weapons_db = {
-	"knife":
-	{
-		"name": "Knife",
-		"desc": "Throws a fast knife.",
-		"rarity": "Common",
-		"scene": preload("res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn"),
-		"icon": preload("res://main/weapons/equipable_weapons/range/knife/knife.png")
-	},
-	"ice_aura":
-	{
-		"name": "Ice Aura",
-		"desc": "Creates a freezing zone.",
-		"rarity": "Uncommon",
-		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/ice_aura.png")
-	},
-	"chain_lightning":
-	{
-		"name": "Chain Lightning",
-		"desc": "[color=green]New Weapon[/color]\nFires a bouncing bolt of energy.",
-		"rarity": "Rare",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/chain_lightning.png")
-	},
-	"pillar_of_light":
-	{
-		"name": "Pillar of Light",
-		"desc": "[color=green]New Weapon[/color]\nGod strikes the souls.",
-		"rarity": "Epic",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/pillar_of_light.png")
-	},
-	"void_orbs":
-	{
-		"name": "Void Orb",
-		"desc": "[color=green]New Weapon[/color]\n ...",
-		"rarity": "Legendary",
-		"scene": preload("res://main/weapons/equipable_weapons/melee/void_orbs/void_orbs.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/void_orbs.png")
-	},
-	"blood_trail":
-	{
-		"name": "Blood Trail",
-		"desc": "[color=green]New Weapon[/color]\n ...",
-		"rarity": "Uncommon",
-		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/blood_trail.png")
-	},
-	"phantom_glaive":
-	{
-		"name": "Phantom Glaive",
-		"desc": "[color=green]New Weapon[/color]\nThrows a spectral blade that returns to you.",
-		"rarity": "Rare",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/phantom_glaive.png")
-	},
-	"abyssal_impale":
-	{
-		"name": "Abyssal Impale",
-		"desc": "[color=green]New Weapon[/color]\nSpikes outranging the ground.",
-		"rarity": "Epic",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn"),
-		"icon": preload("res://assets/art/icons/weapon_icon/abyssal_impale.png")
-	},
-}
-
-
 func _ready():
 	pass
 
@@ -178,9 +106,9 @@ func generate_cards():
 					)
 
 		if current_weapons.size() < weapons_manager.max_weapons:
-			for w_id in unowned_weapons_db:
+			for w_id in UpgradeDatabase.weapons_db:
 				if not owned_weapon_ids.has(w_id):
-					var w_data = unowned_weapons_db[w_id]
+					var w_data = UpgradeDatabase.weapons_db[w_id]
 					weapon_pool.append(
 						{
 							"name": w_data["name"],

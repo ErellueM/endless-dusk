@@ -1,0 +1,115 @@
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://b8pphsuclay7a"]
+
+[ext_resource type="Texture2D" uid="uid://dl14ytnld1n1p" path="res://assets/art/ui/x_checkbox.png" id="1_tttxp"]
+[ext_resource type="Texture2D" uid="uid://cmhpijjhb2y6c" path="res://assets/art/ui/radio_unchecked.png" id="2_vgcga"]
+[ext_resource type="Texture2D" uid="uid://ojiv0cp0nnsa" path="res://assets/art/ui/slider.png" id="3_va3da"]
+[ext_resource type="Texture2D" uid="uid://ddw20k3wafa5u" path="res://assets/art/ui/arrow_down.png" id="4_g4b4m"]
+[ext_resource type="Texture2D" uid="uid://bjb71533alhyt" path="res://assets/art/ui/radio_checked.png" id="5_358ut"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_py3ce"]
+bg_color = Color(1, 1, 1, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rewnd"]
+bg_color = Color(0.8217887, 0.82178867, 0.82178867, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gewyu"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.3779188, 0.37791887, 0.37791884, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a312l"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.20152658, 0.20152658, 0.20152652, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qy8ck"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.17283267, 0.17283267, 0.17283261, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1j7eh"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.33288068, 0.3328807, 0.33288056, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tttxp"]
+bg_color = Color(0.06666667, 0.06666667, 0.08627451, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23392555, 0.23392546, 0.23392531, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tttxp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_va3da"]
+content_margin_left = 15.0
+content_margin_top = 5.0
+content_margin_right = 15.0
+content_margin_bottom = 5.0
+bg_color = Color(0.039215688, 0.039215688, 0.050980393, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_color = Color(0.28118682, 0.2811869, 0.2811867, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vgcga"]
+content_margin_left = 15.0
+content_margin_top = 5.0
+content_margin_right = 15.0
+content_margin_bottom = 5.0
+bg_color = Color(0.06666667, 0.06666667, 0.08627451, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_color = Color(0.9882353, 0.92941177, 0.6509804, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4b4m"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 0.72156864, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_358ut"]
+content_margin_left = 4.0
+bg_color = Color(0, 0, 0, 1)
+
+[resource]
+CheckBox/icons/checked = ExtResource("1_tttxp")
+CheckBox/icons/unchecked = ExtResource("2_vgcga")
+HSlider/icons/grabber = ExtResource("3_va3da")
+HSlider/icons/grabber_disabled = ExtResource("3_va3da")
+HSlider/icons/grabber_highlight = ExtResource("3_va3da")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_py3ce")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_rewnd")
+HSlider/styles/slider = SubResource("StyleBoxFlat_gewyu")
+OptionButton/icons/arrow = ExtResource("4_g4b4m")
+OptionButton/styles/hover = SubResource("StyleBoxFlat_a312l")
+OptionButton/styles/normal = SubResource("StyleBoxFlat_qy8ck")
+OptionButton/styles/pressed = SubResource("StyleBoxFlat_1j7eh")
+PopupMenu/icons/checked = ExtResource("1_tttxp")
+PopupMenu/icons/radio_checked = ExtResource("5_358ut")
+PopupMenu/icons/radio_unchecked = ExtResource("2_vgcga")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_tttxp")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_tttxp")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_va3da")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_vgcga")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_va3da")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_g4b4m")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_g4b4m")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_g4b4m")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_358ut")
