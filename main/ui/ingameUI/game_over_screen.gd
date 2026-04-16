@@ -16,6 +16,7 @@ func _ready():
 func show_game_over():
 	var final_level = 1
 	var final_time = "00:00"
+	var raw_time = 0.0
 
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
@@ -23,9 +24,12 @@ func show_game_over():
 
 	var game_ui = get_tree().get_first_node_in_group("GameUI")
 	if game_ui and "time_elapsed" in game_ui:
-		var minutes = int(game_ui.time_elapsed / 60)
-		var seconds = int(game_ui.time_elapsed) % 60
+		raw_time = game_ui.time_elapsed
+		var minutes = int(raw_time / 60)
+		var seconds = int(raw_time) % 60
 		final_time = "%02d:%02d" % [minutes, seconds]
+	
+	Global.end_run(raw_time, final_level)
 
 	stats_label.text = "LEVEL: " + str(final_level) + "\nTIME: " + final_time
 	show()

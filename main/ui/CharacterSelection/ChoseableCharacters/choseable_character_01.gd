@@ -34,7 +34,7 @@ func setup():
 		price_box.hide()
 	else:
 		# GESPERRT (Silhouetten-Look)
-		anim_sprite.modulate = Color(0.1, 0.1, 0.1, 1.0) # Sehr dunkles Grau
+		anim_sprite.modulate = Color(0.0, 0.0, 0.0, 0.5) # Sehr dunkles Grau
 		name_label.hide()
 		price_label.text = str(unlock_cost)
 		price_box.show()

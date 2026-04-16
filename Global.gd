@@ -8,8 +8,12 @@ const SAVE_PATH = "user://savegame.cfg"
 var unlocked_characters: Array = ["Soilder"]
 
 var total_runs_played: int = 0
+var lifetime_damage_dealt: float = 0.0
+var highest_level_reached: int = 1
+var run_damage_dealt: float = 0.0
 
 var highest_survival_time: float = 0.0
+var total_time_played: float = 0.0
 
 # --- RUN STATS ---
 var run_total_kills: int = 0
@@ -83,22 +87,40 @@ func register_kill(enemy_name: String):
 	else:
 		lifetime_kills_by_type[enemy_name] = 1
 
+func register_survival_time(time: float):
+	if time > highest_survival_time:
+		highest_survival_time = time
+	total_time_played += time
+	
 
 func reset_run_stats():
 	save_game()
 	run_total_kills = 0
 	run_kills_by_type.clear()
 
-
+func end_run(final_time: float, final_level: int):
+	if final_time > highest_survival_time:
+		highest_survival_time = final_time
+	total_time_played += final_time
+	
+	if final_level > highest_level_reached:
+		highest_level_reached = final_level
+		
+	lifetime_damage_dealt += run_damage_dealt
+	run_damage_dealt = 0.0 
+	reset_run_stats()
+	
 # --- SPEICHERN & LADEN ---
-
-
 func save_game():
 	var config = ConfigFile.new()
 	config.set_value("Stats", "total_kills", lifetime_total_kills)
 	config.set_value("Stats", "kills_by_type", lifetime_kills_by_type)
 	config.set_value("Stats", "total_runs_played", total_runs_played)
+	config.set_value("Stats", "lifetime_damage_dealt", lifetime_damage_dealt )
+	config.set_value("Stats", "highest_level_reached", highest_level_reached )
+	config.set_value("Stats", "run_damage_dealt", run_damage_dealt )
 	config.set_value("Stats", "highest_survival_time", highest_survival_time)
+	config.set_value("Stats", "total_time_played", total_time_played)
 	
 	config.set_value("Economy", "gold", gold)
 	config.set_value("Economy", "total_gold_earned", total_gold_earned)
@@ -115,7 +137,11 @@ func load_game():
 		lifetime_total_kills = config.get_value("Stats", "total_kills", 0)
 		lifetime_kills_by_type = config.get_value("Stats", "kills_by_type", {})
 		total_runs_played = config.get_value("Stats", "total_runs_played", 0)
+		lifetime_damage_dealt = config.get_value("Stats", "lifetime_damage_dealt", 0)
+		highest_level_reached = config.get_value("Stats", "highest_level_reached", 0)
+		run_damage_dealt = config.get_value("Stats", "run_damage_dealt", 0)
 		highest_survival_time = config.get_value("Stats", "highest_survival_time", 0.0)
+		total_time_played = config.get_value("Stats", "total_time_played", 0.0)
 		
 		gold = config.get_value("Economy", "gold", 0)
 		total_gold_earned = config.get_value("Economy", "total_gold_earned", 0)

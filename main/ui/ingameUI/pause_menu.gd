@@ -356,6 +356,11 @@ func _on_settings_button_pressed():
 
 
 func _on_quit_button_pressed():
+	var game_ui = get_tree().get_first_node_in_group("GameUI")
+	var player = get_tree().get_first_node_in_group("player")
+	var final_time = game_ui.time_elapsed if game_ui else 0.0
+	var final_lvl = player.level if player else 1
+	Global.end_run(final_time, final_lvl)
 	var manager = get_tree().get_first_node_in_group("Managers")
 	if manager:
 		manager.reset_game()
