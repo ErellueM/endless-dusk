@@ -6,6 +6,8 @@ var selected_character_scene: PackedScene = load(
 const SAVE_PATH = "user://savegame.cfg"
 
 var unlocked_characters: Array = ["Soilder"]
+var discovered_weapons: Array = []
+var discovered_upgrades: Array = []
 
 var total_runs_played: int = 0
 var lifetime_damage_dealt: float = 0.0
@@ -87,11 +89,15 @@ func register_kill(enemy_name: String):
 	else:
 		lifetime_kills_by_type[enemy_name] = 1
 
-func register_survival_time(time: float):
-	if time > highest_survival_time:
-		highest_survival_time = time
-	total_time_played += time
-	
+func discover_weapon(weapon_id: String):
+	if not weapon_id in discovered_weapons:
+		discovered_weapons.append(weapon_id)
+		save_game()
+
+func discover_upgrade(upgrade_name: String):
+	if not upgrade_name in discovered_upgrades:
+		discovered_upgrades.append(upgrade_name)
+		save_game()
 
 func reset_run_stats():
 	save_game()
@@ -125,6 +131,8 @@ func save_game():
 	config.set_value("Economy", "gold", gold)
 	config.set_value("Economy", "total_gold_earned", total_gold_earned)
 	config.set_value("Economy", "unlocked_chars", unlocked_characters)
+	config.set_value("Economy", "discovered_weapons", discovered_weapons)
+	config.set_value("Economy", "discovered_upgrades", discovered_upgrades)
 	config.save(SAVE_PATH)
 	print("Spiel erfolgreich gespeichert!")  # Kleines Feedback für die Konsole
 
@@ -146,3 +154,5 @@ func load_game():
 		gold = config.get_value("Economy", "gold", 0)
 		total_gold_earned = config.get_value("Economy", "total_gold_earned", 0)
 		unlocked_characters = config.get_value("Economy", "unlocked_chars", ["Soilder"])
+		discovered_weapons = config.get_value("Economy", "discovered_weapons", ["knife"])
+		discovered_upgrades = config.get_value("Economy", "discovered_upgrades", [])

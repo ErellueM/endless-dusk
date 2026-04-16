@@ -11,10 +11,11 @@ func add_weapon(weapon_scene: PackedScene) -> bool:
 	if get_child_count() >= max_weapons:
 		print("Inventar voll! Maximale Anzahl an Waffen erreicht.")
 		return false
-
+	
 	var new_weapon = weapon_scene.instantiate()
 	add_child(new_weapon)
 	if "player_ref" in new_weapon:
 		new_weapon.player_ref = get_parent()
+	Global.discover_weapon(new_weapon.weapon_id)
 
 	return true

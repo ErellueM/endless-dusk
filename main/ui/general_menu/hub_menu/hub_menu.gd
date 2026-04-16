@@ -7,7 +7,22 @@ extends Control
 
 @onready var stats_list = $TabContainer/Stats/ScrollContainer/MarginContainer/VBoxContainer
 @onready var armory_list = $TabContainer/Armory/ScrollContainer/VBoxContainer
+@onready var relics_list = $TabContainer/Relics/ScrollContainer/MarginContainer/VBoxContainer
 
+var rarity_colors = {
+	"Common": Color("#9d9d9d"),
+	"Uncommon": Color("#7fb06d"),
+	"Rare": Color("#5c9be6"),
+	"Epic": Color("#c95b8d"),
+	"Legendary": Color("#ff9933")
+}
+var rarity_values = {
+	"Legendary": 5,
+	"Epic": 4,
+	"Rare": 3,
+	"Uncommon": 2,
+	"Common": 1
+}
 var currently_selected_char_node = null
 
 func _ready():
@@ -24,6 +39,7 @@ func _ready():
 			
 	populate_stats()
 	populate_armory()
+	populate_relics()
 
 func update_gold_display():
 	gold_label.text = str(Global.gold)
@@ -82,10 +98,10 @@ func populate_stats():
 	# --- GENERAL STATS ---
 	add_stat_row("Total Runs Played:", str(Global.total_runs_played))
 	add_stat_row("Highest Level Reached:", "Level " + str(Global.highest_level_reached))
-	add_stat_row("Total Kills:", _format_big_number(Global.lifetime_total_kills))
+	add_stat_row("Total Kills:", _format_number_dotted(Global.lifetime_total_kills))
 	add_stat_row("Highest Survival Time:", _format_time(Global.highest_survival_time))
 	add_stat_row("Total Playtime:", _format_time(Global.total_time_played))
-	add_stat_row("Total Damage Dealt:", _format_big_number(Global.lifetime_damage_dealt))
+	add_stat_row("Total Damage Dealt:", _format_number_dotted(Global.lifetime_damage_dealt))
 	add_stat_row("Total Gold Earned:", str(Global.total_gold_earned))
 	
 	# Divider
@@ -179,47 +195,162 @@ func populate_armory():
 	for child in armory_list.get_children():
 		child.queue_free()
 		
-	for weapon_id in UpgradeDatabase.weapons_db:
-		var w_data = UpgradeDatabase.weapons_db[weapon_id]
+	# 1. Wir holen uns alle IDs und sortieren sie mit unserer brandneuen Logik!
+	var sorted_weapon_ids = UpgradeDatabase.weapons_db.keys()
+	sorted_weapon_ids.sort_custom(_sort_weapons)
 		
-		var temp_weapon = w_data["scene"].instantiate()
-		var w_damage = temp_weapon.base_damage
-		var w_cooldown = temp_weapon.base_fire_rate
-		var w_is_util = temp_weapon.is_utility
-		temp_weapon.queue_free()
+	# 2. Wir iterieren über die SORTIERTE Liste
+	for weapon_id in sorted_weapon_ids:
+		var w_data = UpgradeDatabase.weapons_db[weapon_id]
+		var is_discovered = weapon_id in Global.discovered_weapons
+		
+		# Wenn unentdeckt, ist alles dunkel. Wenn entdeckt, nutzen wir die Rarity-Farbe.
+		var rarity = w_data.get("rarity", "Common")
+		var r_color = rarity_colors.get(rarity, Color.WHITE) if is_discovered else Color(0.4, 0.4, 0.4)
 		
 		var row = HBoxContainer.new()
 		
+		# --- DAS ICON ---
 		var icon = TextureRect.new()
 		icon.texture = w_data["icon"]
-		icon.custom_minimum_size = Vector2(32, 32)
+		icon.custom_minimum_size = Vector2(48, 48)
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		
+		if not is_discovered:
+			# Schwarze Silhouette für unentdeckte Waffen
+			icon.modulate = Color(0.0, 0.0, 0.0, 0.5) 
+		
 		row.add_child(icon)
 		
+		# --- DER TEXT-BEREICH ---
 		var text_vbox = VBoxContainer.new()
 		text_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		text_vbox.add_theme_constant_override("separation", 2) 
 		row.add_child(text_vbox)
 		
 		var name_lbl = Label.new()
-		var stat_string = ""
 		
-		if w_is_util:
-			stat_string = "  [Utility Aura]"
+		if is_discovered:
+			# WAFFE IST BEKANNT: Zeige volle Stats!
+			var temp_weapon = w_data["scene"].instantiate()
+			var w_damage = temp_weapon.base_damage
+			var w_cooldown = temp_weapon.base_fire_rate
+			var w_is_util = temp_weapon.is_utility
+			temp_weapon.queue_free()
+			
+			var stat_string = "  [Utility Aura]" if w_is_util else "  (Dmg: " + _format_num(w_damage) + " | Cooldown: " + _format_num(w_cooldown) + "s)"
+			name_lbl.text = w_data["name"] + " [" + rarity + "]" + stat_string
+			
+			# Farbe und Schatten für den Titel
+			name_lbl.add_theme_color_override("font_color", r_color)
+			name_lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 1))
+			name_lbl.add_theme_constant_override("shadow_offset_y", 1)
+			
+			var desc_lbl = Label.new()
+			var clean_desc = w_data["desc"].replace("[color=green]New Weapon[/color]\n", "")
+			desc_lbl.text = clean_desc
+			desc_lbl.modulate = Color(0.6, 0.6, 0.6) 
+			text_vbox.add_child(name_lbl)
+			text_vbox.add_child(desc_lbl)
+			
 		else:
-			stat_string = "  (Dmg: " + _format_num(w_damage) + " | Cooldown: " + _format_num(w_cooldown) + "s)"
-		
-		name_lbl.text = w_data["name"] + " [" + w_data.get("rarity", "Common") + "]" + stat_string
-		text_vbox.add_child(name_lbl)
-		
-		var desc_lbl = Label.new()
-		var clean_desc = w_data["desc"].replace("[color=green]New Weapon[/color]\n", "")
-		
-		desc_lbl.text = clean_desc
-		desc_lbl.modulate = Color(0.7, 0.7, 0.7)
-		text_vbox.add_child(desc_lbl)
+			# WAFFE IST UNBEKANNT: Nur "???" anzeigen
+			name_lbl.text = "??? [Unknown Weapon]"
+			name_lbl.add_theme_color_override("font_color", r_color) # Das ist unser dunkles Grau von oben
+			text_vbox.add_child(name_lbl)
+			
+			var desc_lbl = Label.new()
+			desc_lbl.text = "Find this weapon during a run to unlock its details."
+			desc_lbl.modulate = Color(0.3, 0.3, 0.3) # Sehr schwaches Grau
+			text_vbox.add_child(desc_lbl)
 		
 		armory_list.add_child(row)
+
+# --- HELPER: CUSTOM SORTING FOR RELICS ---
+func _sort_relics(a: Dictionary, b: Dictionary) -> bool:
+	var is_a_unlocked = a["name"] in Global.discovered_upgrades
+	var is_b_unlocked = b["name"] in Global.discovered_upgrades
+	
+	if is_a_unlocked and not is_b_unlocked: return true
+	if not is_a_unlocked and is_b_unlocked: return false
+	
+	var val_a = rarity_values.get(a.get("rarity", "Common"), 1)
+	var val_b = rarity_values.get(b.get("rarity", "Common"), 1)
+	
+	if val_a != val_b:
+		return val_a > val_b 
+		
+	return a["name"] < b["name"]
+
+
+# --- POPULATE RELICS (PASSIVES) ---
+func populate_relics():
+	for child in relics_list.get_children():
+		child.queue_free()
+		
+	# 1. Hole alle Stat-Upgrades und sortiere sie
+	var sorted_upgrades = UpgradeDatabase.stat_upgrades.duplicate()
+	sorted_upgrades.sort_custom(_sort_relics)
+		
+	# 2. Iteriere über die sortierte Liste
+	for u_data in sorted_upgrades:
+		var u_name = u_data["name"]
+		var is_discovered = u_name in Global.discovered_upgrades
+		
+		var rarity = u_data.get("rarity", "Common")
+		var r_color = rarity_colors.get(rarity, Color.WHITE) if is_discovered else Color(0.4, 0.4, 0.4)
+		
+		var row = HBoxContainer.new()
+		
+		# --- ICON ZUWEISEN ---
+		var icon = TextureRect.new()
+		# Finde das richtige Icon basierend auf dem ersten Stat-Key
+		if u_data.has("stats") and u_data["stats"].size() > 0:
+			var primary_stat_key = u_data["stats"][0]["key"]
+			icon.texture = UpgradeDatabase.stat_icons.get(primary_stat_key)
+			
+		icon.custom_minimum_size = Vector2(48, 48)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		
+		if not is_discovered:
+			icon.modulate = Color(0.0, 0.0, 0.0, 0.5) 
+		
+		row.add_child(icon)
+		
+		# --- TEXT BEREICH ---
+		var text_vbox = VBoxContainer.new()
+		text_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		text_vbox.add_theme_constant_override("separation", 2) 
+		row.add_child(text_vbox)
+		
+		var name_lbl = Label.new()
+		
+		if is_discovered:
+			name_lbl.text = u_name + " [" + rarity + "]"
+			name_lbl.add_theme_color_override("font_color", r_color)
+			name_lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 1))
+			name_lbl.add_theme_constant_override("shadow_offset_y", 1)
+			
+			var desc_lbl = Label.new()
+			var clean_desc = u_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "")
+			desc_lbl.text = clean_desc
+			desc_lbl.modulate = Color(0.6, 0.6, 0.6) 
+			
+			text_vbox.add_child(name_lbl)
+			text_vbox.add_child(desc_lbl)
+		else:
+			name_lbl.text = "??? [Unknown Relic]"
+			name_lbl.add_theme_color_override("font_color", r_color) 
+			text_vbox.add_child(name_lbl)
+			
+			var desc_lbl = Label.new()
+			desc_lbl.text = "Unlock this passive by finding it during a run."
+			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
+			text_vbox.add_child(desc_lbl)
+		
+		relics_list.add_child(row)
 
 # --- UI BUILDER HELPER FUNCTIONS ---
 func add_stat_row(title: String, value: String):
@@ -305,6 +436,42 @@ func _format_big_number(val: float) -> String:
 	else:
 		return "%.2f%s" % [display_val, suffixes[suffix_index]]
 
+func _format_number_dotted(val: float) -> String:
+	var str_val = str(int(val))
+	var result = ""
+	var count = 0
+	
+	# Wir gehen die Ziffernfolge von hinten nach vorne durch
+	for i in range(str_val.length() - 1, -1, -1):
+		if count == 3:
+			result = "." + result # Für US-Schreibweise hier einfach ein "," eintragen
+			count = 0
+		result = str_val[i] + result
+		count += 1
+		
+	return result
+	
+func _sort_weapons(a: String, b: String) -> bool:
+	var is_a_unlocked = a in Global.discovered_weapons
+	var is_b_unlocked = b in Global.discovered_weapons
+	
+	# Regel 1: Entdeckte Items kommen VOR unentdeckten
+	if is_a_unlocked and not is_b_unlocked: return true
+	if not is_a_unlocked and is_b_unlocked: return false
+	
+	var data_a = UpgradeDatabase.weapons_db[a]
+	var data_b = UpgradeDatabase.weapons_db[b]
+	
+	# Regel 2: Wenn beide den gleichen Status haben, sortiere nach Seltenheit (Legendary zuerst!)
+	var val_a = rarity_values.get(data_a.get("rarity", "Common"), 1)
+	var val_b = rarity_values.get(data_b.get("rarity", "Common"), 1)
+	
+	if val_a != val_b:
+		return val_a > val_b 
+		
+	# Regel 3: Wenn Status UND Seltenheit gleich sind, sortiere Alphabetisch (A-Z)
+	return data_a["name"] < data_b["name"]
+	
 # --- BUTTON SIGNALS ---
 func _on_start_run_button_pressed():
 	if currently_selected_char_node and currently_selected_char_node.is_unlocked:
