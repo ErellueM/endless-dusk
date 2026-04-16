@@ -227,8 +227,8 @@ texture = ExtResource("7_5xq8x")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(320, 180)
 
-[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button_start_game" to="." method="_on_Button_start_game_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button_start_game" to="." method="_on_button_start_game_pressed"]
+[connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button_start_game" to="." method="_on_Button_start_game_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button_settings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button_credits" to="." method="_on_button_credits_pressed"]
 [connection signal="pressed" from="CanvasLayer/CenterContainer/VBoxContainer/Button_credits2" to="." method="_on_quit_button_pressed"]

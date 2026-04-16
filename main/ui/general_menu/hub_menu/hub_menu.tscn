@@ -1,0 +1,431 @@
+[gd_scene load_steps=41 format=3 uid="uid://dlcsq0j1e233m"]
+
+[ext_resource type="Script" uid="uid://dr4exrmw1x5lx" path="res://main/ui/general_menu/hub_menu/hub_menu.gd" id="1_hubscript"]
+[ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="2_6eg4w"]
+[ext_resource type="PackedScene" uid="uid://yd6amcmsh8in" path="res://main/ui/CharacterSelection/ChoseableCharacters/ChoseableCharacter_01.tscn" id="2_13ydn"]
+[ext_resource type="Texture2D" uid="uid://kuxsf4tgrp1b" path="res://assets/art/destructables/barrel/item_drops/coin.png" id="2_coin"]
+[ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/PlayableCharacter_01.tscn" id="3_ef216"]
+[ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="4_6eg4w"]
+[ext_resource type="PackedScene" uid="uid://bk8p1tcioxxce" path="res://main/entities/Characters/PlayableCharacter_02.tscn" id="5_h2mne"]
+[ext_resource type="Texture2D" uid="uid://c55wcqqjsap3r" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="6_ujtpe"]
+[ext_resource type="PackedScene" uid="uid://vq8qmvmk1bbj" path="res://main/entities/Characters/PlayableCHaracter_03.tscn" id="7_a88xq"]
+[ext_resource type="Texture2D" uid="uid://b0u5anfvql282" path="res://assets/art/characters/Crusader/Crusader-Idle.png" id="8_mwmri"]
+[ext_resource type="Texture2D" uid="uid://c7758oaoelgk1" path="res://assets/art/characters/Crusader/Crusader-Walk.png" id="9_whar4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ltq3"]
+atlas = ExtResource("4_6eg4w")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6acf"]
+atlas = ExtResource("4_6eg4w")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxdn1"]
+atlas = ExtResource("4_6eg4w")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_atvyr"]
+atlas = ExtResource("4_6eg4w")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eclxw"]
+atlas = ExtResource("4_6eg4w")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nxpqh"]
+atlas = ExtResource("4_6eg4w")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6eg4w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ltq3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6acf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxdn1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_atvyr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eclxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nxpqh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8bcl"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8du83"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cfg8"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw7g4"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mji4m"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lctbe"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h2mne"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8bcl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8du83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cfg8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw7g4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mji4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lctbe")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxaws"]
+atlas = ExtResource("8_mwmri")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjtgd"]
+atlas = ExtResource("8_mwmri")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wb3i4"]
+atlas = ExtResource("8_mwmri")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cuwi"]
+atlas = ExtResource("8_mwmri")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bs84k"]
+atlas = ExtResource("8_mwmri")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qep86"]
+atlas = ExtResource("8_mwmri")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wnni"]
+atlas = ExtResource("9_whar4")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bt83l"]
+atlas = ExtResource("9_whar4")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sp01w"]
+atlas = ExtResource("9_whar4")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrb1g"]
+atlas = ExtResource("9_whar4")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dtyh"]
+atlas = ExtResource("9_whar4")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7u14q"]
+atlas = ExtResource("9_whar4")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqeul"]
+atlas = ExtResource("9_whar4")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruirv"]
+atlas = ExtResource("9_whar4")
+region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ujtpe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxaws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjtgd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wb3i4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cuwi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bs84k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qep86")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6wnni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bt83l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sp01w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrb1g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dtyh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7u14q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqeul")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ruirv")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 9.0
+}]
+
+[node name="HubMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hubscript")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0666667, 0.0666667, 0.0862745, 1)
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 35.0
+grow_horizontal = 2
+
+[node name="GenericBackButton" parent="TopBar" instance=ExtResource("2_6eg4w")]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GoldBox" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+alignment = 2
+
+[node name="GoldLabel" type="Label" parent="TopBar/GoldBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.929412, 0.65098, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "0"
+vertical_alignment = 1
+
+[node name="CoinIcon" type="TextureRect" parent="TopBar/GoldBox"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("2_coin")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -130.0
+offset_right = 280.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+current_tab = 0
+
+[node name="Characters" type="Control" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/Characters"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 15
+columns = 4
+
+[node name="Soilder" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
+layout_mode = 2
+character_name = "Soilder"
+character_scene = ExtResource("3_ef216")
+sprite_frames = SubResource("SpriteFrames_6eg4w")
+
+[node name="Orc" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
+layout_mode = 2
+character_name = "Orc"
+character_scene = ExtResource("5_h2mne")
+sprite_frames = SubResource("SpriteFrames_h2mne")
+unlock_cost = 2
+
+[node name="Crusader" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
+layout_mode = 2
+character_name = "Crusader"
+character_scene = ExtResource("7_a88xq")
+sprite_frames = SubResource("SpriteFrames_ujtpe")
+unlock_cost = 4
+
+[node name="SelectedCharInfo" type="Label" parent="TabContainer/Characters"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "Selected: None"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Upgrades" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Label" type="Label" parent="TabContainer/Upgrades"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+text = "Meta Progression Shop
+(Coming Soon)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Armory" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Armory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Armory/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="Stats" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Stats"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Stats/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="StartRunButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -45.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.819608, 0.941176, 0.643137, 1)
+theme_override_font_sizes/font_size = 16
+text = "START RUN"
+
+[connection signal="pressed" from="StartRunButton" to="." method="_on_start_run_button_pressed"]

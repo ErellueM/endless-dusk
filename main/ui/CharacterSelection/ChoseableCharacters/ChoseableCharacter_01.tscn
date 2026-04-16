@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://yd6amcmsh8in"]
+[gd_scene load_steps=12 format=3 uid="uid://yd6amcmsh8in"]
 
 [ext_resource type="Script" uid="uid://b6csilx3gglyp" path="res://main/ui/CharacterSelection/ChoseableCharacters/choseable_character_01.gd" id="1_ppt4t"]
 [ext_resource type="FontFile" uid="uid://6ejtcaxqg1gg" path="res://assets/fonts/pixelfonts/monogram-extended.ttf" id="2_2q4s7"]
 [ext_resource type="Texture2D" uid="uid://b0u5anfvql282" path="res://assets/art/characters/Crusader/Crusader-Idle.png" id="3_2q4s7"]
+[ext_resource type="Texture2D" uid="uid://kuxsf4tgrp1b" path="res://assets/art/destructables/barrel/item_drops/coin.png" id="4_coin"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jccbn"]
 atlas = ExtResource("3_2q4s7")
@@ -54,39 +55,66 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Control" type="Control"]
-custom_minimum_size = Vector2(50, 50)
+[node name="CharacterCard" type="Control"]
+custom_minimum_size = Vector2(70, 85)
 layout_mode = 3
-anchor_right = 0.087000005
-anchor_bottom = 0.15400001
-offset_right = -5.680004
-offset_bottom = -5.4400063
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
 script = ExtResource("1_ppt4t")
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_top = 21.0
-offset_right = 50.0
-offset_bottom = 36.0
-theme_override_constants/line_spacing = 6
-theme_override_fonts/font = ExtResource("2_2q4s7")
-theme_override_font_sizes/font_size = 16
-text = "CRusader"
-horizontal_alignment = 1
-
 [node name="TextureButton" type="TextureButton" parent="."]
-layout_mode = 0
-offset_right = 50.0
-offset_bottom = 38.0
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 55.0
+grow_horizontal = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="TextureButton"]
-layout_mode = 0
-offset_right = 50.0
-offset_bottom = 43.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TextureButton/CenterContainer"]
-position = Vector2(24, 15)
+position = Vector2(35, 27)
 sprite_frames = SubResource("SpriteFrames_2g43r")
 animation = &"new_animation"
+
+[node name="InfoContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.29
+offset_bottom = -25.290062
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="InfoContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_2q4s7")
+theme_override_font_sizes/font_size = 16
+text = "Crusader"
+horizontal_alignment = 1
+
+[node name="PriceBox" type="HBoxContainer" parent="InfoContainer"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="PriceLabel" type="Label" parent="InfoContainer/PriceBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.5803922, 1)
+theme_override_fonts/font = ExtResource("2_2q4s7")
+theme_override_font_sizes/font_size = 16
+text = "500"
+
+[node name="CoinIcon" type="TextureRect" parent="InfoContainer/PriceBox"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("4_coin")
+expand_mode = 1
+stretch_mode = 5

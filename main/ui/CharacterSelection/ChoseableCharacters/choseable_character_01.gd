@@ -1,34 +1,43 @@
 extends Control
 
+signal character_clicked(char_node)
+
 @export var character_name: String
 @export var character_scene: PackedScene
 @export var sprite_frames: SpriteFrames
-@export var unlocked: bool = true
+@export var unlock_cost: int = 500 
 
+var is_unlocked: bool = false
+
+@onready var anim_sprite = $TextureButton/CenterContainer/AnimatedSprite2D
+@onready var name_label = $InfoContainer/NameLabel
+@onready var price_box = $InfoContainer/PriceBox
+@onready var price_label = $InfoContainer/PriceBox/PriceLabel
 
 func _ready():
-	$Label.text = character_name
-	$TextureButton.connect("pressed", Callable(self, "_on_pressed"))
-
+	$TextureButton.pressed.connect(_on_pressed)
+	
 	if sprite_frames:
-		$TextureButton/CenterContainer/AnimatedSprite2D.sprite_frames = sprite_frames
+		anim_sprite.sprite_frames = sprite_frames
 		var anims = sprite_frames.get_animation_names()
 		if anims.size() > 0:
-			$TextureButton/CenterContainer/AnimatedSprite2D.play(anims[0])  # erste Animation automatisch abspielen
+			anim_sprite.play(anims[0])
 
-	if not unlocked:
-		make_locked_visual()
-
+func setup():
+	is_unlocked = Global.unlocked_characters.has(character_name)
+	
+	if is_unlocked:
+		# FREIGESCHALTET
+		anim_sprite.modulate = Color(1.0, 1.0, 1.0, 1.0) # Normale Farbe
+		name_label.text = character_name
+		name_label.show()
+		price_box.hide()
+	else:
+		# GESPERRT (Silhouetten-Look)
+		anim_sprite.modulate = Color(0.1, 0.1, 0.1, 1.0) # Sehr dunkles Grau
+		name_label.hide()
+		price_label.text = str(unlock_cost)
+		price_box.show()
 
 func _on_pressed():
-	if not unlocked:
-		return
-	Global.selected_character_scene = character_scene
-	SceneChanger.change_scene("res://maps/map_1.tscn")
-
-
-func make_locked_visual():
-	$TextureButton.modulate = Color(0, 0, 0, 0.5)
-	$Label.text = "???"
-
-# Zurück Zum Hauptmenü
+	character_clicked.emit(self)

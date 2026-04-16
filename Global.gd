@@ -5,6 +5,12 @@ var selected_character_scene: PackedScene = load(
 )
 const SAVE_PATH = "user://savegame.cfg"
 
+var unlocked_characters: Array = ["Soilder"]
+
+var total_runs_played: int = 0
+var total_gold_earned: int = 0
+var highest_survival_time: float = 0.0
+
 # --- RUN STATS ---
 var run_total_kills: int = 0
 var run_kills_by_type: Dictionary = {}
@@ -58,7 +64,12 @@ func save_game():
 	var config = ConfigFile.new()
 	config.set_value("Stats", "total_kills", lifetime_total_kills)
 	config.set_value("Stats", "kills_by_type", lifetime_kills_by_type)
+	config.set_value("Stats", "total_runs_played", total_runs_played)
+	config.set_value("Stats", "highest_survival_time", highest_survival_time)
+	
 	config.set_value("Economy", "gold", gold)
+	config.set_value("Economy", "total_gold_earned", total_gold_earned)
+	config.set_value("Economy", "unlocked_chars", unlocked_characters)
 	config.save(SAVE_PATH)
 	print("Spiel erfolgreich gespeichert!")  # Kleines Feedback für die Konsole
 
@@ -70,4 +81,9 @@ func load_game():
 	if err == OK:
 		lifetime_total_kills = config.get_value("Stats", "total_kills", 0)
 		lifetime_kills_by_type = config.get_value("Stats", "kills_by_type", {})
+		total_runs_played = config.get_value("Stats", "total_runs_played", 0)
+		highest_survival_time = config.get_value("Stats", "highest_survival_time", 0.0)
+		
 		gold = config.get_value("Economy", "gold", 0)
+		total_gold_earned = config.get_value("Economy", "total_gold_earned", 0)
+		unlocked_characters = config.get_value("Economy", "unlocked_chars", ["Soilder"])

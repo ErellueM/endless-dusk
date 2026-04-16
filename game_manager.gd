@@ -9,9 +9,7 @@ var current_state = GameState.PLAYING
 
 
 func _ready():
-	Global.reset_run_stats()
-	XpPool.reset_pool()
-	EnemyPool.clear_pools()
+	reset_game()
 	if pause_menu:
 		pause_menu.hide()
 	if level_up_screen:
@@ -62,15 +60,18 @@ func change_state(new_state):
 
 		GameState.DEAD:
 			get_tree().paused = true
-			Global.save_game()
-			XpPool.reset_pool()
-			EnemyPool.clear_pools()
+			reset_game()
 			pause_menu.hide()
 			level_up_screen.hide()
 			if game_over_screen:
 				game_over_screen.show_game_over()
 			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+func reset_game():
+	Global.save_game()
+	XpPool.reset_pool()
+	EnemyPool.clear_pools()
+	Global.reset_run_stats()
 
 func _on_player_leveled_up():
 	change_state(GameState.LEVEL_UP)

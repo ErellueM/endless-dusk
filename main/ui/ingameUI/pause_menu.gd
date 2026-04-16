@@ -356,4 +356,7 @@ func _on_settings_button_pressed():
 
 
 func _on_quit_button_pressed():
+	var manager = get_tree().get_first_node_in_group("Managers")
+	if manager:
+		manager.reset_game()
 	SceneChanger.change_scene("res://main/ui/general_menu/main_menu/main_menu.tscn")

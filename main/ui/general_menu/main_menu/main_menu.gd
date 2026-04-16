@@ -1,7 +1,7 @@
 extends Node2D
 
 # Pfad zur Szenen
-const SCENE_CHARACTER_SELECTION = "res://main/ui/CharacterSelection/CharacterSeletion.tscn"
+const SCENE_CHARACTER_SELECTION = "res://main/ui/general_menu/hub_menu/hub_menu.tscn"#"res://main/ui/CharacterSelection/CharacterSeletion.tscn"
 const SCENE_SETTINGS = "res://main/ui/general_menu/settings_menu/settings_menu.tscn"
 const SCENE_CREDITS = "res://main/ui/general_menu/credits_menu/credits.tscn"
 const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
