@@ -73,6 +73,16 @@ var monsters_db = {
 	}
 }
 
+# --- ACHIEVEMENT REGELWERK ---
+var achievement_db = {
+	"survive_10_min": {"type": "time", "target": 600.0},
+	"survive_20_min": {"type": "time", "target": 1200.0},
+	"survive_30_min": {"type": "time", "target": 1800.0},
+	"kills_1000":     {"type": "kills", "target": 1000},
+	"kills_5000":     {"type": "kills", "target": 5000},
+	"damage_1M":      {"type": "damage", "target": 1000000.0},
+	"level_50":       {"type": "level", "target": 50}
+}
 
 func _ready():
 	load_game()  # Lädt die Lifetime-Stats direkt beim Spielstart
@@ -109,16 +119,34 @@ func unlock_item(item_id: String):
 func check_achievements():
 	var newly_unlocked = false
 	
-	if highest_survival_time >= 600.0 and not "survive_10_min" in unlocked_achievements:
-		unlocked_achievements.append("survive_10_min")
-		newly_unlocked = true
-		print("ACHIEVEMENT UNLOCKED: 10 Minutes Survival!")
-
-	if lifetime_total_kills >= 5000 and not "kills_5000" in unlocked_achievements:
-		unlocked_achievements.append("kills_5000")
-		newly_unlocked = true
-
-	# Wenn etwas freigeschaltet wurde, speichern!
+	# Wir gehen jedes Achievement in unserer Datenbank durch
+	for ach_id in achievement_db:
+		
+		# 1. Wenn wir es schon haben, direkt zum nächsten springen!
+		if unlocked_achievements.has(ach_id):
+			continue 
+			
+		var data = achievement_db[ach_id]
+		var is_completed = false
+		
+		# 2. Prüfen, ob die Bedingung erfüllt ist (anhand des "Typs")
+		match data["type"]:
+			"time":
+				if highest_survival_time >= data["target"]: is_completed = true
+			"kills":
+				if lifetime_total_kills >= data["target"]: is_completed = true
+			"damage":
+				if lifetime_damage_dealt >= data["target"]: is_completed = true
+			"level":
+				if highest_level_reached >= data["target"]: is_completed = true
+				
+		# 3. Wenn es erfüllt ist, freischalten!
+		if is_completed:
+			unlocked_achievements.append(ach_id)
+			newly_unlocked = true
+			print("ACHIEVEMENT UNLOCKED: ", ach_id)
+			
+	# 4. Am Ende einmal speichern, falls sich etwas getan hat
 	if newly_unlocked:
 		save_game()
 

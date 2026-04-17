@@ -9,6 +9,13 @@ extends Control
 @onready var armory_list = $TabContainer/Armory/ScrollContainer/VBoxContainer
 @onready var relics_list = $TabContainer/Relics/ScrollContainer/MarginContainer/VBoxContainer
 
+@onready var buy_overlay = $BuyConfirmOverlay
+@onready var buy_rt_label = $BuyConfirmOverlay/Panel/MarginContainer/VBoxContainer/RichTextLabel
+@onready var btn_buy_yes = $BuyConfirmOverlay/Panel/MarginContainer/VBoxContainer/HBoxContainer/BtnYes
+@onready var btn_buy_no = $BuyConfirmOverlay/Panel/MarginContainer/VBoxContainer/HBoxContainer/BtnNo
+
+var character_to_buy_node = null
+
 var rarity_colors = {
 	"Common": Color("#9d9d9d"),
 	"Uncommon": Color("#7fb06d"),
@@ -26,7 +33,11 @@ var rarity_values = {
 var currently_selected_char_node = null
 
 func _ready():
+	Global.check_achievements()
 	update_gold_display()
+	
+	btn_buy_yes.pressed.connect(_on_buy_yes_pressed)
+	btn_buy_no.pressed.connect(_on_buy_no_pressed)
 	
 	var start_card = null
 	for char_card in char_grid.get_children():
@@ -66,10 +77,12 @@ func _on_character_card_clicked(clicked_card):
 					if name_label: name_label.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	else:
 		if Global.gold >= clicked_card.unlock_cost:
-			# Man kann es sich leisten!
-			selected_info_label.text = "Buy " + clicked_card.character_name + " for " + str(clicked_card.unlock_cost) + "G?"
-			start_button.disabled = true
-			start_button.text = "LOCKED"
+			character_to_buy_node = clicked_card
+			var gold_icon_path = "res://assets/art/destructables/barrel/item_drops/coin.png" 
+			buy_rt_label.text = "[center]Buy " + clicked_card.character_name + " for\n" + \
+								"[font_size=24][color=#fceda6]" + str(clicked_card.unlock_cost) + "[/color][/font_size]" + \
+								" [img=32]" + gold_icon_path + "[/img] ?[/center]"
+			buy_overlay.show()
 		else:
 			# ZU WENIG GOLD!
 			selected_info_label.text = "NOT ENOUGH GOLD (" + str(clicked_card.unlock_cost) + "G)"
@@ -203,7 +216,7 @@ func populate_armory():
 	for weapon_id in sorted_weapon_ids:
 		var w_data = UpgradeDatabase.weapons_db[weapon_id]
 		var is_discovered = weapon_id in Global.discovered_weapons
-		var is_locked = w_data.has("unlock_req") and not Global.unlocked_items.has(weapon_id)
+		var is_locked = w_data.has("unlock_req") and not Global.unlocked_achievements.has(w_data["unlock_req"])
 		
 		# Wenn unentdeckt, ist alles dunkel. Wenn entdeckt, nutzen wir die Rarity-Farbe.
 		var rarity = w_data.get("rarity", "Common")
@@ -536,5 +549,23 @@ func _on_start_run_button_pressed():
 		Global.selected_character_scene = currently_selected_char_node.character_scene
 		SceneChanger.change_scene("res://maps/map_1.tscn")
 
-func _on_back_button_pressed():
-	pass
+# --- BUY CONFIRMATION POPUP ---
+func _on_buy_yes_pressed():
+	if character_to_buy_node and Global.gold >= character_to_buy_node.unlock_cost:
+		# KAUF WIRD DURCHGEFÜHRT!
+		Global.gold -= character_to_buy_node.unlock_cost
+		Global.unlocked_characters.append(character_to_buy_node.character_name)
+		Global.save_game()
+		
+		update_gold_display()
+		character_to_buy_node.setup()
+		_on_character_card_clicked(character_to_buy_node)
+		
+	# Popup schließen und Variable leeren
+	buy_overlay.hide()
+	character_to_buy_node = null
+
+func _on_buy_no_pressed():
+	# Abbruch: Einfach nur das Popup schließen
+	buy_overlay.hide()
+	character_to_buy_node = null
