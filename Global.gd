@@ -37,52 +37,6 @@ var gold: int = 0:
 		gold = value
 		gold_changed.emit(gold) 
 
-# We ONLY store the scene path now!
-var monsters_db = {
-	"Green Slime": {
-		"scene": preload("res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/green_slime.tscn"),
-		"category": "Swarm"
-	},
-	"Red Slime": {
-		"scene": preload("res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/red_slime.tscn"),
-		"category": "Swarm"
-	},
-	"Tank Slime": {
-		"scene": preload("res://main/entities/enemies/dump_swarm_enemy/swarm_enemies/tank_slime.tscn"),
-		"category": "Swarm"
-	},
-	"Mushroom Brute": {
-		"scene": preload("res://main/entities/enemies/simple_enemy/mushroom_brute/mushroom_brute.tscn"),
-		"category": "Normal"
-	},
-	"Wheel": {
-		"scene": preload("res://main/entities/enemies/simple_enemy/wheel/wheel.tscn"),
-		"category": "Normal"
-	},
-	"Tollkeeper": {
-		"scene": preload("res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.tscn"),
-		"category": "Normal"
-	},
-	"Plague Doctor": {
-		"scene": preload("res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn"),
-		"category": "Normal"
-	},
-	"Slime King": {
-		"scene": preload("res://main/entities/enemies/miniboss/slime_king/slime_king.tscn"),
-		"category": "Miniboss"
-	}
-}
-
-# --- ACHIEVEMENT REGELWERK ---
-var achievement_db = {
-	"survive_10_min": {"type": "time", "target": 600.0},
-	"survive_20_min": {"type": "time", "target": 1200.0},
-	"survive_30_min": {"type": "time", "target": 1800.0},
-	"kills_1000":     {"type": "kills", "target": 1000},
-	"kills_5000":     {"type": "kills", "target": 5000},
-	"damage_1M":      {"type": "damage", "target": 1000000.0},
-	"level_50":       {"type": "level", "target": 50}
-}
 
 func _ready():
 	load_game()  # Lädt die Lifetime-Stats direkt beim Spielstart
@@ -118,37 +72,25 @@ func unlock_item(item_id: String):
 
 func check_achievements():
 	var newly_unlocked = false
-	
-	# Wir gehen jedes Achievement in unserer Datenbank durch
-	for ach_id in achievement_db:
+	for ach_id in AchievementDatabase.achievements:
+		if unlocked_achievements.has(ach_id): continue
 		
-		# 1. Wenn wir es schon haben, direkt zum nächsten springen!
-		if unlocked_achievements.has(ach_id):
-			continue 
-			
-		var data = achievement_db[ach_id]
-		var is_completed = false
-		
-		# 2. Prüfen, ob die Bedingung erfüllt ist (anhand des "Typs")
+		var data = AchievementDatabase.achievements[ach_id]
+		var is_done = false
 		match data["type"]:
-			"time":
-				if highest_survival_time >= data["target"]: is_completed = true
-			"kills":
-				if lifetime_total_kills >= data["target"]: is_completed = true
-			"damage":
-				if lifetime_damage_dealt >= data["target"]: is_completed = true
-			"level":
-				if highest_level_reached >= data["target"]: is_completed = true
-				
-		# 3. Wenn es erfüllt ist, freischalten!
-		if is_completed:
+			"time":   if highest_survival_time >= data["target"]: is_done = true
+			"kills":  if lifetime_total_kills >= data["target"]: is_done = true
+			"damage": if lifetime_damage_dealt >= data["target"]: is_done = true
+			"level":  if highest_level_reached >= data["target"]: is_done = true
+			"gold":   if total_gold_earned >= data["target"]: is_done = true
+			"runs":   if total_runs_played >= data["target"]: is_done = true
+		
+		if is_done:
 			unlocked_achievements.append(ach_id)
 			newly_unlocked = true
-			print("ACHIEVEMENT UNLOCKED: ", ach_id)
+			print("Unlocked: ", data["name"])
 			
-	# 4. Am Ende einmal speichern, falls sich etwas getan hat
-	if newly_unlocked:
-		save_game()
+	if newly_unlocked: save_game()
 
 func reset_run_stats():
 	save_game()

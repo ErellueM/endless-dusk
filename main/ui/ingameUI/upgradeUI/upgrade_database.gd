@@ -49,7 +49,7 @@ static var weapons_db = {
 		"name": "Blood Trail",
 		"desc": "[color=green]New Weapon[/color]\n ...",
 		"rarity": "Uncommon",
-		"unlock_req": "survive_10_min",
+		"unlock_req": "survive_10_min", #level_100
 		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/blood_trail.png")
 	},
@@ -159,6 +159,7 @@ static var stat_upgrades = [
 		"desc": "[color=green]+60% Damage[/color]\n[color=red]-5 Armor[/color]",
 		"rarity": "Legendary",
 		"type": "stat",
+		"unlock_req": "level_100",
 		"stats": [{"key": "might", "amount": 0.6}, {"key": "armor", "amount": -5.0}]
 	},
 	{

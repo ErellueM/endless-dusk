@@ -8,6 +8,7 @@ extends Control
 @onready var stats_list = $TabContainer/Stats/ScrollContainer/MarginContainer/VBoxContainer
 @onready var armory_list = $TabContainer/Armory/ScrollContainer/VBoxContainer
 @onready var relics_list = $TabContainer/Relics/ScrollContainer/MarginContainer/VBoxContainer
+@onready var achievements_list = $TabContainer/Achievements/ScrollContainer/MarginContainer/VBoxContainer
 
 @onready var buy_overlay = $BuyConfirmOverlay
 @onready var buy_rt_label = $BuyConfirmOverlay/Panel/MarginContainer/VBoxContainer/RichTextLabel
@@ -51,6 +52,7 @@ func _ready():
 	populate_stats()
 	populate_armory()
 	populate_relics()
+	populate_achievements()
 
 func update_gold_display():
 	gold_label.text = str(Global.gold)
@@ -135,8 +137,8 @@ func populate_stats():
 	for cat in categories:
 		# Now we get ALL enemies from the DB that belong to this category, regardless of kills!
 		var enemies_in_this_cat = []
-		for enemy_name in Global.monsters_db:
-			if Global.monsters_db[enemy_name]["category"] == cat:
+		for enemy_name in MonstersDatabase.monsters:
+			if MonstersDatabase.monsters[enemy_name]["category"] == cat:
 				enemies_in_this_cat.append(enemy_name)
 				
 		if enemies_in_this_cat.size() > 0:
@@ -158,7 +160,7 @@ func populate_stats():
 				var m_icon = null
 				var m_color = Color.WHITE
 				
-				var m_scene = Global.monsters_db[enemy_name]["scene"]
+				var m_scene = MonstersDatabase.monsters[enemy_name]["scene"]
 				var temp_monster = m_scene.instantiate()
 				
 				# Extract Image 
@@ -255,7 +257,12 @@ func populate_armory():
 			text_vbox.add_child(name_lbl)
 			
 			var desc_lbl = Label.new()
-			desc_lbl.text = "This weapon is currently locked."
+			# --- NEU: DYNAMISCHER TEXT AUS DER DATENBANK ---
+			var req_id = w_data["unlock_req"]
+			if AchievementDatabase.achievements.has(req_id):
+				desc_lbl.text = "Unlock Goal: " + AchievementDatabase.achievements[req_id]["desc"]
+			else:
+				desc_lbl.text = "Unlock Goal: Unknown"
 			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
 			text_vbox.add_child(desc_lbl)
 			
@@ -294,7 +301,6 @@ func populate_armory():
 			text_vbox.add_child(desc_lbl)
 		armory_list.add_child(row)
 
-# --- HELPER: CUSTOM SORTING FOR RELICS ---
 # --- HELPER: CUSTOM SORTING FOR RELICS ---
 func _sort_relics(a: Dictionary, b: Dictionary) -> bool:
 	# Status 1: Sind die Relics gesperrt?
@@ -379,7 +385,13 @@ func populate_relics():
 			text_vbox.add_child(name_lbl)
 			
 			var desc_lbl = Label.new()
-			desc_lbl.text = "This Relic is currently locked."
+			# --- NEU: DYNAMISCHER TEXT AUS DER DATENBANK ---
+			var req_id = u_data["unlock_req"]
+			if AchievementDatabase.achievements.has(req_id):
+				desc_lbl.text = "Unlock Goal: " + AchievementDatabase.achievements[req_id]["desc"]
+			else:
+				desc_lbl.text = "Unlock Goal: Unknown"
+			# -----------------------------------------------
 			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
 			text_vbox.add_child(desc_lbl)
 			
@@ -463,10 +475,79 @@ func _add_monster_stat_row(title: String, value: String, icon_texture: Texture2D
 	row.add_child(lbl_val)
 	stats_list.add_child(row)
 
+# --- POPULATE ACHIEVEMENTS ---
+func populate_achievements():
+	# Liste leeren
+	for child in achievements_list.get_children():
+		child.queue_free()
+		
+	# Wir gehen die komplette Datenbank durch
+	for ach_id in AchievementDatabase.achievements:
+		var data = AchievementDatabase.achievements[ach_id]
+		var is_unlocked = Global.unlocked_achievements.has(ach_id)
+		
+		var row = HBoxContainer.new()
+		
+		# --- 1. DAS KATEGORIE-ICON ---
+		var icon = TextureRect.new()
+		icon.custom_minimum_size = Vector2(40, 40)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		
+		# Wir laden einfach EIN generisches Icon pro Typ! (Pfade musst du anpassen)
+		match data["type"]:
+			"time": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+			"kills": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+			"damage": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+			"level": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+			"gold": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+			_: icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+			
+		row.add_child(icon)
+		
+		# --- 2. TEXT BEREICH ---
+		var text_vbox = VBoxContainer.new()
+		text_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(text_vbox)
+		
+		var name_lbl = Label.new()
+		name_lbl.text = data["name"]
+		
+		var desc_lbl = Label.new()
+		desc_lbl.text = data["desc"]
+		
+		# --- 3. STATUS BEREICH (Rechtsbündig) ---
+		var status_lbl = Label.new()
+		status_lbl.custom_minimum_size.x = 120
+		status_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		row.add_child(status_lbl)
+		
+		# --- FARBEN JE NACH STATUS ---
+		if is_unlocked:
+			icon.modulate = Color.WHITE
+			name_lbl.add_theme_color_override("font_color", Color("#fceda6")) # Gold!
+			desc_lbl.modulate = Color(0.8, 0.8, 0.8)
+			status_lbl.text = "COMPLETED"
+			status_lbl.add_theme_color_override("font_color", Color("#7fb06d")) # Grün
+		else:
+			icon.modulate = Color(0.3, 0.3, 0.3) # Ausgegraut
+			name_lbl.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
+			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
+			status_lbl.text = "LOCKED"
+			status_lbl.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4))
+			
+		text_vbox.add_child(name_lbl)
+		text_vbox.add_child(desc_lbl)
+		
+		achievements_list.add_child(row)
+
 func _format_time(total_seconds: float) -> String:
 	var t = int(total_seconds)
+	@warning_ignore("integer_division")
 	var days = t / 86400
+	@warning_ignore("integer_division")
 	var hours = (t / 3600) % 24
+	@warning_ignore("integer_division")
 	var minutes = (t / 60) % 60
 	var seconds = t % 60
 	
