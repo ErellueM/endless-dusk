@@ -60,7 +60,6 @@ func change_state(new_state):
 
 		GameState.DEAD:
 			get_tree().paused = true
-			reset_game()
 			pause_menu.hide()
 			level_up_screen.hide()
 			if game_over_screen:

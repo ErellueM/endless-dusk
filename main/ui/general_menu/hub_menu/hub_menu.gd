@@ -625,6 +625,7 @@ func _sort_weapons(a: String, b: String) -> bool:
 # --- BUTTON SIGNALS ---
 func _on_start_run_button_pressed():
 	if currently_selected_char_node and currently_selected_char_node.is_unlocked:
+		Global.reset_run_stats()
 		Global.total_runs_played += 1
 		Global.save_game()
 		Global.selected_character_scene = currently_selected_char_node.character_scene

@@ -15,6 +15,7 @@ static var weapons_db = {
 		"name": "Ice Aura",
 		"desc": "Creates a freezing zone.",
 		"rarity": "Uncommon",
+		"unlock_req" :"runs_1",
 		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/ice_aura.png")
 	},
@@ -152,6 +153,7 @@ static var stat_upgrades = [
 		"desc": "[color=green]+50% Damage[/color]\n[color=red]-20 Max Health[/color]",
 		"rarity": "Legendary",
 		"type": "stat",
+		"unlock_req" :"runs_1",
 		"stats": [{"key": "might", "amount": 0.5}, {"key": "max_health", "amount": -20.0}]
 	},
 	{

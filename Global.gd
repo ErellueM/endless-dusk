@@ -22,6 +22,7 @@ var total_time_played: float = 0.0
 # --- RUN STATS ---
 var run_total_kills: int = 0
 var run_kills_by_type: Dictionary = {}
+var achievements_this_run: Array = []
 
 # --- LIFETIME STATS ---
 var lifetime_total_kills: int = 0
@@ -87,6 +88,7 @@ func check_achievements():
 		
 		if is_done:
 			unlocked_achievements.append(ach_id)
+			achievements_this_run.append(ach_id)
 			newly_unlocked = true
 			print("Unlocked: ", data["name"])
 			
@@ -95,7 +97,9 @@ func check_achievements():
 func reset_run_stats():
 	save_game()
 	run_total_kills = 0
+	run_damage_dealt = 0.0 
 	run_kills_by_type.clear()
+	achievements_this_run.clear()
 
 func end_run(final_time: float, final_level: int):
 	if final_time > highest_survival_time:
@@ -106,9 +110,7 @@ func end_run(final_time: float, final_level: int):
 		highest_level_reached = final_level
 		
 	lifetime_damage_dealt += run_damage_dealt
-	run_damage_dealt = 0.0 
 	check_achievements()
-	reset_run_stats()
 	
 # --- SPEICHERN & LADEN ---
 func save_game():
