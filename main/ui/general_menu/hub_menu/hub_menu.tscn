@@ -62,56 +62,6 @@ animations = [{
 "speed": 7.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_w8bcl"]
-atlas = ExtResource("6_ujtpe")
-region = Rect2(0, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8du83"]
-atlas = ExtResource("6_ujtpe")
-region = Rect2(100, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1cfg8"]
-atlas = ExtResource("6_ujtpe")
-region = Rect2(200, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_aw7g4"]
-atlas = ExtResource("6_ujtpe")
-region = Rect2(300, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mji4m"]
-atlas = ExtResource("6_ujtpe")
-region = Rect2(400, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lctbe"]
-atlas = ExtResource("6_ujtpe")
-region = Rect2(500, 0, 100, 100)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_h2mne"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_w8bcl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8du83")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1cfg8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_aw7g4")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mji4m")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_lctbe")
-}],
-"loop": true,
-"name": &"default",
-"speed": 7.0
-}]
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_hxaws"]
 atlas = ExtResource("8_mwmri")
 region = Rect2(0, 0, 100, 100)
@@ -223,6 +173,56 @@ animations = [{
 "speed": 9.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8bcl"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8du83"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cfg8"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw7g4"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mji4m"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lctbe"]
+atlas = ExtResource("6_ujtpe")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h2mne"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8bcl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8du83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cfg8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw7g4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mji4m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lctbe")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
 [node name="HubMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -320,19 +320,19 @@ character_name = "Soilder"
 character_scene = ExtResource("3_ef216")
 sprite_frames = SubResource("SpriteFrames_6eg4w")
 
-[node name="Orc" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
-layout_mode = 2
-character_name = "Orc"
-character_scene = ExtResource("5_h2mne")
-sprite_frames = SubResource("SpriteFrames_h2mne")
-unlock_cost = 10
-
 [node name="Crusader" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
 layout_mode = 2
 character_name = "Crusader"
 character_scene = ExtResource("7_a88xq")
 sprite_frames = SubResource("SpriteFrames_ujtpe")
 unlock_cost = 4
+
+[node name="Orc" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
+layout_mode = 2
+character_name = "Orc"
+character_scene = ExtResource("5_h2mne")
+sprite_frames = SubResource("SpriteFrames_h2mne")
+unlock_cost = 10
 
 [node name="SelectedCharInfo" type="Label" parent="TabContainer/Characters"]
 layout_mode = 1
@@ -493,6 +493,7 @@ offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 focus_mode = 0
+theme_type_variation = &"BasisButton"
 theme_override_colors/font_color = Color(0.819608, 0.941176, 0.643137, 1)
 theme_override_font_sizes/font_size = 16
 text = "START RUN"

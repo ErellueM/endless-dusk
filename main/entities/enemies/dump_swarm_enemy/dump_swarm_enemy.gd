@@ -82,10 +82,6 @@ func take_damage(amount: float, show_number: bool = true) -> float:
 	var final_amount = amount * status_manager.dmg_taken_mult
 	current_health -= final_amount
 	
-	if (current_health - final_amount) < 0:
-		Global.run_damage_dealt += current_health
-	Global.run_damage_dealt += final_amount
-
 	if show_number and SettingsManager.show_damage_numbers and final_amount > 0:
 		var offset = Vector2(randf_range(-10, 10), randf_range(-20, -10))
 		DamagePool.spawn_number(global_position + offset, final_amount, false, Color(1, 1, 0))

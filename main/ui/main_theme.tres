@@ -1,10 +1,48 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://b8pphsuclay7a"]
+[gd_resource type="Theme" load_steps=22 format=3 uid="uid://b8pphsuclay7a"]
 
 [ext_resource type="Texture2D" uid="uid://dl14ytnld1n1p" path="res://assets/art/ui/x_checkbox.png" id="1_tttxp"]
 [ext_resource type="Texture2D" uid="uid://cmhpijjhb2y6c" path="res://assets/art/ui/radio_unchecked.png" id="2_vgcga"]
 [ext_resource type="Texture2D" uid="uid://ojiv0cp0nnsa" path="res://assets/art/ui/slider.png" id="3_va3da"]
 [ext_resource type="Texture2D" uid="uid://ddw20k3wafa5u" path="res://assets/art/ui/arrow_down.png" id="4_g4b4m"]
 [ext_resource type="Texture2D" uid="uid://bjb71533alhyt" path="res://assets/art/ui/radio_checked.png" id="5_358ut"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgcga"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_323hb"]
+bg_color = Color(0.11489678, 0.11489683, 0.11489671, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yqq7w"]
+bg_color = Color(0.033853278, 0.033853278, 0.033853274, 1)
+border_color = Color(0.8, 0.8, 0.6156863, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58k8s"]
+bg_color = Color(0.19434914, 0.19434932, 0.19434926, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_py3ce"]
 bg_color = Color(1, 1, 1, 1)
@@ -89,6 +127,11 @@ content_margin_left = 4.0
 bg_color = Color(0, 0, 0, 1)
 
 [resource]
+BasisButton/base_type = &"Button"
+BasisButton/styles/focus = SubResource("StyleBoxEmpty_vgcga")
+BasisButton/styles/hover = SubResource("StyleBoxFlat_323hb")
+BasisButton/styles/normal = SubResource("StyleBoxFlat_yqq7w")
+BasisButton/styles/pressed = SubResource("StyleBoxFlat_58k8s")
 CheckBox/icons/checked = ExtResource("1_tttxp")
 CheckBox/icons/unchecked = ExtResource("2_vgcga")
 HSlider/icons/grabber = ExtResource("3_va3da")

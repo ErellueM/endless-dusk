@@ -495,13 +495,9 @@ func populate_achievements():
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		
 		# Wir laden einfach EIN generisches Icon pro Typ! (Pfade musst du anpassen)
-		match data["type"]:
-			"time": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			"kills": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			"damage": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			"level": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			"gold": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			_: icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+		# Holt sich das Icon automatisch basierend auf dem Typ aus der Datenbank
+		var default_icon = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+		icon.texture = AchievementDatabase.type_icons.get(data["type"], default_icon)
 			
 		row.add_child(icon)
 		

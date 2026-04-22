@@ -11,13 +11,13 @@ extends CanvasLayer
 
 # Unlocks Hauptbildschirm
 @onready var unlocks_container = $UI_Container/UnlocksContainer
-@onready var unlocks_list = $UI_Container/UnlocksContainer/UnlocksList
+@onready var unlocks_list = $UI_Container/UnlocksContainer/ScrollContainer/UnlocksList
 
 # Tooltip
 @onready var custom_tooltip = $CustomTooltip
 @onready var tooltip_text = $CustomTooltip/MarginContainer/TooltipText
 
-# Stats Panel (Versteckt)
+# Stats Panel
 @onready var stats_panel = $StatsPanel
 @onready var stats_grid = $StatsPanel/MarginContainer/VBoxContainer/StatsSplitter/ScrollContainer/MarginContainer/StatsGrid
 @onready var weapons_grid = $StatsPanel/MarginContainer/VBoxContainer/StatsSplitter/WeaponsGrid
@@ -42,20 +42,20 @@ func show_game_over():
 	if game_ui and "time_elapsed" in game_ui:
 		raw_time = game_ui.time_elapsed
 	
-	# --- BUGFIX: STATS RETTEN ---
-	var saved_kills = Global.run_total_kills
-	var saved_damage = Global.run_damage_dealt
-	
-	# Beendet den Run und löscht temporäre Stats (achievements_this_run bleibt aber erhalten bis zum nächsten Start!)
+	# 1. Beende den Run ZUERST (Das berechnet jetzt den Schaden in Global!)
 	Global.end_run(raw_time, final_level)
 
-	# UI zurücksetzen
+	# 2. Rette die Stats, NACHDEM sie berechnet wurden
+	var saved_kills = Global.run_total_kills
+	var saved_damage = Global.run_damage_dealt
+
+	# UI Resets
 	custom_tooltip.hide()
 	stats_panel.hide()
 	you_died_label.show()
 	ui_container.show()
 
-	# Füllt das UI
+	# Fülle UI
 	_populate_unlocks()
 	if player:
 		_populate_run_stats(player, final_level, raw_time, saved_kills, saved_damage)
@@ -67,17 +67,12 @@ func show_game_over():
 func _process(delta):
 	if custom_tooltip.visible:
 		var mouse_pos = custom_tooltip.get_global_mouse_position()
-		var target_pos = mouse_pos #+ Vector2(15, 15)
-		
-		# Hole die aktuelle Bildschirmgroesse und Tooltipgroesse
+		var target_pos = mouse_pos + Vector2(15, 15)
 		var screen_size = get_viewport().get_visible_rect().size
 		var tooltip_size = custom_tooltip.size
 		
-		# Wenn der Tooltip rechts aus dem Bild ragt, zeige ihn links von der Maus
 		if target_pos.x + tooltip_size.x > screen_size.x:
 			target_pos.x = mouse_pos.x - tooltip_size.x - 5
-			
-		# Wenn der Tooltip unten aus dem Bild ragt, zeige ihn ueber der Maus
 		if target_pos.y + tooltip_size.y > screen_size.y:
 			target_pos.y = mouse_pos.y - tooltip_size.y - 5
 			
@@ -96,11 +91,9 @@ func _on_close_stats_pressed():
 	you_died_label.show()
 	ui_container.show()
 
-# --- UNLOCKS & TOOLTIP ---
+# --- SEQUENTIELLE UNLOCKS & TOOLTIP ---
 
 func _populate_unlocks():
-	print("Achievements this run: ", Global.achievements_this_run) # DEBUG PRINT
-	
 	if Global.achievements_this_run.size() == 0:
 		unlocks_container.hide()
 		return
@@ -109,86 +102,111 @@ func _populate_unlocks():
 	for child in unlocks_list.get_children():
 		child.queue_free()
 		
+	var tween = create_tween().set_parallel(true)
+	var anim_delay = 2.5 
+	
 	for ach_id in Global.achievements_this_run:
 		if not AchievementDatabase.achievements.has(ach_id): continue
-		var data = AchievementDatabase.achievements[ach_id]
+		var ach_data = AchievementDatabase.achievements[ach_id]
 		
-		# Verwende einen Button anstelle eines PanelContainers für zuverlässige Klick/Hover-Events
-		var icon_btn = Button.new()
-		icon_btn.custom_minimum_size = Vector2(48, 48)
-		icon_btn.flat = true # Kein Standard-Button-Hintergrund
-		
-		var style_box = StyleBoxFlat.new()
-		style_box.bg_color = Color(0.0, 0.0, 0.0, 1.0)
-		style_box.border_width_left = 2
-		style_box.border_width_top = 2
-		style_box.border_width_right = 2
-		style_box.border_width_bottom = 2
-		style_box.border_color = Color("#fceda6") 
-		icon_btn.add_theme_stylebox_override("normal", style_box)
-		icon_btn.add_theme_stylebox_override("hover", style_box) # Verhindert Flackern
-		icon_btn.add_theme_stylebox_override("pressed", style_box)
-		
-		var icon = TextureRect.new()
-		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 4) # Margins
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE # WICHTIG: Das Bild soll die Maus ignorieren, der Button fängt es ab
-		
-		match data["type"]:
-			"time": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			"kills": icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
-			_: icon.texture = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+		# 1. Achievement Icon hinzufügen
+		# 1. Das Achievement Icon erstellen
+		var ach_btn = _create_icon_button()
+		var default_icon = preload("res://assets/art/destructables/barrel/item_drops/coin.png")
+		ach_btn.get_child(0).texture = AchievementDatabase.type_icons.get(ach_data["type"], default_icon)
 			
-		icon_btn.add_child(icon)
-		unlocks_list.add_child(icon_btn)
+		ach_btn.mouse_entered.connect(_show_ach_tooltip.bind(ach_data))
+		ach_btn.mouse_exited.connect(_hide_tooltip)
 		
-		# Verbinde die Signale mit dem Button
-		icon_btn.mouse_entered.connect(_on_icon_mouse_entered.bind(ach_id))
-		icon_btn.mouse_exited.connect(_on_icon_mouse_exited)
+		ach_btn.modulate.a = 0.0
+		unlocks_list.add_child(ach_btn)
+		tween.tween_property(ach_btn, "modulate:a", 1.0, 0.3).set_delay(anim_delay)
+		anim_delay += 0.3
+		
+		# 2. Waffen und Relics finden
+		var unlocked_items = []
+		for w_id in UpgradeDatabase.weapons_db:
+			var w_data = UpgradeDatabase.weapons_db[w_id]
+			if w_data.has("unlock_req") and w_data["unlock_req"] == ach_id:
+				unlocked_items.append(w_data)
+				
+		for u_data in UpgradeDatabase.stat_upgrades:
+			if u_data.has("unlock_req") and u_data["unlock_req"] == ach_id:
+				unlocked_items.append(u_data)
+				
+		# 3. Item Icons direkt in dieselbe HBox packen
+		for item_data in unlocked_items:
+			var item_btn = _create_icon_button()
+			
+			if item_data.has("icon"):
+				item_btn.get_child(0).texture = item_data["icon"]
+			elif item_data.has("stats") and item_data["stats"].size() > 0:
+				var stat_key = item_data["stats"][0]["key"]
+				item_btn.get_child(0).texture = UpgradeDatabase.stat_icons.get(stat_key)
+				
+			item_btn.mouse_entered.connect(_show_item_tooltip.bind(item_data))
+			item_btn.mouse_exited.connect(_hide_tooltip)
+			
+			item_btn.modulate.a = 0.0
+			unlocks_list.add_child(item_btn)
+			tween.tween_property(item_btn, "modulate:a", 1.0, 0.3).set_delay(anim_delay)
+			anim_delay += 0.3
+			
+		# Platzhalter zwischen den Achievement-Gruppen
+		var spacer = Control.new()
+		spacer.custom_minimum_size = Vector2(25, 0)
+		unlocks_list.add_child(spacer)
 
+func _create_icon_button() -> Button:
+	var btn = Button.new()
+	btn.custom_minimum_size = Vector2(40, 40)
+	btn.flat = true
+	
+	var style_box = StyleBoxFlat.new()
+	style_box.bg_color = Color(0.0, 0.0, 0.0, 1.0)
+	style_box.border_width_left = 2
+	style_box.border_width_top = 2
+	style_box.border_width_right = 2
+	style_box.border_width_bottom = 2
+	style_box.border_color = Color("#fceda6") 
+	btn.add_theme_stylebox_override("normal", style_box)
+	btn.add_theme_stylebox_override("hover", style_box)
+	btn.add_theme_stylebox_override("pressed", style_box)
+	
+	var icon = TextureRect.new()
+	icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 4)
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	btn.add_child(icon)
+	return btn
 
-func _on_icon_mouse_entered(ach_id: String):
-	tooltip_text.text = _build_tooltip_text(ach_id)
+func _show_ach_tooltip(ach_data: Dictionary):
+	var text = "[color=#fceda6][font_size=18]Achievement Unlocked[/font_size][/color]\n"
+	text += "[font_size=16]" + ach_data["name"] + "\n"
+	text += "[color=#aaaaaa]" + ach_data["desc"] + "[/color][/font_size]"
+	
+	tooltip_text.text = text
 	custom_tooltip.show()
-	custom_tooltip.move_to_front() # Stellt sicher, dass es ganz oben gerendert wird
+	custom_tooltip.move_to_front()
 
-func _on_icon_mouse_exited():
+func _show_item_tooltip(item_data: Dictionary):
+	var is_weapon = item_data.has("scene")
+	var type_text = "New Weapon Unlocked" if is_weapon else "New Relic Unlocked"
+	
+	var rarity_hex = _get_rarity_color_hex(item_data.get("rarity", "Common"))
+	var text = "[color=#7fb06d][font_size=18]" + type_text + "[/font_size][/color]\n"
+	text += "[font_size=16][color=" + rarity_hex + "]" + item_data["name"] + "[/color]\n"
+	
+	var clean_desc = item_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "").replace("New Weapon\n", "")
+	text += "[color=#aaaaaa]" + clean_desc + "[/color][/font_size]"
+	
+	tooltip_text.text = text
+	custom_tooltip.show()
+	custom_tooltip.move_to_front()
+
+func _hide_tooltip():
 	custom_tooltip.hide()
-
-func _build_tooltip_text(ach_id: String) -> String:
-	var ach_data = AchievementDatabase.achievements[ach_id]
-	
-	# Block 1: Achievement Info (Schriftgroesse 20 und 16)
-	var text = "[color=#fceda6][b][font_size=20]" + ach_data["name"] + "[/font_size][/b][/color]\n"
-	text += "[color=#cccccc][font_size=16]" + ach_data["desc"] + "[/font_size][/color]\n\n"
-	
-	var found_items = false
-	text += "[color=#7fb06d][b][font_size=18]Unlocked Items:[/font_size][/b][/color]\n"
-	
-	# Block 2: Waffen durchsuchen
-	for w_id in UpgradeDatabase.weapons_db:
-		var w_data = UpgradeDatabase.weapons_db[w_id]
-		if w_data.has("unlock_req") and w_data["unlock_req"] == ach_id:
-			found_items = true
-			var rarity_color = _get_rarity_color_hex(w_data.get("rarity", "Common"))
-			text += "• [color=" + rarity_color + "][font_size=16]" + w_data["name"] + "[/font_size][/color]\n"
-			var clean_desc = w_data["desc"].replace("[color=green]New Weapon[/color]\n", "")
-			text += "  [color=#aaaaaa][font_size=16]" + clean_desc + "[/font_size][/color]\n"
-			
-	# Block 3: Relics durchsuchen
-	for u_data in UpgradeDatabase.stat_upgrades:
-		if u_data.has("unlock_req") and u_data["unlock_req"] == ach_id:
-			found_items = true
-			var rarity_color = _get_rarity_color_hex(u_data.get("rarity", "Common"))
-			text += "• [color=" + rarity_color + "][font_size=16]" + u_data["name"] + "[/font_size][/color]\n"
-			var clean_desc = u_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "")
-			text += "  [color=#aaaaaa][font_size=16]" + clean_desc + "[/font_size][/color]\n"
-			
-	if not found_items:
-		text += "[color=#aaaaaa][font_size=16]No specific items unlocked.[/font_size][/color]"
-		
-	return text
 
 func _get_rarity_color_hex(rarity: String) -> String:
 	match rarity:
@@ -206,10 +224,10 @@ func _populate_run_stats(player, final_level, raw_time, final_kills, final_damag
 		child.queue_free()
 		
 	var time_str = _format_time(raw_time)
-	var time_icon = preload("res://assets/art/icons/stats_icon/movement_speed_wingboots.png")
-	var kill_icon = preload("res://assets/art/icons/stats_icon/might_gauntlet.png")
+	var time_icon = preload("res://assets/art/icons/achievements_icon/time.png")
+	var kill_icon = preload("res://assets/art/icons/achievements_icon/skull2.png")
 	
-	add_stat_row("Level Reached", str(final_level), UpgradeDatabase.stat_icons.get("growth"))
+	add_stat_row("Level Reached", str(final_level), AchievementDatabase.type_icons.get("level"))
 	add_stat_row("Survival Time", time_str, time_icon)
 	add_stat_row("Enemies Killed", str(final_kills), kill_icon, Color(1.0, 0.3, 0.3))
 	add_stat_row("Total Damage", format_huge_number(final_damage), null, Color.ORANGE)
@@ -290,7 +308,7 @@ func _populate_weapons(player):
 			for i in range(data["max_level"]):
 				level_display += "◆" if i < data["level"] else "[color=#444444]◇[/color]"
 
-		var final_name_bb = "%s  [font_size=12]%s[/font_size]" % [data["name"], level_display]
+		var final_name_bb = "%s  [font_size=16]%s[/font_size]" % [data["name"], level_display]
 		var w_info = "Utility" if data["is_utility"] else "%s Dmg" % [format_huge_number(data["total"])]
 		
 		_add_sleek_weapon_row(final_name_bb, w_info, data["icon"], info_color, fill_ratio, data["is_utility"])
@@ -301,9 +319,7 @@ func add_stat_row(name_text: String, value_text: String, icon_texture: Texture2D
 	if icon_texture:
 		var icon_rect = TextureRect.new()
 		icon_rect.texture = icon_texture
-		icon_rect.custom_minimum_size = Vector2(24, 24)
-		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon_rect.custom_minimum_size = Vector2(16, 16)
 		left_hbox.add_child(icon_rect)
 		
 	var lbl_name = Label.new()
@@ -341,9 +357,7 @@ func _add_sleek_weapon_row(w_name_bb: String, w_info: String, icon_texture: Text
 	icon_panel.add_theme_stylebox_override("panel", style_box)
 
 	var icon_rect = TextureRect.new()
-	icon_rect.custom_minimum_size = Vector2(24, 24)
-	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon_rect.custom_minimum_size = Vector2(16, 16)
 	icon_rect.texture = icon_texture if icon_texture else PlaceholderTexture2D.new()
 	icon_panel.add_child(icon_rect)
 	row.add_child(icon_panel)

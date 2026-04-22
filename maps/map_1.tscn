@@ -1,12 +1,13 @@
-[gd_scene load_steps=29 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=30 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
 [ext_resource type="PackedScene" uid="uid://cycdm305tvfx5" path="res://main/environments/lightSources/candle_1.tscn" id="3_ae8pb"]
 [ext_resource type="PackedScene" uid="uid://bd6b54asmqcgu" path="res://main/environments/lightSources/candle_2.tscn" id="4_nli1r"]
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_hm8ck"]
-[ext_resource type="PackedScene" uid="uid://506dfn3f56hi" path="res://main/ui/ingameUI/game_over_screen.tscn" id="7_o76ia"]
+[ext_resource type="PackedScene" uid="uid://506dfn3f56hi" path="res://main/ui/ingameUI/game_over_screen.tscn" id="7_nljlp"]
 [ext_resource type="PackedScene" uid="uid://ic3hmfvhlxmq" path="res://main/ui/ingameUI/game_ui.tscn" id="8_063jp"]
+[ext_resource type="PackedScene" uid="uid://506dfn3f56hi" path="res://main/ui/ingameUI/gameOverScreen/you_died_screen.tscn" id="8_gks6h"]
 [ext_resource type="Script" uid="uid://dociaqow5vvrf" path="res://game_manager.gd" id="8_jkpbc"]
 [ext_resource type="Script" uid="uid://cyyf8w4p782il" path="res://maps/wave_manager.gd" id="9_jkpbc"]
 [ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
@@ -2632,14 +2633,17 @@ position = Vector2(597, 322)
 [node name="PauseMenu" parent="GameUI" index="2"]
 process_mode = 2
 
-[node name="GameOverScreen" parent="GameUI" instance=ExtResource("7_o76ia")]
+[node name="GameOverScreen" parent="GameUI" instance=ExtResource("7_nljlp")]
+visible = false
+
+[node name="YouDiedScreen" parent="GameUI" instance=ExtResource("8_gks6h")]
 
 [node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("pause_menu", "level_up_screen", "game_over_screen") groups=["Managers"]]
 process_mode = 3
 script = ExtResource("8_jkpbc")
 pause_menu = NodePath("../GameUI/PauseMenu")
 level_up_screen = NodePath("../GameUI/LevelUpScreen")
-game_over_screen = NodePath("../GameUI/GameOverScreen")
+game_over_screen = NodePath("../GameUI/YouDiedScreen")
 
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("9_jkpbc")

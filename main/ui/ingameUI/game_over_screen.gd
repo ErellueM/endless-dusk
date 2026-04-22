@@ -43,4 +43,5 @@ func _on_restart_pressed():
 
 func _on_quit_pressed():
 	EnemyPool.clear_pools()
+	XpPool.reset_pool()
 	SceneChanger.change_scene("res://main/ui/general_menu/main_menu/main_menu.tscn")

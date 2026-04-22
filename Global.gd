@@ -102,6 +102,17 @@ func reset_run_stats():
 	achievements_this_run.clear()
 
 func end_run(final_time: float, final_level: int):
+	run_damage_dealt = 0.0
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		var weapons_manager = player.get_node_or_null("WeaponInventory")
+		if weapons_manager:
+			for weapon in weapons_manager.get_children():
+				if weapon.has_method("get_actual_damage"):
+					var dmg = weapon.get("total_damage_dealt")
+					if dmg != null:
+						run_damage_dealt += dmg
+	
 	if final_time > highest_survival_time:
 		highest_survival_time = final_time
 	total_time_played += final_time

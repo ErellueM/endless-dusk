@@ -146,6 +146,7 @@ static var stat_upgrades = [
 		"desc": "[color=green]+35% Damage[/color]\n[color=red]-10% Area[/color]",
 		"rarity": "Epic",
 		"type": "stat",
+		"unlock_req": "kills_100",
 		"stats": [{"key": "might", "amount": 0.35}, {"key": "area", "amount": -0.1}]
 	},
 	{

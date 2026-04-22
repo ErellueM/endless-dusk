@@ -1,6 +1,16 @@
 class_name AchievementDatabase
 extends Node
 
+# Hier definieren wir zentral, welches Icon für welchen Typ Achievement geladen wird.
+static var type_icons = {
+	"time": preload("res://assets/art/icons/achievements_icon/time.png"),
+	"kills": preload("res://assets/art/icons/achievements_icon/skull2.png"),
+	"damage": preload("res://assets/art/icons/achievements_icon/damage.png"),
+	"level": preload("res://assets/art/icons/achievements_icon/level.png"),
+	"gold": preload("res://assets/art/destructables/barrel/item_drops/coin.png"),
+	"runs": preload("res://assets/art/icons/achievements_icon/run.png")
+}
+
 static var achievements = {
 	# --- SURVIVAL TIME ---
 	"survive_5_min":   {"name": "Novice Survivor", "type": "time", "target": 300.0, "desc": "Survive for 5 minutes"},

@@ -113,9 +113,6 @@ func take_damage_typed(
 	var display_damage = amount * t_mult
 	var actual_damage = display_damage
 	
-	if (max_health - actual_damage) < 0:
-		Global.run_damage_dealt += max_health
-	Global.run_damage_dealt += actual_damage
 
 	if health and health.get("current_health") != null:
 		if actual_damage > health.current_health:
