@@ -193,6 +193,7 @@ func _on_upgrade_selected(option_data, card_instance):
 		if type == "stat":
 			apply_stat_upgrade(player, option_data)
 			Global.discover_upgrade(option_data["name"])
+			Global.add_run_upgrade(option_data["name"])
 
 		elif type == "new_weapon":
 			var weapons_manager = player.get_node("WeaponInventory")

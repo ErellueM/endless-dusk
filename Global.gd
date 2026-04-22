@@ -23,6 +23,8 @@ var total_time_played: float = 0.0
 var run_total_kills: int = 0
 var run_kills_by_type: Dictionary = {}
 var achievements_this_run: Array = []
+var run_upgrades: Dictionary = {}
+var bosses_defeated_this_run: int = 0
 
 # --- LIFETIME STATS ---
 var lifetime_total_kills: int = 0
@@ -94,12 +96,26 @@ func check_achievements():
 			
 	if newly_unlocked: save_game()
 
+func add_run_upgrade(upgrade_name: String):
+	if run_upgrades.has(upgrade_name):
+		run_upgrades[upgrade_name] += 1 
+	else:
+		run_upgrades[upgrade_name] = 1
+
+func process_boss_kill(base_gold_reward: int = 5):
+	bosses_defeated_this_run += 1
+	var final_gold_reward = base_gold_reward * bosses_defeated_this_run
+	self.gold += final_gold_reward
+
+
 func reset_run_stats():
 	save_game()
 	run_total_kills = 0
+	bosses_defeated_this_run = 0
 	run_damage_dealt = 0.0 
 	run_kills_by_type.clear()
 	achievements_this_run.clear()
+	run_upgrades.clear()
 
 func end_run(final_time: float, final_level: int):
 	run_damage_dealt = 0.0

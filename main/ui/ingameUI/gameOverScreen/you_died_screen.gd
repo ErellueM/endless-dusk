@@ -19,9 +19,12 @@ extends CanvasLayer
 
 # Stats Panel
 @onready var stats_panel = $StatsPanel
-@onready var stats_grid = $StatsPanel/MarginContainer/VBoxContainer/StatsSplitter/ScrollContainer/MarginContainer/StatsGrid
-@onready var weapons_grid = $StatsPanel/MarginContainer/VBoxContainer/StatsSplitter/WeaponsGrid
+@onready var stats_grid = $StatsPanel/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/StatsSplitter/StatsGrid
+@onready var weapons_grid = $StatsPanel/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/StatsSplitter/RightColumn/WeaponsGrid
 @onready var close_stats_button = $StatsPanel/MarginContainer/VBoxContainer/CloseStatsButton
+
+@onready var relics_grid = $StatsPanel/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/StatsSplitter/RightColumn/RelicsGrid
+@onready var relics_title = $StatsPanel/MarginContainer/VBoxContainer/ScrollContainer/MarginContainer/StatsSplitter/RightColumn/RelicsTitle
 
 func _ready():
 	restart_button.pressed.connect(_on_restart_pressed)
@@ -60,6 +63,7 @@ func show_game_over():
 	if player:
 		_populate_run_stats(player, final_level, raw_time, saved_kills, saved_damage)
 		_populate_weapons(player)
+		_populate_relics()
 
 	show()
 	anim_player.play("fade_in")
@@ -152,15 +156,17 @@ func _populate_unlocks():
 			tween.tween_property(item_btn, "modulate:a", 1.0, 0.3).set_delay(anim_delay)
 			anim_delay += 0.3
 			
-		# Platzhalter zwischen den Achievement-Gruppen
-		var spacer = Control.new()
-		spacer.custom_minimum_size = Vector2(25, 0)
-		unlocks_list.add_child(spacer)
+		
 
-func _create_icon_button() -> Button:
+# Wir fügen hier (size: Vector2 = Vector2(40, 40)) ein
+func _create_icon_button(size: Vector2 = Vector2(40, 40)) -> Button:
 	var btn = Button.new()
-	btn.custom_minimum_size = Vector2(40, 40)
+	btn.custom_minimum_size = size
 	btn.flat = true
+	
+	# Wir nutzen die Type Variation, die du vorher im Editor erstellt hast!
+	# Falls du sie "Basiswepon" genannt hast, aktiviere die Zeile hier drunter:
+	# btn.theme_type_variation = "Basiswepon" 
 	
 	var style_box = StyleBoxFlat.new()
 	style_box.bg_color = Color(0.0, 0.0, 0.0, 1.0)
@@ -169,20 +175,33 @@ func _create_icon_button() -> Button:
 	style_box.border_width_right = 2
 	style_box.border_width_bottom = 2
 	style_box.border_color = Color("#fceda6") 
+	# Wichtig: Anti-Aliasing aus für knackige Kanten bei Pixel-Art
+	style_box.anti_aliasing = false 
+	
 	btn.add_theme_stylebox_override("normal", style_box)
 	btn.add_theme_stylebox_override("hover", style_box)
 	btn.add_theme_stylebox_override("pressed", style_box)
 	
 	var icon = TextureRect.new()
-	icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 4)
+	
+	# --- HIER IST DER FIX FÜR DIE ICON-GRÖSSE ---
+	# Wir setzen den Rand auf 2 Pixel (oder 0), damit das Bild mehr Platz hat.
+	var margin = 2 if size.x >= 40 else 0 
+	icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, margin)
+	
+	# KEEP_ASPECT_CENTERED skaliert das Bild hoch, bis es an den Rand stößt, behält aber die Proportionen
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	
+	# WICHTIG FÜR PIXEL-ART: Filter auf Nearest stellen, damit es beim Vergrößern nicht verschwimmt!
+	icon.texture_filter = Control.TEXTURE_FILTER_NEAREST 
+	
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	btn.add_child(icon)
 	return btn
 
 func _show_ach_tooltip(ach_data: Dictionary):
-	var text = "[color=#fceda6][font_size=18]Achievement Unlocked[/font_size][/color]\n"
+	var text = "[color=#fceda6][font_size=16]Achievement Unlocked[/font_size][/color]\n"
 	text += "[font_size=16]" + ach_data["name"] + "\n"
 	text += "[color=#aaaaaa]" + ach_data["desc"] + "[/color][/font_size]"
 	
@@ -195,7 +214,7 @@ func _show_item_tooltip(item_data: Dictionary):
 	var type_text = "New Weapon Unlocked" if is_weapon else "New Relic Unlocked"
 	
 	var rarity_hex = _get_rarity_color_hex(item_data.get("rarity", "Common"))
-	var text = "[color=#7fb06d][font_size=18]" + type_text + "[/font_size][/color]\n"
+	var text = "[color=#7fb06d][font_size=16]" + type_text + "[/font_size][/color]\n"
 	text += "[font_size=16][color=" + rarity_hex + "]" + item_data["name"] + "[/color]\n"
 	
 	var clean_desc = item_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "").replace("New Weapon\n", "")
@@ -312,6 +331,55 @@ func _populate_weapons(player):
 		var w_info = "Utility" if data["is_utility"] else "%s Dmg" % [format_huge_number(data["total"])]
 		
 		_add_sleek_weapon_row(final_name_bb, w_info, data["icon"], info_color, fill_ratio, data["is_utility"])
+
+# --- RELICS BEFÜLLEN ---
+
+func _populate_relics():
+	for child in relics_grid.get_children():
+		child.queue_free()
+
+	if Global.run_upgrades.is_empty():
+		relics_title.hide()
+		return
+		
+	relics_title.show()
+
+	# Gehe alle gesammelten Upgrades durch
+	for r_name in Global.run_upgrades.keys():
+		var r_level = Global.run_upgrades[r_name]
+		var r_data = null
+		
+		# Suche die Daten zum Upgrade in der Datenbank
+		for u in UpgradeDatabase.stat_upgrades:
+			if u["name"] == r_name:
+				r_data = u
+				break
+				
+		if r_data:
+			var btn = _create_icon_button(Vector2(16, 16))
+			
+			# Lade das korrekte Icon aus der stat_icons Datenbank
+			if r_data.has("stats") and r_data["stats"].size() > 0:
+				var stat_key = r_data["stats"][0]["key"]
+				btn.get_child(0).texture = UpgradeDatabase.stat_icons.get(stat_key)
+				
+			# Hover-Signale für den Tooltip
+			btn.mouse_entered.connect(_show_relic_stat_tooltip.bind(r_data, r_level))
+			btn.mouse_exited.connect(_hide_tooltip)
+			
+			relics_grid.add_child(btn)
+
+func _show_relic_stat_tooltip(r_data: Dictionary, r_level: int):
+	var rarity_hex = _get_rarity_color_hex(r_data.get("rarity", "Common"))
+	var text = "[color=#7fb06d][font_size=16]Relic Gathered[/font_size][/color]\n"
+	text += "[font_size=16][color=" + rarity_hex + "]" + r_data["name"] + " (Level " + str(r_level) + ")[/color]\n"
+	
+	var clean_desc = r_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "")
+	text += "[color=#aaaaaa]" + clean_desc + "[/color][/font_size]"
+	
+	tooltip_text.text = text
+	custom_tooltip.show()
+	custom_tooltip.move_to_front()
 
 func add_stat_row(name_text: String, value_text: String, icon_texture: Texture2D = null, value_color: Color = Color.WHITE):
 	var left_hbox = HBoxContainer.new()
