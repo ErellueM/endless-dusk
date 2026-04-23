@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://lvahnokxirys"]
+
+[ext_resource type="Script" uid="uid://dktey5t47klv6" path="res://main/weapons/equipable_weapons/melee/longsword/longsword.gd" id="1_wg76a"]
+[ext_resource type="Texture2D" uid="uid://blrgthy58gdtv" path="res://assets/art/weapons/sword/sword.png" id="2_g6ws0"]
+
+[node name="Longsword" type="Node2D"]
+script = ExtResource("1_wg76a")
+weapon_sprite = ExtResource("2_g6ws0")
+swing_arc_degrees = 120.0
+swing_duration = 1.0
+reach = 22.0
+hitbox_width = 6.0
+distance_from_center = 5.0
+weapon_id = "longsword"
+weapon_icon = ExtResource("2_g6ws0")
+base_fire_rate = 2.0
+base_range = 100.0
+base_area = 1.5

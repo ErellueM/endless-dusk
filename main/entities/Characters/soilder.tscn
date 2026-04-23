@@ -115,7 +115,7 @@ animations = [{
 "speed": 9.0
 }]
 
-[node name="Player" instance=ExtResource("1_g4fcl")]
+[node name="Soilder" instance=ExtResource("1_g4fcl")]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_wxwjk")

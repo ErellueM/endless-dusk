@@ -73,6 +73,13 @@ func unlock_item(item_id: String):
 		unlocked_items.append(item_id)
 		save_game()
 
+func unlock_achievement_manual(ach_id: String):
+	if not unlocked_achievements.has(ach_id):
+		unlocked_achievements.append(ach_id)
+		achievements_this_run.append(ach_id)
+		save_game()
+		print("Manually Unlocked Achievement: ", ach_id)
+
 func check_achievements():
 	var newly_unlocked = false
 	for ach_id in AchievementDatabase.achievements:

@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://yc2gdwc2auk6"]
+
+[ext_resource type="Script" uid="uid://cmrf0dhaqstvg" path="res://main/weapons/equipable_weapons/range/fireball/fireball.gd" id="1_3pr2q"]
+[ext_resource type="Texture2D" uid="uid://bpbev3mf7fly1" path="res://assets/art/weapons/fireball/fireball.png" id="2_q6rh8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2fci3"]
+radius = 8.0
+
+[sub_resource type="Gradient" id="Gradient_q6rh8"]
+offsets = PackedFloat32Array(0, 0.38647342, 0.73913044, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.56078434, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2fci3"]
+gradient = SubResource("Gradient_q6rh8")
+
+[sub_resource type="Curve" id="Curve_q7ai6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6051502, 0.6516854), -1.1780899, -1.1780899, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_jh4u6"]
+curve = SubResource("Curve_q7ai6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_apgp4"]
+lifetime_randomness = 0.03
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_jh4u6")
+color_ramp = SubResource("GradientTexture1D_2fci3")
+
+[node name="Fireball" type="Area2D"]
+z_index = 1
+collision_layer = 0
+collision_mask = 10
+script = ExtResource("1_3pr2q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2fci3")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 40
+lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_apgp4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_q6rh8")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

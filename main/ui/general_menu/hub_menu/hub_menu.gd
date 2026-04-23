@@ -218,7 +218,7 @@ func populate_armory():
 	for weapon_id in sorted_weapon_ids:
 		var w_data = UpgradeDatabase.weapons_db[weapon_id]
 		var is_discovered = weapon_id in Global.discovered_weapons
-		var is_locked = w_data.has("unlock_req") and not Global.unlocked_achievements.has(w_data["unlock_req"])
+		var is_locked = w_data.has("unlock_req") and not _is_req_unlocked(w_data["unlock_req"])
 		
 		# Wenn unentdeckt, ist alles dunkel. Wenn entdeckt, nutzen wir die Rarity-Farbe.
 		var rarity = w_data.get("rarity", "Common")
@@ -257,12 +257,8 @@ func populate_armory():
 			text_vbox.add_child(name_lbl)
 			
 			var desc_lbl = Label.new()
-			# --- NEU: DYNAMISCHER TEXT AUS DER DATENBANK ---
-			var req_id = w_data["unlock_req"]
-			if AchievementDatabase.achievements.has(req_id):
-				desc_lbl.text = "Unlock Goal: " + AchievementDatabase.achievements[req_id]["desc"]
-			else:
-				desc_lbl.text = "Unlock Goal: Unknown"
+			# --- NUTZT JETZT DIE HILFSFUNKTION ---
+			desc_lbl.text = _get_req_desc(w_data["unlock_req"])
 			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
 			text_vbox.add_child(desc_lbl)
 			
@@ -593,8 +589,8 @@ func _sort_weapons(a: String, b: String) -> bool:
 	
 	# Status 1: Sind die Waffen gesperrt? (Nutzt jetzt korrekt unlocked_achievements!)
 	# Wir prüfen, ob die Waffe eine unlock_req hat UND ob diese NICHT in den erreichten Achievements steht.
-	var is_a_locked = data_a.has("unlock_req") and not Global.unlocked_achievements.has(data_a["unlock_req"])
-	var is_b_locked = data_b.has("unlock_req") and not Global.unlocked_achievements.has(data_b["unlock_req"])
+	var is_a_locked = data_a.has("unlock_req") and not _is_req_unlocked(data_a["unlock_req"])
+	var is_b_locked = data_b.has("unlock_req") and not _is_req_unlocked(data_b["unlock_req"])
 	
 	# REGEL 1: Gesperrte Waffen MÜSSEN immer ganz nach unten!
 	if not is_a_locked and is_b_locked: return true
@@ -617,7 +613,21 @@ func _sort_weapons(a: String, b: String) -> bool:
 		
 	# REGEL 4: Wenn auch die Seltenheit gleich ist, sortiere Alphabetisch (A-Z)
 	return data_a["name"] < data_b["name"]
-	
+
+# --- HELPER: UNLOCK CHECKS ---
+func _is_req_unlocked(req_id: String) -> bool:
+	# Prüft, ob es als Achievement ODER als Charakter freigeschaltet wurde!
+	if Global.unlocked_achievements.has(req_id): return true
+	if Global.unlocked_characters.has(req_id): return true
+	return false
+
+func _get_req_desc(req_id: String) -> String:
+	# Wenn es ein Achievement ist, hol den Text aus der Datenbank
+	if AchievementDatabase.achievements.has(req_id):
+		return "Unlock Goal: " + AchievementDatabase.achievements[req_id]["desc"]
+	# Ansonsten ist es ein Charakter-Unlock
+	return "Unlock Goal: Purchase and play the " + req_id + " character."
+
 # --- BUTTON SIGNALS ---
 func _on_start_run_button_pressed():
 	if currently_selected_char_node and currently_selected_char_node.is_unlocked:
@@ -634,6 +644,7 @@ func _on_buy_yes_pressed():
 		Global.gold -= character_to_buy_node.unlock_cost
 		Global.unlocked_characters.append(character_to_buy_node.character_name)
 		Global.save_game()
+		
 		
 		update_gold_display()
 		character_to_buy_node.setup()

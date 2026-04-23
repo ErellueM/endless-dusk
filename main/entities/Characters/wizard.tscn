@@ -1,0 +1,125 @@
+[gd_scene load_steps=20 format=3 uid="uid://btpkxnbtfk73v"]
+
+[ext_resource type="PackedScene" uid="uid://c0mcgac7knbxt" path="res://main/entities/player.tscn" id="1_tanxq"]
+[ext_resource type="PackedScene" uid="uid://8rpn8cxrau7r" path="res://main/weapons/equipable_weapons/range/fireball/firewand.tscn" id="2_2j1t2"]
+[ext_resource type="Texture2D" uid="uid://bx4do5y4y11jf" path="res://assets/art/characters/wizard/wizard-Idle.png" id="2_o03rg"]
+[ext_resource type="Texture2D" uid="uid://f2lgintyto1o" path="res://assets/art/characters/wizard/wizard-walk.png" id="3_o03rg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2j1t2"]
+atlas = ExtResource("2_o03rg")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tuamx"]
+atlas = ExtResource("2_o03rg")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83wlj"]
+atlas = ExtResource("2_o03rg")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8b2d4"]
+atlas = ExtResource("2_o03rg")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t5kio"]
+atlas = ExtResource("2_o03rg")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xr33"]
+atlas = ExtResource("2_o03rg")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0jn4"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqy66"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bx3n5"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20g41"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdum5"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fx7gj"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vou2o"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1d6ga"]
+atlas = ExtResource("3_o03rg")
+region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w0jn4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2j1t2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tuamx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_83wlj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8b2d4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t5kio")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xr33")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w0jn4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqy66")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bx3n5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20g41")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gdum5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fx7gj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vou2o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1d6ga")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 9.0
+}]
+
+[node name="Player" instance=ExtResource("1_tanxq")]
+starting_weapons = Array[PackedScene]([ExtResource("2_2j1t2")])
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
+sprite_frames = SubResource("SpriteFrames_w0jn4")
+animation = &"walk"
+frame_progress = 0.30880523

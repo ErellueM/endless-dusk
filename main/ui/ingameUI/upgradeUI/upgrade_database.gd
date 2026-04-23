@@ -5,7 +5,7 @@ static var weapons_db = {
 	"knife":
 	{
 		"name": "Knife",
-		"desc": "Throws a fast knife.",
+		"desc": "[color=green]New Weapon[/color]\nThrows a fast, precise blade.",
 		"rarity": "Common",
 		"scene": preload("res://main/weapons/equipable_weapons/range/knife/knife_weapon.tscn"),
 		"icon": preload("res://main/weapons/equipable_weapons/range/knife/knife.png")
@@ -13,7 +13,7 @@ static var weapons_db = {
 	"ice_aura":
 	{
 		"name": "Ice Aura",
-		"desc": "Creates a freezing zone.",
+		"desc": "[color=green]New Weapon[/color]\nSurrounds you with a freezing zone.",
 		"rarity": "Uncommon",
 		"unlock_req" :"runs_1",
 		"scene": preload("res://main/weapons/equipable_weapons/aura/ice_aura/ice_aura.tscn"),
@@ -22,25 +22,23 @@ static var weapons_db = {
 	"chain_lightning":
 	{
 		"name": "Chain Lightning",
-		"desc": "[color=green]New Weapon[/color]\nFires a bouncing bolt of energy.",
+		"desc": "[color=green]New Weapon[/color]\nUnleashes a bouncing bolt of energy.",
 		"rarity": "Rare",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.tscn"),
+		"scene": preload("res://main/weapons/equipable_weapons/other/chain_lightning/chain_lightning.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/chain_lightning.png")
 	},
 	"pillar_of_light":
 	{
 		"name": "Pillar of Light",
-		"desc": "[color=green]New Weapon[/color]\nGod strikes the souls.",
+		"desc": "[color=green]New Weapon[/color]\nSmites enemies with a divine strike.",
 		"rarity": "Epic",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn"),
+		"scene": preload("res://main/weapons/equipable_weapons/other/pillar_of_light/pillar_of_light.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/pillar_of_light.png")
 	},
 	"void_orbs":
 	{
 		"name": "Void Orb",
-		"desc": "[color=green]New Weapon[/color]\n ...",
+		"desc": "[color=green]New Weapon[/color]\nSummons dark orbs that orbit you.",
 		"rarity": "Legendary",
 		"scene": preload("res://main/weapons/equipable_weapons/melee/void_orbs/void_orbs.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/void_orbs.png")
@@ -48,7 +46,7 @@ static var weapons_db = {
 	"blood_trail":
 	{
 		"name": "Blood Trail",
-		"desc": "[color=green]New Weapon[/color]\n ...",
+		"desc": "[color=green]New Weapon[/color]\nLeaves a damaging path of blood behind.",
 		"rarity": "Uncommon",
 		"unlock_req": "survive_10_min", #level_100
 		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn"),
@@ -57,20 +55,35 @@ static var weapons_db = {
 	"phantom_glaive":
 	{
 		"name": "Phantom Glaive",
-		"desc": "[color=green]New Weapon[/color]\nThrows a spectral blade that returns to you.",
+		"desc": "[color=green]New Weapon[/color]\nHurls a returning spectral blade.",
 		"rarity": "Rare",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn"),
+		"scene": preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/phantom_glaive.png")
 	},
 	"abyssal_impale":
 	{
 		"name": "Abyssal Impale",
-		"desc": "[color=green]New Weapon[/color]\nSpikes outranging the ground.",
+		"desc": "[color=green]New Weapon[/color]\nErupts lethal spikes from the ground.",
 		"rarity": "Epic",
-		"scene":
-		preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn"),
+		"scene": preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/abyssal_impale.png")
+	},
+	"longsword":
+	{
+		"name": "Longsword",
+		"desc": "[color=green]New Weapon[/color]\nCleaves through enemies with a wide swing.",
+		"rarity": "Common",
+		"scene": preload("res://main/weapons/equipable_weapons/melee/longsword/longsword.tscn"),
+		"icon": preload("res://assets/art/weapons/sword/sword.png")
+	},
+	"fireball":
+	{
+		"name": "Fireball",
+		"desc": "[color=green]New Weapon[/color]\nFires a piercing fireball that burns enemies.",
+		"rarity": "Rare",
+		"unlock_req": "Wizard",
+		"scene": preload("res://main/weapons/equipable_weapons/range/fireball/firewand.tscn"),
+		"icon": preload("res://assets/art/weapons/fireball/fireball.png")
 	},
 }
 
