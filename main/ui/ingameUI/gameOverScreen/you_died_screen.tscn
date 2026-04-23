@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://506dfn3f56hi"]
+[gd_scene load_steps=7 format=3 uid="uid://d3xmyau8tlvsb"]
 
 [ext_resource type="Script" uid="uid://dpi1s33ma13el" path="res://main/ui/ingameUI/gameOverScreen/you_died_screen.gd" id="1_0pqm3"]
 [ext_resource type="FontFile" uid="uid://bi8yhuhuvn611" path="res://assets/fonts/Bitmgothic/Bitmgothic.ttf" id="1_gm6yx"]
@@ -248,7 +248,7 @@ text = "Close"
 [node name="CustomTooltip" type="PanelContainer" parent="."]
 visible = false
 top_level = true
-custom_minimum_size = Vector2(250, 0)
+custom_minimum_size = Vector2(200, 0)
 offset_right = 250.0
 offset_bottom = 100.0
 mouse_filter = 2

@@ -371,11 +371,10 @@ func _populate_relics():
 
 func _show_relic_stat_tooltip(r_data: Dictionary, r_level: int):
 	var rarity_hex = _get_rarity_color_hex(r_data.get("rarity", "Common"))
-	var text = "[color=#7fb06d][font_size=16]Relic Gathered[/font_size][/color]\n"
-	text += "[font_size=16][color=" + rarity_hex + "]" + r_data["name"] + " (Level " + str(r_level) + ")[/color]\n"
+	var text = "[font_size=16][color=" + rarity_hex + "]" + r_data["name"] + " (Level " + str(r_level) + ")[/color][/font_size]\n\n"
 	
-	var clean_desc = r_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "")
-	text += "[color=#aaaaaa]" + clean_desc + "[/color][/font_size]"
+	var clean_desc = "[font_size=16]" + r_data["desc"].replace("[color=green]", "").replace("[/color]", "").replace("[color=red]", "")
+	text += "[color=#aaaaaa]" + clean_desc + "[/font_size][/color]"
 	
 	tooltip_text.text = text
 	custom_tooltip.show()
