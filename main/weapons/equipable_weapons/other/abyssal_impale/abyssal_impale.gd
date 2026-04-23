@@ -77,8 +77,8 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 					(target.is_in_group("Enemygroup") or target.is_in_group("Props"))
 					and target.has_method("take_damage")
 				):
-					target.take_damage(dmg, true)
-					add_damage_stat(dmg)
+					var true_damage = target.take_damage(dmg, true)
+					add_damage_stat(true_damage)
 	)
 	tween.tween_property(spike_visual, "scale:y", 1.0, 0.15).set_trans(Tween.TRANS_BACK).set_ease(
 		Tween.EASE_OUT

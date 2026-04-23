@@ -7,4 +7,9 @@
 script = ExtResource("1_4rm5c")
 weapon_id = "blood_trail"
 weapon_icon = ExtResource("2_7fo78")
+is_utility = null
+max_level = null
 base_damage = 5.0
+base_fire_rate = null
+base_range = null
+base_area = null

@@ -26,7 +26,7 @@ func take_damage(amount: float, is_dot: bool = false, dmg_color: Color = Color.W
 
 	is_destroyed = true
 	destroy()
-	return amount
+	return 0.0
 
 func destroy():
 	spawn_loot()

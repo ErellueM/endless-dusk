@@ -6,11 +6,10 @@ var weapon_ref: Node2D = null
 
 
 func _ready():
-	# FIX: Das Projektil reagiert jetzt auf dicke Bosse (Bodies) UND kleine Slimes (Areas)!
 	body_entered.connect(_on_hit)
 	area_entered.connect(_on_hit)
 
-	await get_tree().create_timer(5.0).timeout
+	await get_tree().create_timer(10.0).timeout
 	queue_free()
 
 

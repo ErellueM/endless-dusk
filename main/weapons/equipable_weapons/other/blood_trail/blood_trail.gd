@@ -50,8 +50,8 @@ func attack() -> bool:
 						and target.has_method("take_damage")
 					):
 						# false = Keine Lag-Zahlen bei AoE!
-						target.take_damage(dmg, false)
-						add_damage_stat(dmg)
+						var true_damage = target.take_damage(dmg, true)
+						add_damage_stat(true_damage)
 	)
 
 	var tween = create_tween()

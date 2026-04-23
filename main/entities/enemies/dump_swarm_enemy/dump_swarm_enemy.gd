@@ -77,15 +77,19 @@ func add_status_effect(effect):
 
 func take_damage(amount: float, show_number: bool = true) -> float:
 	if is_dead: return 0.0
+	var display_amount = amount * status_manager.dmg_taken_mult
+	var actual_damage = display_amount
+	if actual_damage > current_health:
+		actual_damage = current_health
+		
+	actual_damage = max(0.0, actual_damage)
 
-	# Schaden mit dmg_taken_mult vom Status Manager verrechnen
-	var final_amount = amount * status_manager.dmg_taken_mult
-	current_health -= final_amount
+	current_health -= display_amount
 	
-	if show_number and SettingsManager.show_damage_numbers and final_amount > 0:
+	if show_number and SettingsManager.show_damage_numbers and display_amount > 0:
 		var offset = Vector2(randf_range(-10, 10), randf_range(-20, -10))
-		DamagePool.spawn_number(global_position + offset, final_amount, false, Color(1, 1, 0))
-
+		DamagePool.spawn_number(global_position + offset, display_amount, false, Color(1, 1, 0))
+	
 	is_flashing = true
 	sprite.modulate = Color(10, 10, 10)
 	var flash_tween = create_tween()
@@ -97,7 +101,8 @@ func take_damage(amount: float, show_number: bool = true) -> float:
 
 	if current_health <= 0:
 		die()
-	return final_amount
+		
+	return actual_damage
 
 # Hilfsmethode für das Pooling
 func revive(new_pos: Vector2, difficulty_multiplier: float):

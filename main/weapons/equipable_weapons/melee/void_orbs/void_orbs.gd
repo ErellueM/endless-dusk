@@ -68,7 +68,6 @@ func _on_target_entered(target: Node2D):
 func _apply_orb_damage(target: Node2D):
 	if (target.is_in_group("Enemygroup") or target.is_in_group("Props")) and target.has_method("take_damage"):
 		var dmg = get_actual_damage()
-		# true = Schadenszahlen werden angezeigt!
 		var actual_dmg = target.take_damage(dmg, true)
 		add_damage_stat(actual_dmg)
 
