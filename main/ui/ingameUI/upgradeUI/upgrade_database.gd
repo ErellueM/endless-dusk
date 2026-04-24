@@ -85,6 +85,23 @@ static var weapons_db = {
 		"scene": preload("res://main/weapons/equipable_weapons/range/fireball/firewand.tscn"),
 		"icon": preload("res://assets/art/weapons/fireball/fireball.png")
 	},
+	"firebomb":
+	{
+		"name": "Black Firebomb",
+		"desc": "[color=green]New Weapon[/color]\nThrows explosive jars in a high arc.",
+		"rarity": "Uncommon",
+		"scene": preload("res://main/weapons/equipable_weapons/range/black_firebomb/firebomb_launcher.tscn"),
+		"icon": preload("res://assets/art/weapons/firebomb/firebomb.png")
+	},
+	"executioner_axe":
+	{
+		"name": "Executioner's Axe",
+		"desc": "[color=green]New Weapon[/color]\nDelivers a devastating overhead chop.",
+		"rarity": "Rare",
+		"unlock_req": "Orc",
+		"scene": preload("res://main/weapons/equipable_weapons/melee/executioner_axe/executioner_axe.tscn"),
+		"icon": preload("res://assets/art/weapons/executioner_axe/executioner_axe.png")
+	},
 }
 
 

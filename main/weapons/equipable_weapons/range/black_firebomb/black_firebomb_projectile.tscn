@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://b6txber5wgte8"]
+
+[ext_resource type="Script" uid="uid://lr72g6ec2pa0" path="res://main/weapons/equipable_weapons/range/black_firebomb/black_firebomb_projectile.gd" id="1_3w7aq"]
+[ext_resource type="Texture2D" uid="uid://cxfcbwnm40tg6" path="res://assets/art/weapons/firebomb/firebomb.png" id="2_v2567"]
+
+[sub_resource type="Gradient" id="Gradient_v2567"]
+offsets = PackedFloat32Array(0, 0.23188406, 0.47826087, 0.7487923, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 0, 1, 1, 0.67058825, 0, 1, 0.48235294, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4d8ga"]
+gradient = SubResource("Gradient_v2567")
+
+[sub_resource type="Curve" id="Curve_4d8ga"]
+_limits = [0.0, 3.0, 0.0, 1.0]
+_data = [Vector2(0, 2.05618), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_vcwkf"]
+curve = SubResource("Curve_4d8ga")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nba5v"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+damping_min = 50.000004
+damping_max = 100.00001
+scale_curve = SubResource("CurveTexture_vcwkf")
+color_ramp = SubResource("GradientTexture1D_4d8ga")
+
+[node name="BlackFirebombProjectile" type="Node2D"]
+z_index = 16
+script = ExtResource("1_3w7aq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_v2567")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 80
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_nba5v")

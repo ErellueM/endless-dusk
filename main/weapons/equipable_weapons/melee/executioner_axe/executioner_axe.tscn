@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca7016axwk7gu"]
+
+[ext_resource type="Script" uid="uid://bpedfdw2wli5k" path="res://main/weapons/equipable_weapons/melee/executioner_axe/executioner_axe.gd" id="1_rkwl8"]
+[ext_resource type="Texture2D" uid="uid://dtixlefjxqw5h" path="res://assets/art/weapons/executioner_axe/executioner_axe.png" id="2_4hjof"]
+
+[node name="ExecutionerAxe" type="Node2D"]
+script = ExtResource("1_rkwl8")
+axe_sprite = ExtResource("2_4hjof")
+sprite_rotation_offset = 225.0
+inverse_blade = true
+chop_length = 28.0
+chop_width = 5.0
+windup_time = 0.4
+weapon_id = "executioner_axe"
+weapon_icon = ExtResource("2_4hjof")
+max_level = 8
+base_damage = 15.0
+base_fire_rate = 3.0
+base_area = 2.0

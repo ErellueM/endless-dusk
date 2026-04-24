@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfdh8fi16xtqg"]
+
+[ext_resource type="Script" uid="uid://dhfj6xb6e8ajf" path="res://main/weapons/equipable_weapons/range/black_firebomb/firebomb_launcher.gd" id="1_nsuaq"]
+[ext_resource type="PackedScene" uid="uid://b6txber5wgte8" path="res://main/weapons/equipable_weapons/range/black_firebomb/black_firebomb_projectile.tscn" id="2_tmka5"]
+[ext_resource type="Texture2D" uid="uid://cxfcbwnm40tg6" path="res://assets/art/weapons/firebomb/firebomb.png" id="3_vt22m"]
+
+[node name="FirebombLauncher" type="Node2D"]
+script = ExtResource("1_nsuaq")
+bomb_scene = ExtResource("2_tmka5")
+scatter_radius = 100.0
+weapon_id = "firebomb"
+weapon_icon = ExtResource("3_vt22m")
+base_fire_rate = 1.4
+base_range = 150.0
