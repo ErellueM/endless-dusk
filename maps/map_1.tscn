@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=31 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -18,8 +18,11 @@
 [ext_resource type="Resource" uid="uid://dn3di480hwma0" path="res://main/data/spawns/elite/plague_doctor_data.tres" id="16_ylxxr"]
 [ext_resource type="Resource" uid="uid://bvibad2ji24hp" path="res://main/data/spawns/miniboss/slime_king_data.tres" id="17_5da34"]
 [ext_resource type="Resource" uid="uid://d1i2ikev5utml" path="res://main/data/spawns/swarm/tank_slime_data.tres" id="17_ylxxr"]
+[ext_resource type="Resource" uid="uid://bpek127np2vo7" path="res://main/data/spawns/miniboss/golem_data.tres" id="19_gks6h"]
 [ext_resource type="PackedScene" uid="uid://dbqfr87lrdt78" path="res://main/environments/destructables/barrel/barrel.tscn" id="19_m0juc"]
-[ext_resource type="PackedScene" uid="uid://ctdarvhl6mjyo" path="res://main/entities/enemies/bosses/eye_boss/eye_boss.tscn" id="19_ylxxr"]
+[ext_resource type="PackedScene" uid="uid://cexwxave6ebrn" path="res://main/entities/enemies/bosses/the_cursed_grave/the_cursed_grave.tscn" id="19_ylxxr"]
+[ext_resource type="Resource" uid="uid://qmirc5xrgf73" path="res://main/data/spawns/miniboss/void_puller_data.tres" id="20_72bmq"]
+[ext_resource type="PackedScene" uid="uid://ctdarvhl6mjyo" path="res://main/entities/enemies/bosses/eye_boss/eye_boss.tscn" id="20_nljlp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -2628,8 +2631,12 @@ position = Vector2(597, 322)
 
 [node name="GameUI" parent="." instance=ExtResource("8_063jp")]
 
+[node name="LevelUpScreen" parent="GameUI" index="1"]
+visible = true
+
 [node name="PauseMenu" parent="GameUI" index="2"]
 process_mode = 2
+visible = true
 
 [node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("pause_menu", "level_up_screen", "game_over_screen") groups=["Managers"]]
 process_mode = 3
@@ -2644,10 +2651,9 @@ game_over_screen = NodePath("YouDiedScreen")
 script = ExtResource("9_jkpbc")
 elite_database = Array[ExtResource("10_tiqm4")]([ExtResource("16_ylxxr"), ExtResource("13_tdbau"), ExtResource("12_y5lha"), ExtResource("14_5da34")])
 swarm_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_5da34"), ExtResource("16_m0juc"), ExtResource("17_ylxxr")])
-miniboss_database = Array[ExtResource("10_tiqm4")]([ExtResource("17_5da34")])
+miniboss_database = Array[ExtResource("10_tiqm4")]([ExtResource("17_5da34"), ExtResource("19_gks6h"), ExtResource("20_72bmq")])
 max_swarm_enemies = 1000
-boss_scenes = Array[PackedScene]([ExtResource("19_ylxxr")])
-boss_interval_minutes = 0.15
+boss_scenes = Array[PackedScene]([ExtResource("19_ylxxr"), ExtResource("20_nljlp")])
 prop_scene = ExtResource("19_m0juc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

@@ -30,8 +30,28 @@ static var monsters =  {
 		"scene": preload("res://main/entities/enemies/simple_ranged_enemy/plagueDoctor/plague_doctor.tscn"),
 		"category": "Normal"
 	},
+	"Golem Blop": {
+		"scene": preload("res://main/entities/enemies/miniboss/golem/golem_blop.tscn"),
+		"category": "Normal"
+	},
 	"Slime King": {
 		"scene": preload("res://main/entities/enemies/miniboss/slime_king/slime_king.tscn"),
 		"category": "Miniboss"
-	}
+	},
+	"Golem": {
+		"scene": preload("res://main/entities/enemies/miniboss/golem/golem.tscn"),
+		"category": "Miniboss"
+	},
+	"Void Puller": {
+		"scene": preload("res://main/entities/enemies/miniboss/void_puller/void_puller.tscn"),
+		"category": "Miniboss"
+	},
+	"The Cursed Grave": {
+		"scene": preload("res://main/entities/enemies/bosses/the_cursed_grave/the_cursed_grave.tscn"),
+		"category": "Boss"
+	},
+	"Eye": {
+		"scene": preload("res://main/entities/enemies/bosses/eye_boss/eye_boss.tscn"),
+		"category": "Boss"
+	},
 }

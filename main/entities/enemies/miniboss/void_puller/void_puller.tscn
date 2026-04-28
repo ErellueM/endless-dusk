@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://8c8hvswagdan"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_leuh8"]
+[ext_resource type="Script" uid="uid://cjyeq515fkfno" path="res://main/entities/enemies/miniboss/void_puller/void_puller.gd" id="2_1pmnj"]
+[ext_resource type="PackedScene" uid="uid://bdv3jkshikrwm" path="res://main/entities/grave_chest/grave_chest.tscn" id="2_d5p57"]
+[ext_resource type="Texture2D" uid="uid://byrqanj8oojad" path="res://assets/art/enemys/miniboss/void_puller.png" id="4_cl1j7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uh11g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_cl1j7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mumrs"]
+radius = 18.110771
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vau77"]
+radius = 18.027756
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1pmnj"]
+radius = 280.0
+
+[sub_resource type="Gradient" id="Gradient_cl1j7"]
+offsets = PackedFloat32Array(0, 0.21115538, 0.4741036, 0.61354584)
+colors = PackedColorArray(0.60784316, 0.21176471, 0.60784316, 0.2627451, 0.5686275, 0.28235295, 0.57254905, 0.23921569, 0.53333336, 0.36078432, 0.53333336, 0.18039216, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uh11g"]
+gradient = SubResource("Gradient_cl1j7")
+width = 600
+height = 600
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="VoidPuller" instance=ExtResource("1_leuh8")]
+script = ExtResource("2_1pmnj")
+pull_strength = 30.0
+enemy_name = "Void Puller"
+is_miniboss = true
+max_health = 300.0
+speed = 20.0
+damage = 30.0
+xp_reward = 0.0
+chest_scene = ExtResource("2_d5p57")
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+z_index = 2
+sprite_frames = SubResource("SpriteFrames_uh11g")
+
+[node name="AttackArea" parent="." index="3"]
+visible = false
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+shape = SubResource("CircleShape2D_mumrs")
+
+[node name="CollisionShape2D" parent="." index="4"]
+visible = false
+shape = SubResource("CircleShape2D_vau77")
+
+[node name="GravityZone" type="Area2D" parent="." index="5"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GravityZone" index="0"]
+shape = SubResource("CircleShape2D_1pmnj")
+
+[node name="TextureRect" type="TextureRect" parent="GravityZone" index="1"]
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 300.0
+offset_bottom = 300.0
+size_flags_horizontal = 4
+texture = SubResource("GradientTexture2D_uh11g")

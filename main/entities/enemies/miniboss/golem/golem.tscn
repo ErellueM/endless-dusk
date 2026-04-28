@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://dyag2rr3wgj76"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_771f8"]
+[ext_resource type="Script" uid="uid://c2b4hu28chpyf" path="res://main/entities/enemies/miniboss/golem/golem.gd" id="2_4fhw7"]
+[ext_resource type="PackedScene" uid="uid://647gmt58dx3m" path="res://main/entities/enemies/miniboss/golem/golem_blop.tscn" id="3_il84r"]
+[ext_resource type="PackedScene" uid="uid://bdv3jkshikrwm" path="res://main/entities/grave_chest/grave_chest.tscn" id="3_ny7as"]
+[ext_resource type="Texture2D" uid="uid://dh5g4i8s7emjl" path="res://assets/art/enemys/miniboss/golem/golem.png" id="3_uvu2e"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ny7as"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_uvu2e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_il84r"]
+size = Vector2(28, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_56qwg"]
+size = Vector2(28, 27)
+
+[node name="Golem" instance=ExtResource("1_771f8")]
+script = ExtResource("2_4fhw7")
+splits_into = 3
+small_enemy_scene = ExtResource("3_il84r")
+enemy_name = "Golem"
+is_miniboss = true
+max_health = 500.0
+speed = 60.0
+damage = 20.0
+xp_reward = 0.0
+chest_scene = ExtResource("3_ny7as")
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_ny7as")
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_il84r")
+
+[node name="CollisionShape2D" parent="." index="4"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_56qwg")

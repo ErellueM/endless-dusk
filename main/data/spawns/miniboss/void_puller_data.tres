@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://qmirc5xrgf73"]
+
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="1_d7djq"]
+[ext_resource type="PackedScene" uid="uid://8c8hvswagdan" path="res://main/entities/enemies/miniboss/void_puller/void_puller.tscn" id="1_vq785"]
+
+[resource]
+script = ExtResource("1_d7djq")
+enemy_scene = ExtResource("1_vq785")
+spawn_type = 1
+metadata/_custom_type_script = "uid://cbh7ils05gocm"

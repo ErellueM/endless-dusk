@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbkk4mdxwxopm"]
+[gd_scene load_steps=8 format=3 uid="uid://cbkk4mdxwxopm"]
 
 [ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/soilder.tscn" id="1_61muo"]
 [ext_resource type="PackedScene" uid="uid://cqulv6gr7h21f" path="res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn" id="2_cjqb1"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_a3rpa"]
 [ext_resource type="PackedScene" uid="uid://dbqfr87lrdt78" path="res://main/environments/destructables/barrel/barrel.tscn" id="5_slsko"]
 [ext_resource type="PackedScene" uid="uid://bdv3jkshikrwm" path="res://main/entities/grave_chest/grave_chest.tscn" id="6_slsko"]
+[ext_resource type="PackedScene" uid="uid://8c8hvswagdan" path="res://main/entities/enemies/miniboss/void_puller/void_puller.tscn" id="7_cjqb1"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -34,3 +35,5 @@ position = Vector2(395, 91)
 
 [node name="GraveChest" parent="." instance=ExtResource("6_slsko")]
 position = Vector2(351, 241)
+
+[node name="VoidPuller" parent="." instance=ExtResource("7_cjqb1")]

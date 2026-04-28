@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ic3hmfvhlxmq"]
+[gd_scene load_steps=26 format=3 uid="uid://ic3hmfvhlxmq"]
 
 [ext_resource type="Script" uid="uid://c31o37fby64g" path="res://main/ui/ingameUI/game_ui.gd" id="1_bwhdv"]
 [ext_resource type="FontFile" uid="uid://c77np2l41gur1" path="res://assets/fonts/press-start-2p/PressStart2P-Regular.ttf" id="2_727k7"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://tq0eql2ynnij" path="res://assets/art/HUD/flask2.png" id="8_c6rn7"]
 [ext_resource type="Shader" uid="uid://duitpm02107wg" path="res://main/effects/shader/bubbles.gdshader" id="8_sbcx4"]
 [ext_resource type="Texture2D" uid="uid://kuxsf4tgrp1b" path="res://assets/art/destructables/barrel/item_drops/coin.png" id="9_iwkmk"]
+[ext_resource type="PackedScene" uid="uid://0bd8y7ndqugy" path="res://main/ui/ingameUI/boss_ui/boss_ui.tscn" id="12_sbcx4"]
 
 [sub_resource type="Gradient" id="Gradient_acanw"]
 
@@ -217,3 +218,8 @@ visible = false
 [node name="PauseMenu" parent="." instance=ExtResource("8_7k6wb")]
 layer = 10
 visible = false
+
+[node name="BossUI" parent="." instance=ExtResource("12_sbcx4")]
+layer = 3
+offset = Vector2(0, 330)
+transform = Transform2D(1, 0, 0, 1, 0, 330)

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SpawnData" load_steps=3 format=3 uid="uid://bpek127np2vo7"]
+
+[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="1_gnjsx"]
+[ext_resource type="PackedScene" uid="uid://dyag2rr3wgj76" path="res://main/entities/enemies/miniboss/golem/golem.tscn" id="1_u7qnh"]
+
+[resource]
+script = ExtResource("1_gnjsx")
+enemy_scene = ExtResource("1_u7qnh")
+spawn_type = 1
+metadata/_custom_type_script = "uid://cbh7ils05gocm"

@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://ctdarvhl6mjyo"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_ek5mq"]
-[ext_resource type="Texture2D" uid="uid://cte0fbsb4n6j0" path="res://main/entities/enemies/Eye_boss_v2.png" id="2_7hkpd"]
 [ext_resource type="Script" uid="uid://bcektp2mpxshq" path="res://main/entities/enemies/bosses/eye_boss/eye_boss.gd" id="2_fqetb"]
 [ext_resource type="PackedScene" uid="uid://bn205tya7xfm3" path="res://main/entities/grave_chest/boss_grave_chest.tscn" id="3_av68v"]
+[ext_resource type="Texture2D" uid="uid://cnrah8pxbrvmf" path="res://assets/art/enemys/boss/Eye_boss_v2.png" id="4_av68v"]
 
 [sub_resource type="Gradient" id="Gradient_av68v"]
 offsets = PackedFloat32Array(0, 0.10878661, 0.49790794, 0.9037657, 1)
@@ -21,7 +21,7 @@ size = Vector2(900, 15)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_7hkpd")
+"texture": ExtResource("4_av68v")
 }],
 "loop": true,
 "name": &"default",
@@ -37,9 +37,9 @@ height = 62.0
 
 [node name="Eye" instance=ExtResource("1_ek5mq")]
 script = ExtResource("2_fqetb")
-laser_dps = 100.0
-laser_duration = 3.0
-sweep_arc_degrees = 120.0
+laser_dps = 70.0
+laser_duration = 4.0
+sweep_arc_degrees = 180.0
 rotation_smoothing = 3.0
 enemy_name = "Eye"
 is_miniboss = true

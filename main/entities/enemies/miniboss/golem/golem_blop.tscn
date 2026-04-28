@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://647gmt58dx3m"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_8cs4d"]
+[ext_resource type="Texture2D" uid="uid://b0xpjpriw3isj" path="res://assets/art/enemys/miniboss/golem/gilem_blop.png" id="2_is41s"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t7aen"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_is41s")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_itc5h"]
+size = Vector2(14, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pkfu"]
+size = Vector2(14, 13)
+
+[node name="GolemBlop" instance=ExtResource("1_8cs4d")]
+enemy_name = "Golem Blop"
+max_health = 200.0
+speed = 60.0
+damage = 5.0
+xp_reward = 15.0
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_t7aen")
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_itc5h")
+
+[node name="CollisionShape2D" parent="." index="4"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_8pkfu")

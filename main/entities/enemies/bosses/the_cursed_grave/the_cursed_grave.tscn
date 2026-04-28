@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://cexwxave6ebrn"]
+
+[ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_eg73i"]
+[ext_resource type="Script" uid="uid://d0u6uuocm7usu" path="res://main/entities/enemies/bosses/the_cursed_grave/the_cursed_grave.gd" id="2_kcrdj"]
+[ext_resource type="Texture2D" uid="uid://b21qolwylwwdb" path="res://assets/art/enemys/boss/grave_boss.png" id="3_3qlch"]
+[ext_resource type="PackedScene" uid="uid://bn205tya7xfm3" path="res://main/entities/grave_chest/boss_grave_chest.tscn" id="3_r1o1e"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_r1o1e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_3qlch")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3jaon"]
+size = Vector2(42, 58)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qyrmm"]
+size = Vector2(42, 58)
+
+[node name="TheCursedGrave" instance=ExtResource("1_eg73i")]
+script = ExtResource("2_kcrdj")
+dash_speed = 500.0
+max_bounces = 4
+enemy_name = "The Cursed Grave"
+max_health = 1500.0
+speed = 30.0
+damage = 30.0
+xp_reward = 0.0
+chest_scene = ExtResource("3_r1o1e")
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+z_index = 2
+sprite_frames = SubResource("SpriteFrames_r1o1e")
+
+[node name="CollisionShape2D" parent="AttackArea" index="0"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_3jaon")
+
+[node name="CollisionShape2D" parent="." index="4"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_qyrmm")
+
+[node name="AimLine" type="Line2D" parent="." index="5"]
