@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://coyy300hfesg2"]
+[gd_scene load_steps=28 format=4 uid="uid://coyy300hfesg2"]
 
 [ext_resource type="Script" uid="uid://dnllvi7dgdmqg" path="res://maps/map_1.gd" id="1_hm8ck"]
 [ext_resource type="Texture2D" uid="uid://4uyrq35kk1gj" path="res://assets/art/mapTilesets/mainlevbuild.png" id="1_p5fey"]
@@ -7,20 +7,19 @@
 [ext_resource type="Script" uid="uid://ctoqfg78j1v85" path="res://maps/camera_2d.gd" id="5_hm8ck"]
 [ext_resource type="PackedScene" uid="uid://ic3hmfvhlxmq" path="res://main/ui/ingameUI/game_ui.tscn" id="8_063jp"]
 [ext_resource type="Script" uid="uid://dociaqow5vvrf" path="res://game_manager.gd" id="8_jkpbc"]
-[ext_resource type="PackedScene" path="res://main/ui/ingameUI/gameOverScreen/you_died_screen.tscn" id="8_nljlp"]
+[ext_resource type="PackedScene" uid="uid://d3xmyau8tlvsb" path="res://main/ui/ingameUI/gameOverScreen/you_died_screen.tscn" id="8_nljlp"]
 [ext_resource type="Script" uid="uid://cyyf8w4p782il" path="res://maps/wave_manager.gd" id="9_jkpbc"]
 [ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
 [ext_resource type="Resource" uid="uid://d0vpqum71sxt3" path="res://main/data/spawns/swarm/green_slime_data.tres" id="11_5da34"]
 [ext_resource type="Resource" uid="uid://byoll1n8dn5vm" path="res://main/data/spawns/elite/wheel_data.tres" id="12_y5lha"]
 [ext_resource type="Resource" uid="uid://ce0d75rgxkpuv" path="res://main/data/spawns/elite/tollkeeper_data.tres" id="13_tdbau"]
 [ext_resource type="Resource" uid="uid://bu8y8gxs0msdk" path="res://main/data/spawns/elite/mushroom_brute_data.tres" id="14_5da34"]
-[ext_resource type="PackedScene" uid="uid://b24oocjwprsh3" path="res://main/entities/enemies/miniboss/slime_king/slime_king.tscn" id="15_y5lha"]
 [ext_resource type="Resource" uid="uid://crnplk7l8a3j6" path="res://main/data/spawns/swarm/red_slime_data.tres" id="16_m0juc"]
 [ext_resource type="Resource" uid="uid://dn3di480hwma0" path="res://main/data/spawns/elite/plague_doctor_data.tres" id="16_ylxxr"]
 [ext_resource type="Resource" uid="uid://bvibad2ji24hp" path="res://main/data/spawns/miniboss/slime_king_data.tres" id="17_5da34"]
 [ext_resource type="Resource" uid="uid://d1i2ikev5utml" path="res://main/data/spawns/swarm/tank_slime_data.tres" id="17_ylxxr"]
 [ext_resource type="PackedScene" uid="uid://dbqfr87lrdt78" path="res://main/environments/destructables/barrel/barrel.tscn" id="19_m0juc"]
-[ext_resource type="PackedScene" uid="uid://bdv3jkshikrwm" path="res://main/entities/grave_chest/grave_chest.tscn" id="21_nljlp"]
+[ext_resource type="PackedScene" uid="uid://ctdarvhl6mjyo" path="res://main/entities/enemies/bosses/eye_boss/eye_boss.tscn" id="19_ylxxr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p5fey"]
 texture = ExtResource("1_p5fey")
@@ -2647,15 +2646,11 @@ elite_database = Array[ExtResource("10_tiqm4")]([ExtResource("16_ylxxr"), ExtRes
 swarm_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_5da34"), ExtResource("16_m0juc"), ExtResource("17_ylxxr")])
 miniboss_database = Array[ExtResource("10_tiqm4")]([ExtResource("17_5da34")])
 max_swarm_enemies = 1000
-boss_scenes = Array[PackedScene]([ExtResource("15_y5lha")])
-miniboss_interval_minutes = 0.25
+boss_scenes = Array[PackedScene]([ExtResource("19_ylxxr")])
+boss_interval_minutes = 0.15
 prop_scene = ExtResource("19_m0juc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gdq6d")
-
-[node name="GraveChest" parent="." instance=ExtResource("21_nljlp")]
-position = Vector2(589, 413)
-is_boss_grave = true
 
 [editable path="GameUI"]

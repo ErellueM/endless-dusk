@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bn205tya7xfm3"]
+
+[ext_resource type="PackedScene" uid="uid://bdv3jkshikrwm" path="res://main/entities/grave_chest/grave_chest.tscn" id="1_6h1bx"]
+[ext_resource type="Texture2D" uid="uid://cnw7oj063tugj" path="res://assets/art/chest/grave_boss_base.png" id="2_hbues"]
+[ext_resource type="Texture2D" uid="uid://t807ab6uahjo" path="res://assets/art/chest/grave_boss_lit.png" id="3_xq8bd"]
+
+[node name="BossGraveChest" instance=ExtResource("1_6h1bx")]
+is_boss_grave = true
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_hbues")
+
+[node name="Lid" parent="." index="2"]
+texture = ExtResource("3_xq8bd")

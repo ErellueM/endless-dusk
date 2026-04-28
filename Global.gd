@@ -1,7 +1,7 @@
 extends Node
 
 var selected_character_scene: PackedScene = load(
-	"res://main/entities/Characters/PlayableCharacter_01.tscn"
+	"res://main/entities/Characters/Soilder.tscn"
 )
 const SAVE_PATH = "user://savegame.cfg"
 
