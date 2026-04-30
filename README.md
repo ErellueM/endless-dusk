@@ -47,9 +47,9 @@ Der Spieler kontrolliert einen Charakter in Top-Down-Perspektive und bewegt sich
 |---------|---------|
 | ⚔️ **Automatisches Kampfsystem** | Waffen greifen automatisch an → Fokus auf Bewegung & Strategie |
 | 🎮 **Vier spielbare Charaktere** | Crusader, Orc, Soldier, Wizard (jeder mit Bonus-Stats) |
-| 💥 **Waffen-Arsenal** | 8–10 unterschiedliche Waffen (Axt, SMG, Blitze, etc.) |
+| 💥 **Waffen-Arsenal** | unterschiedliche Waffen (Axt, SMG, Blitze, etc.) |
 | 📊 **Dynamisches Levelsystem** | Sammle XP, wähle aus 3 Upgrades pro Level |
-| 🌊 **Wellen-basiertes Spawn** | Gegner spawnen per `EnemySpawner.gd` in realistischen Mustern |
+| 🌊 **Wellen-basiertes Spawn** | Gegner spawnen per `wave_manager.gd` in realistischen Mustern |
 | 🎨 **Handgemachte Pixel-Art** | Grafiken in Libresprite & Pixelorama erstellt
 
 ---
@@ -119,10 +119,9 @@ Schaffe es 2+ Minuten ohne zu sterben.
 
 **Startpunkt:**
 - Hauptmenü öffnet sich beim Game-Start  
-- Wähle einen Charakter im **CharacterSelection**-Screen aus
-- Drücke „Start" → Map lädt
+- Wähle einen Charakter im **Characters**-Tab aus
+- Drücke „Start Run" → Map lädt
 
-**Anfänger-Tipp:** Wähle **Crusader** (beste Balance)
 
 ---
 
@@ -137,10 +136,7 @@ Nachdem die Map geladen ist:
 
 **Währenddessen passiert im Spiel:**
 ```
-EnemySpawner.gd → spawn_enemy_around_player()
-├─ Gegner spawnen in zufälligem Winkel
-├─ Entfernung: 150–300 Pixel
-└─ Welle wird mit Zeit schwieriger
+#überarbeiten
 ```
 
 ---
@@ -149,15 +145,14 @@ EnemySpawner.gd → spawn_enemy_around_player()
 
 Besiegte Gegner lassen diese Items fallen:
 
-| Item | Effekt | Icon |
-|------|--------|------|
-| 🟨 **XP-Orb** | +1–5 XP Pro Orb | Gelbe Kugel |
-| 💰 **Gold** | +1–5 Punkte | Goldmünze |
-| ⚔️ **Waffen-Drop** | Neue Waffe freischalten | Waffen-Symbol |
+| Item | Effekt | 
+|------|--------|
+|  **XP-Orb** | füllt XP auf |
+| **Grabsarg**| Spieler erhält Upgrades
 
 **Das ist wichtig:**
-- Du musst näher als 100 Pixel an Items sein, um sie zu automatisch-sammeln (ItemMagnet)
-- Gelbe XP-Orbs sind deine Priorität → füllen die Level-Leiste
+- Du musst nah an Items sein, um sie zu automatisch-sammeln (ItemMagnet)
+- XP-Orbs sind deine Priorität → füllen die Level-Leiste
 
 ---
 
@@ -200,14 +195,7 @@ func gain_xp(amount: float):
 
 ### Schritt 5: So lange spielen, bis du stirbst (Variable Zeit)
 
-Das Spiel wird exponentiell schwerer:
-
-| Minute | Gegner-Anzahl | Schwierigkeit |
-|--------|---------------|---------------|
-| 0–2 | ~5–10 | 🟩 Einfach |
-| 2–4 | ~20–30 | 🟨 Mittel |
-| 4–6 | ~50–100 | 🟠 Schwer |
-| 6+ | 100+ | 🔴 Chaotisch |
+Das Spiel wird jede Minute schwerer, indem das Leben der Gegner erhöht wird
 
 **Das Spiel endet** wenn `health_component.current_health <= 0`
 
@@ -315,8 +303,6 @@ Mit dieser Strategie solltest du es auf **5–7 Minuten** schaffen, bevor die Ge
 |--------|-------------|
 | **Bewegung** | W / A / S / D oder Pfeiltasten |
 | **Pause** | ESC |
-| **Neustarten** | R (im Game-Over-Screen) |
-| **Einstellungen** | Hauptmenü → Settings |
 
 ---
 
@@ -328,9 +314,6 @@ endless-dusk/
 │   ├── entities/              # Spielobjekte (Spieler, Gegner, Items)
 │   │   ├── player.gd         # Spieler-Logik
 │   │   ├── Characters/       # Charakter-Definitionen
-│   ├── systems/              # Game-Systeme
-│   │   ├── enemy_spawner.gd  # Gegner-Spawn-Logik
-│   │   ├── wave_handler.gd   # Wellen-Management
 │   ├── ui/                   # Benutzeroberfläche
 │   │   ├── ingameUI/        # In-Game-HUD
 │   │   ├── general_menu/    # Hauptmenü
@@ -366,10 +349,10 @@ Kurze technische Übersicht mit direkten Dateiverweisen und Beispielsnippets (au
 ### Wichtige Dateien (Kurz)
 - [maps/map_1.gd](maps/map_1.gd) — Instanziiert den Spieler und verbindet Signale
 - [main/entities/player.gd](main/entities/player.gd) — `gain_xp`, `xp_changed`, `health_changed`, `leveled_up`
-- [main/systems/wave_handler.gd](main/systems/wave_handler.gd) — Wellen- und Spawn-Logik
+- [maps/wave_handler.gd](maps/wave_manager.gd) — Wellen- und Spawn-Logik
 - [main/systems/enemy_spawner.gd](main/systems/enemy_spawner.gd) — `spawn_enemy_around_player` / `spawn_enemy_group`
 - [main/ui/general_menu/main_menu/main_menu.gd](main/ui/general_menu/main_menu/main_menu.gd) — Menü-Pfade & Buttons
-- [main/ui/CharacterSelection/character_seletion.gd](main/ui/CharacterSelection/character_seletion.gd) — Default-Auswahl (`soilder.tscn`; Tipp: Namen prüfen)
+- [main/ui/CharacterSelection/character_seletion.gd](main/ui/CharacterSelection/character_seletion.gd) — Default-Auswahl (`soldier.tscn`)
 
 ### Schnell‑Beispiele
 ```gdscript
@@ -381,12 +364,6 @@ if Global.selected_character_scene:
    player.xp_changed.connect(game_ui._on_player_xp_changed)
    player.health_changed.connect(game_ui._on_player_health_changed)
    player.leveled_up.connect(game_manager._on_player_leveled_up)
-```
-
-```gdscript
-# spawn-Beispiel (WaveHandler nutzt den Spawner)
-var slime_scene = preload("res://main/entities/enemies/simple_enemy/slime/slime.tscn")
-$WaveManager/EnemySpawner.spawn_enemy_around_player(player, slime_scene, 300, 500)
 ```
 
 ```gdscript
@@ -437,11 +414,6 @@ open reports/report_1/index.html
  start "" reports\report_1\index.html
  ```
 
-### Debug‑Tipps
-- Fehlende Szenen prüfen: [main/ui/general_menu/main_menu/main_menu.gd](main/ui/general_menu/main_menu/main_menu.gd) — Pfade sind dort als Konstanten definiert.
-- Character-Dateien: [main/entities/Characters](main/entities/Characters) — Standard: `soilder.tscn` (Achtung: Schreibweise).
-- Logs: `reports/` und `reports/report_1/index.html` nach Tests öffnen.
-
 ## Entwicklung & Beitragen
 
 ### Tech-Stack
@@ -456,15 +428,6 @@ open reports/report_1/index.html
 1. Klone das Repository
 2. Öffne in Godot 4.5+
 3. Führe Tests aus: `F5` im Test-Baum oder über `gdUnit4`
-
-### Wie du beitragen kannst
-
-Wir freuen uns über Beiträge! Bitte:
-
-1. **Fork** das Repository
-2. Erstelle einen **Feature-Branch** (`git checkout -b feature/deine-idee`)
-3. **Commit** deine Änderungen (`git commit -am 'Add feature'`)
-4. **Push** und erstelle einen **Pull Request**
 
 ### Bekannte Probleme & TODOs
 
