@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://bf0hdwj2y0a2i"]
+
+[ext_resource type="Script" uid="uid://b4vxuiqd77amv" path="res://main/weapons/equipable_weapons/other/prism_weapon/prism_trap.gd" id="1_56t73"]
+[ext_resource type="Texture2D" uid="uid://cmpian6yybqdl" path="res://assets/art/weapons/cursed_prism/prism.png" id="2_ryuv7"]
+
+[sub_resource type="Gradient" id="Gradient_ryuv7"]
+offsets = PackedFloat32Array(0, 0.5737052, 0.6055777, 0.6334661)
+colors = PackedColorArray(0.972549, 0, 0.5882353, 0.1254902, 0.82758623, 0.82758623, 0.82758623, 0.17241377, 0.8156863, 0, 0.8156863, 0.3529412, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lo8sf"]
+gradient = SubResource("Gradient_ryuv7")
+width = 110
+height = 110
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nn0p1"]
+radius = 50.0
+
+[node name="PrismTrap" type="Area2D"]
+collision_layer = 0
+collision_mask = 10
+script = ExtResource("1_56t73")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = -55.0
+offset_top = -55.0
+offset_right = 55.0
+offset_bottom = 55.0
+texture = SubResource("GradientTexture2D_lo8sf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_nn0p1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -11)
+texture = ExtResource("2_ryuv7")

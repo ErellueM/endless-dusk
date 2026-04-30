@@ -12,7 +12,7 @@ static var type_icons = {
 }
 
 static var achievements = {
-	# --- SURVIVAL TIME ---
+# --- SURVIVAL TIME ---
 	"survive_5_min":   {"name": "Novice Survivor", "type": "time", "target": 300.0, "desc": "Survive for 5 minutes"},
 	"survive_10_min":  {"name": "Skilled Survivor", "type": "time", "target": 600.0, "desc": "Survive for 10 minutes"},
 	"survive_20_min":  {"name": "Veteran Survivor", "type": "time", "target": 1200.0, "desc": "Survive for 20 minutes"},

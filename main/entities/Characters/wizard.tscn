@@ -116,8 +116,13 @@ animations = [{
 "speed": 9.0
 }]
 
-[node name="Player" instance=ExtResource("1_tanxq")]
+[node name="Wizard" instance=ExtResource("1_tanxq")]
 starting_weapons = Array[PackedScene]([ExtResource("2_2j1t2")])
+max_health = 60.0
+might = 0.9
+attack_speed_bonus = 0.2
+magnet_mult = 1.5
+growth = 1.25
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3"]
 sprite_frames = SubResource("SpriteFrames_w0jn4")

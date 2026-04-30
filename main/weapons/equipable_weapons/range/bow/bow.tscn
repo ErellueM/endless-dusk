@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ipnvovy6b8ys"]
+
+[ext_resource type="Script" uid="uid://caxqlv4rgm1xt" path="res://main/weapons/equipable_weapons/range/bow/bow.gd" id="1_6hu2q"]
+[ext_resource type="Texture2D" uid="uid://dghxgxsm6tb1w" path="res://assets/art/weapons/bow/bow.png" id="2_bc576"]
+[ext_resource type="PackedScene" uid="uid://cj3dqd7b4b36k" path="res://main/weapons/equipable_weapons/range/bow/arrow.tscn" id="2_nbha3"]
+
+[node name="Bow" type="Node2D"]
+script = ExtResource("1_6hu2q")
+projectile_scene = ExtResource("2_nbha3")
+projectile_speed = 250.0
+spawn_offset = 6.0
+weapon_id = "bow"
+weapon_icon = ExtResource("2_bc576")
+base_damage = 5.0
+base_fire_rate = 0.6
+base_range = 300.0

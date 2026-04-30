@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://cftcfrk4jk6d0"]
+
+[ext_resource type="Script" uid="uid://ddy6l435hujk4" path="res://main/weapons/equipable_weapons/other/prism_weapon/cursed_prism.gd" id="1_thpwe"]
+[ext_resource type="PackedScene" uid="uid://bf0hdwj2y0a2i" path="res://main/weapons/equipable_weapons/other/prism_weapon/prism_trap.tscn" id="2_kjrqx"]
+[ext_resource type="Texture2D" uid="uid://s0afadix0nf4" path="res://assets/art/weapons/cursed_prism/prism_icon.png" id="2_l8wit"]
+
+[node name="CursedPrism" type="Node2D"]
+script = ExtResource("1_thpwe")
+prism_scene = ExtResource("2_kjrqx")
+weapon_id = "cursed_prism"
+weapon_icon = ExtResource("2_l8wit")
+base_fire_rate = 6.0

@@ -9,4 +9,4 @@ enemy_scene = ExtResource("1_x1erk")
 weight = 15.0
 enemy_id = &"msuhroom"
 max_active_count = 20
-spawn_start_minute = 1.0
+spawn_start_minute = 2.5

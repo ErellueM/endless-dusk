@@ -150,8 +150,25 @@ func take_damage_typed(dmg_amount: float, is_dot: bool = false, dmg_color: Color
 	var final_damage = dmg_amount
 	
 	if not is_dot:
-		# NUR direkter Schaden wird durch Rüstung reduziert
-		final_damage = max(0.5, dmg_amount - armor)
+		# --- DAS NEUE RÜSTUNGSSYSTEM ---
+		if armor >= 0:
+			# Die Konstante "50.0" bestimmt, wie schnell man das Cap erreicht.
+			# Bei Armor = 50 hast du 50% Reduktion. Bei Armor = 100 hast du 66%.
+			var reduction = armor / (armor + 50.0)
+			
+			# Wir cappen die Reduktion bei maximal 70% (0.7)
+			reduction = min(0.7, reduction)
+			
+			final_damage = dmg_amount * (1.0 - reduction)
+		else:
+			# Wenn Rüstung NEGATIV ist (z.B. durch Flüche oder bestimmte Charaktere wie den Orc)
+			# Nimmt der Spieler prozentual MEHR Schaden! (-10 Armor = +20% Schaden)
+			final_damage = dmg_amount * (1.0 - (armor / 50.0))
+			
+	# Wir stellen sicher, dass Schaden nie unter 1.0 fällt (außer der Basis-Schaden war schon tiefer)
+	# So macht jeder Treffer zumindest ein bisschen spürbaren Schaden.
+	if not is_dot:
+		final_damage = max(1.0, final_damage)
 	
 	if SettingsManager.show_damage_numbers and final_damage > 0:
 		var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
