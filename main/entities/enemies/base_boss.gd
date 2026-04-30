@@ -20,5 +20,6 @@ func _on_health_changed(new_health: float, _max_health: float):
 
 func _on_death():
 	super._on_death()
+	Global.process_boss_kill()
 	if boss_ui:
 		boss_ui.hide_boss()

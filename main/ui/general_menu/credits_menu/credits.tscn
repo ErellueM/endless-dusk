@@ -23,40 +23,109 @@ offset_top = 12.0
 offset_right = 45.0
 offset_bottom = 44.0
 
-[node name="Label" type="Label" parent="CanvasLayer"]
-offset_left = 248.0
-offset_top = 73.0
-offset_right = 414.0
-offset_bottom = 128.0
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 40
-text = "Creators"
+text = "CREDITS"
+horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer"]
-offset_left = 238.0
-offset_top = 160.0
-offset_right = 516.0
-offset_bottom = 318.0
-
-[node name="Label_timo" type="Label" parent="CanvasLayer/GridContainer"]
+[node name="Spacer1" type="Control" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-text = "Wagner Timo - timopromotive"
 
-[node name="Label_mika" type="Label" parent="CanvasLayer/GridContainer"]
+[node name="Header_Programming" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Stoetter Mika - Mika1011"
+theme_override_colors/font_color = Color(0.988235, 0.929412, 0.65098, 1)
+theme_override_font_sizes/font_size = 24
+text = "Game Design & Programming"
+horizontal_alignment = 1
 
-[node name="Label_erik" type="Label" parent="CanvasLayer/GridContainer"]
+[node name="Names_Programming" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Müller Erik - ErellueM"
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "Timo Wagner
+Mika Stoetter
+Erik Müller
+Felix Tillmann
+Beric Bayrakal
+Maximilian Robin Tarta"
+horizontal_alignment = 1
 
-[node name="Label_till" type="Label" parent="CanvasLayer/GridContainer"]
+[node name="Spacer2" type="Control" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-text = "Tillmann Felix - Sh4d0wnight"
 
-[node name="Label_beric" type="Label" parent="CanvasLayer/GridContainer"]
+[node name="Header_Art" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Bayrakal Beric - Beric-61"
+theme_override_colors/font_color = Color(0.988235, 0.929412, 0.65098, 1)
+theme_override_font_sizes/font_size = 24
+text = "Pixel Art & Animations"
+horizontal_alignment = 1
 
-[node name="Label_maxi" type="Label" parent="CanvasLayer/GridContainer"]
+[node name="Names_Art" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Tarta Maximilian Robin - maxitaxi27"
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "Timo Wagner
+Maximilian Robin Tarta"
+horizontal_alignment = 1
+
+[node name="Spacer3" type="Control" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Header_ExternalArt" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.929412, 0.65098, 1)
+theme_override_font_sizes/font_size = 20
+text = "Additional External Assets"
+horizontal_alignment = 1
+
+[node name="Names_ExternalArt" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "CreatorName1 - Tileset
+CreatorName2 - UI Icons
+(Füge hier deine genutzten Quellen ein)"
+horizontal_alignment = 1
+
+[node name="Spacer4" type="Control" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Header_Music" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.929412, 0.65098, 1)
+theme_override_font_sizes/font_size = 24
+text = "Music & Sound Design"
+horizontal_alignment = 1
+
+[node name="Names_Music" type="Label" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+text = "Timo Wagner"
+horizontal_alignment = 1
+
+[node name="Spacer5" type="Control" parent="CanvasLayer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2

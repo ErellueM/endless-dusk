@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://ifq3ndi4ljjw"]
+[gd_scene load_steps=21 format=3 uid="uid://ifq3ndi4ljjw"]
 
 [ext_resource type="PackedScene" uid="uid://c0mcgac7knbxt" path="res://main/entities/player.tscn" id="1_g4fcl"]
 [ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="2_kckfy"]
-[ext_resource type="PackedScene" uid="uid://ca7016axwk7gu" path="res://main/weapons/equipable_weapons/melee/executioner_axe/executioner_axe.tscn" id="2_ox8nq"]
+[ext_resource type="PackedScene" uid="uid://ipnvovy6b8ys" path="res://main/weapons/equipable_weapons/range/bow/bow.tscn" id="2_ox8nq"]
 [ext_resource type="Texture2D" uid="uid://ce4hivivs4c1x" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png" id="2_vs356"]
+[ext_resource type="PackedScene" uid="uid://cftcfrk4jk6d0" path="res://main/weapons/equipable_weapons/other/prism_weapon/cursed_prism.tscn" id="3_an3k7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wxwjk"]
 atlas = ExtResource("2_kckfy")
@@ -117,7 +118,7 @@ animations = [{
 }]
 
 [node name="Soilder" instance=ExtResource("1_g4fcl")]
-starting_weapons = Array[PackedScene]([ExtResource("2_ox8nq")])
+starting_weapons = Array[PackedScene]([ExtResource("2_ox8nq"), ExtResource("3_an3k7")])
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_wxwjk")

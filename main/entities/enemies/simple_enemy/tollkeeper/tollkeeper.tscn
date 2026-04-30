@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_2g4sm"]
 [ext_resource type="Shader" uid="uid://cchjvuaeh07ew" path="res://main/effects/shader/red_outline.gdshader" id="2_l3u3v"]
-[ext_resource type="Script" uid="uid://cdwttw2asp8o1" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.gd" id="3_rvd58"]
+[ext_resource type="Script" uid="uid://4nsxlo7y8bgb" path="res://main/entities/enemies/simple_enemy/tollkeeper/tollkeeper.gd" id="3_rvd58"]
 [ext_resource type="Texture2D" uid="uid://8w42dtdgktmf" path="res://assets/art/enemys/tollkeeper/tollkeeper_v2_dong_animation.png" id="4_rvd58"]
 [ext_resource type="Texture2D" uid="uid://bbdslxl35oliw" path="res://assets/art/enemys/tollkeeper/tollkeeper_bel_v3l10.png" id="5_rvd58"]
 
@@ -113,10 +113,10 @@ buff_cooldown = 10.0
 buff_duration = 12.0
 buff_multiplier = 1.5
 enemy_name = "Tollkeeper"
-max_health = 70.0
+max_health = 100.0
 speed = 15.0
 damage = 4.0
-xp_reward = 10.0
+xp_reward = 25.0
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = SubResource("SpriteFrames_rvd58")

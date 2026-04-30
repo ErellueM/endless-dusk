@@ -78,8 +78,10 @@ func generate_cards():
 
 	var stat_pool = []
 	for stat_upg in UpgradeDatabase.stat_upgrades:
-		if stat_upg.has("unlock_req") and not Global.unlocked_achievements.has(stat_upg["unlock_req"]):
-			continue
+		if stat_upg.has("unlock_req"):
+			var req = stat_upg["unlock_req"]
+			if not Global.unlocked_achievements.has(req) and not Global.unlocked_characters.has(req):
+				continue
 			
 		stat_pool.append(stat_upg)
 	var weapon_pool = []
@@ -116,7 +118,7 @@ func generate_cards():
 					var w_data = UpgradeDatabase.weapons_db[w_id]
 					if w_data.has("unlock_req"):
 						var req = w_data["unlock_req"]
-						if not req in Global.unlocked_achievements:
+						if not Global.unlocked_achievements.has(req) and not Global.unlocked_characters.has(req):
 							continue
 					weapon_pool.append(
 						{

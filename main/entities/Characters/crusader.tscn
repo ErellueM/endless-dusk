@@ -116,6 +116,12 @@ animations = [{
 }]
 
 [node name="Crusader" instance=ExtResource("1_xjv4b")]
+speed = 120.0
+max_health = 140.0
+armor = 10.0
+recovery = 0.2
+might = 1.1
+magnet_mult = 0.8
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="1"]
 sprite_frames = SubResource("SpriteFrames_hxaws")

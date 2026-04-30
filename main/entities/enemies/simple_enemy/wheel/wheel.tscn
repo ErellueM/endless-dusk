@@ -56,8 +56,9 @@ charge_time = 0.5
 rush_time = 1.0
 cooldown_time = 0.5
 enemy_name = "Wheel"
+max_health = 150.0
 speed = 60.0
-xp_reward = 10.0
+xp_reward = 20.0
 
 [node name="AnimatedSprite2D" parent="." index="2"]
 sprite_frames = SubResource("SpriteFrames_qsyor")

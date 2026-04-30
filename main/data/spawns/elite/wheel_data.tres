@@ -9,4 +9,4 @@ enemy_scene = ExtResource("1_5b16k")
 weight = 5.0
 enemy_id = &"wheel"
 max_active_count = 4
-spawn_start_minute = 3.0
+spawn_start_minute = 15.0

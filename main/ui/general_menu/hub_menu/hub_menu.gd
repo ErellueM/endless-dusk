@@ -297,34 +297,6 @@ func populate_armory():
 			text_vbox.add_child(desc_lbl)
 		armory_list.add_child(row)
 
-# --- HELPER: CUSTOM SORTING FOR RELICS ---
-func _sort_relics(a: Dictionary, b: Dictionary) -> bool:
-	# Status 1: Sind die Relics gesperrt?
-	var is_a_locked = a.has("unlock_req") and not Global.unlocked_achievements.has(a["unlock_req"])
-	var is_b_locked = b.has("unlock_req") and not Global.unlocked_achievements.has(b["unlock_req"])
-	
-	# REGEL 1: Gesperrte Relics MÜSSEN immer ganz nach unten!
-	if not is_a_locked and is_b_locked: return true
-	if is_a_locked and not is_b_locked: return false
-	
-	# Status 2: Entdeckt oder Unentdeckt?
-	var is_a_unlocked = a["name"] in Global.discovered_upgrades
-	var is_b_unlocked = b["name"] in Global.discovered_upgrades
-	
-	# REGEL 2: Entdeckte Items vor Unentdeckten (???)
-	if is_a_unlocked and not is_b_unlocked: return true
-	if not is_a_unlocked and is_b_unlocked: return false
-	
-	# REGEL 3: Nach Seltenheit
-	var val_a = rarity_values.get(a.get("rarity", "Common"), 1)
-	var val_b = rarity_values.get(b.get("rarity", "Common"), 1)
-	
-	if val_a != val_b:
-		return val_a > val_b 
-		
-	# REGEL 4: Alphabetisch
-	return a["name"] < b["name"]
-
 # --- POPULATE RELICS (PASSIVES) ---
 func populate_relics():
 	for child in relics_list.get_children():
@@ -339,8 +311,8 @@ func populate_relics():
 		var u_name = u_data["name"]
 		var is_discovered = u_name in Global.discovered_upgrades
 		
-		# --- NEU: LOCK CHECK ---
-		var is_locked = u_data.has("unlock_req") and not Global.unlocked_achievements.has(u_data["unlock_req"])
+		# --- GEFIXT: Nutzt jetzt die Hilfsfunktion! ---
+		var is_locked = u_data.has("unlock_req") and not _is_req_unlocked(u_data["unlock_req"])
 		
 		var rarity = u_data.get("rarity", "Common")
 		var r_color = rarity_colors.get(rarity, Color.WHITE) if is_discovered else Color(0.4, 0.4, 0.4)
@@ -373,7 +345,7 @@ func populate_relics():
 		
 		if is_locked:
 			# ZUSTAND 1: GESPERRT (LOCKED)
-			icon.texture = preload("res://assets/art/ui/padlock.png") # Achte auf deinen korrekten Pfad!
+			icon.texture = preload("res://assets/art/ui/padlock.png")
 			icon.modulate = Color(0.3, 0.3, 0.3)
 			
 			name_lbl.text = "LOCKED RELIC"
@@ -381,13 +353,8 @@ func populate_relics():
 			text_vbox.add_child(name_lbl)
 			
 			var desc_lbl = Label.new()
-			# --- NEU: DYNAMISCHER TEXT AUS DER DATENBANK ---
-			var req_id = u_data["unlock_req"]
-			if AchievementDatabase.achievements.has(req_id):
-				desc_lbl.text = "Unlock Goal: " + AchievementDatabase.achievements[req_id]["desc"]
-			else:
-				desc_lbl.text = "Unlock Goal: Unknown"
-			# -----------------------------------------------
+			# --- GEFIXT: Nutzt jetzt die Hilfsfunktion für den Text! ---
+			desc_lbl.text = _get_req_desc(u_data["unlock_req"])
 			desc_lbl.modulate = Color(0.3, 0.3, 0.3)
 			text_vbox.add_child(desc_lbl)
 			
@@ -583,36 +550,110 @@ func _format_number_dotted(val: float) -> String:
 		
 	return result
 	
+# --- HELPER: CUSTOM SORTING FOR RELICS ---
+func _sort_relics(a: Dictionary, b: Dictionary) -> bool:
+	var is_a_locked = a.has("unlock_req") and not _is_req_unlocked(a["unlock_req"])
+	var is_b_locked = b.has("unlock_req") and not _is_req_unlocked(b["unlock_req"])
+	
+	# REGEL 1: Gesperrte Relics MÜSSEN immer ganz nach unten!
+	if not is_a_locked and is_b_locked: return true
+	if is_a_locked and not is_b_locked: return false
+	
+	# NEUE REGEL: Wenn BEIDE gesperrt sind, sortieren wir sie nach unserem neuen Nummern-System!
+	if is_a_locked and is_b_locked:
+		var req_a = a.get("unlock_req", "")
+		var req_b = b.get("unlock_req", "")
+		var weight_a = _get_req_weight(req_a)
+		var weight_b = _get_req_weight(req_b)
+		
+		# Wenn sie unterschiedliche Werte haben, sortiere logisch nach Zahlen
+		if weight_a != weight_b:
+			return weight_a < weight_b
+		# Wenn es derselbe Unlock-Grund ist (z.B. zwei Items brauchen denselben Charakter)
+		if req_a != req_b:
+			return req_a < req_b
+		return a["name"] < b["name"]
+	
+	# Status 2: Entdeckt oder Unentdeckt?
+	var is_a_unlocked = a["name"] in Global.discovered_upgrades
+	var is_b_unlocked = b["name"] in Global.discovered_upgrades
+	
+	# REGEL 2: Entdeckte Items vor Unentdeckten (???)
+	if is_a_unlocked and not is_b_unlocked: return true
+	if not is_a_unlocked and is_b_unlocked: return false
+	
+	# REGEL 3: Nach Seltenheit
+	var val_a = rarity_values.get(a.get("rarity", "Common"), 1)
+	var val_b = rarity_values.get(b.get("rarity", "Common"), 1)
+	
+	if val_a != val_b:
+		return val_a > val_b 
+		
+	# REGEL 4: Alphabetisch
+	return a["name"] < b["name"]
+
 func _sort_weapons(a: String, b: String) -> bool:
 	var data_a = UpgradeDatabase.weapons_db[a]
 	var data_b = UpgradeDatabase.weapons_db[b]
 	
-	# Status 1: Sind die Waffen gesperrt? (Nutzt jetzt korrekt unlocked_achievements!)
-	# Wir prüfen, ob die Waffe eine unlock_req hat UND ob diese NICHT in den erreichten Achievements steht.
 	var is_a_locked = data_a.has("unlock_req") and not _is_req_unlocked(data_a["unlock_req"])
 	var is_b_locked = data_b.has("unlock_req") and not _is_req_unlocked(data_b["unlock_req"])
 	
-	# REGEL 1: Gesperrte Waffen MÜSSEN immer ganz nach unten!
 	if not is_a_locked and is_b_locked: return true
 	if is_a_locked and not is_b_locked: return false
 	
-	# Status 2: Sind die Waffen schon im Run gefunden worden?
+	# NEUE REGEL: Auch Waffen nutzen jetzt das geniale Nummern-System!
+	if is_a_locked and is_b_locked:
+		var req_a = data_a.get("unlock_req", "")
+		var req_b = data_b.get("unlock_req", "")
+		var weight_a = _get_req_weight(req_a)
+		var weight_b = _get_req_weight(req_b)
+		
+		if weight_a != weight_b:
+			return weight_a < weight_b
+		if req_a != req_b:
+			return req_a < req_b
+		return data_a["name"] < data_b["name"]
+	
 	var is_a_discovered = a in Global.discovered_weapons
 	var is_b_discovered = b in Global.discovered_weapons
 	
-	# REGEL 2: Entdeckte Items kommen vor unentdeckten (???) Items
 	if is_a_discovered and not is_b_discovered: return true
 	if not is_a_discovered and is_b_discovered: return false
 	
-	# REGEL 3: Wenn Status gleich, sortiere nach Seltenheit (Legendary zuerst!)
 	var val_a = rarity_values.get(data_a.get("rarity", "Common"), 1)
 	var val_b = rarity_values.get(data_b.get("rarity", "Common"), 1)
 	
 	if val_a != val_b:
 		return val_a > val_b 
 		
-	# REGEL 4: Wenn auch die Seltenheit gleich ist, sortiere Alphabetisch (A-Z)
 	return data_a["name"] < data_b["name"]
+
+# --- HELPER: SORT WEIGHT FOR REQUIREMENTS ---
+func _get_req_weight(req_id: String) -> float:
+	if req_id == "":
+		return 0.0
+		
+	# Wenn es kein Achievement ist, ist es ein Charakter! (z.B. "Wizard", "Orc")
+	# Wir packen Charaktere ganz nach oben in der Locked-Liste.
+	if not AchievementDatabase.achievements.has(req_id):
+		return 1000.0 
+		
+	var ach = AchievementDatabase.achievements[req_id]
+	var type = ach["type"]
+	var target = float(ach["target"])
+	
+	# Jeder Typ bekommt einen gigantischen Zahlen-Block zugewiesen.
+	# So sind sie perfekt gruppiert UND innerhalb der Gruppe nach Fortschritt sortiert!
+	match type:
+		"level": return 10000000.0 + target
+		"time": return 20000000.0 + target
+		"runs": return 30000000.0 + target
+		"kills": return 40000000.0 + target
+		"damage": return 50000000.0 + target
+		"gold": return 60000000.0 + target
+		
+	return 99000000.0
 
 # --- HELPER: UNLOCK CHECKS ---
 func _is_req_unlocked(req_id: String) -> bool:

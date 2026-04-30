@@ -194,10 +194,11 @@ texture = ExtResource("8_c6rn7")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
 layout_mode = 0
-offset_left = 600.0
+offset_left = 438.0
 offset_top = 21.0
 offset_right = 640.0
 offset_bottom = 42.0
+alignment = 2
 
 [node name="GoldLabel" type="Label" parent="HUD/HBoxContainer"]
 unique_name_in_owner = true

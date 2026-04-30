@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b0yj1llxhwtd4" path="res://main/ui/uiElements/generic_back_button.tscn" id="2_6eg4w"]
 [ext_resource type="PackedScene" uid="uid://yd6amcmsh8in" path="res://main/ui/CharacterSelection/ChoseableCharacters/ChoseableCharacter_01.tscn" id="2_13ydn"]
 [ext_resource type="Texture2D" uid="uid://kuxsf4tgrp1b" path="res://assets/art/destructables/barrel/item_drops/coin.png" id="2_coin"]
-[ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/soilder.tscn" id="3_ef216"]
+[ext_resource type="PackedScene" uid="uid://ifq3ndi4ljjw" path="res://main/entities/Characters/soldier.tscn" id="3_ef216"]
 [ext_resource type="Texture2D" uid="uid://dlivfx7wy7t7p" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png" id="4_6eg4w"]
 [ext_resource type="PackedScene" uid="uid://bk8p1tcioxxce" path="res://main/entities/Characters/orc.tscn" id="5_h2mne"]
 [ext_resource type="Texture2D" uid="uid://c55wcqqjsap3r" path="res://assets/art/characters/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="6_ujtpe"]
@@ -428,9 +428,9 @@ theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 15
 columns = 4
 
-[node name="Soilder" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
+[node name="Soldier" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
 layout_mode = 2
-character_name = "Soilder"
+character_name = "Soldier"
 character_scene = ExtResource("3_ef216")
 sprite_frames = SubResource("SpriteFrames_6eg4w")
 
@@ -439,14 +439,14 @@ layout_mode = 2
 character_name = "Crusader"
 character_scene = ExtResource("7_a88xq")
 sprite_frames = SubResource("SpriteFrames_ujtpe")
-unlock_cost = 4
+unlock_cost = 5
 
 [node name="Orc" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
 layout_mode = 2
 character_name = "Orc"
 character_scene = ExtResource("5_h2mne")
 sprite_frames = SubResource("SpriteFrames_h2mne")
-unlock_cost = 10
+unlock_cost = 50
 
 [node name="Wizard" parent="TabContainer/Characters/GridContainer" instance=ExtResource("2_13ydn")]
 layout_mode = 2

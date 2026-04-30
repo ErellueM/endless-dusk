@@ -9,4 +9,4 @@ enemy_scene = ExtResource("1_8mene")
 weight = 5.0
 enemy_id = &"buff"
 max_active_count = 3
-spawn_start_minute = 3.0
+spawn_start_minute = 10.0

@@ -7,5 +7,5 @@
 script = ExtResource("2_rjquk")
 enemy_scene = ExtResource("1_mkkxs")
 enemy_id = &"ranged"
-max_active_count = 6
-spawn_start_minute = 2.0
+max_active_count = 10
+spawn_start_minute = 5.0
