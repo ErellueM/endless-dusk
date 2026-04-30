@@ -15,7 +15,7 @@ A game for SWE lecture at DHBW Stuttgart Informatik 2025/26
 - Tillmann Felix - Sh4d0wnight
 
 [![Godot Version](https://img.shields.io/badge/godot-4.5%2B-blue)](https://godotengine.org/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](https://github.com/ErellueM/endless-dusk)
 
 **Ein roguelike 2D-Auto-Battler im Pixelstil. Überlebe endlose Gegnerwellen und verbessere deine Fähigkeiten.**
@@ -403,17 +403,39 @@ func gain_xp(amount: float):
 ```
 
 ### Tests (gdUnit4)
-- Script: `./addons/gdUnit4/runtest.sh`
-- macOS Beispiel:
 ```bash
 export GODOT_BIN="/Applications/Godot.app/Contents/MacOS/Godot"
 ./addons/gdUnit4/runtest.sh
 open reports/report_1/index.html
 ```
-- Oder direkt:
 ```bash
 ./addons/gdUnit4/runtest.sh --godot_binary /usr/local/bin/godot
 ```
+ - Linux (bash):
+ ```bash
+ # Setze Godot-Binary (falls nicht im PATH)
+ export GODOT_BIN="/usr/bin/godot"
+ ./addons/gdUnit4/runtest.sh
+ xdg-open reports/report_1/index.html
+ ```
+
+ - Windows (PowerShell):
+ ```powershell
+ # Setze Umgebungsvariable (PowerShell)
+ $env:GODOT_BIN = 'C:\Program Files\Godot\Godot.exe'
+ # Verwende das Windows-Wrapper-Skript
+ .\addons\gdUnit4\runtest.cmd
+ Start-Process 'reports\report_1\index.html'
+ ```
+
+ - Windows (CMD):
+ ```cmd
+ :: Setze Umgebungsvariable (CMD)
+ set GODOT_BIN=C:\"Program Files"\Godot\Godot.exe
+ :: Führe das Wrapper-Skript aus
+ addons\gdUnit4\runtest.cmd
+ start "" reports\report_1\index.html
+ ```
 
 ### Debug‑Tipps
 - Fehlende Szenen prüfen: [main/ui/general_menu/main_menu/main_menu.gd](main/ui/general_menu/main_menu/main_menu.gd) — Pfade sind dort als Konstanten definiert.
@@ -479,7 +501,7 @@ Wir freuen uns über Beiträge! Bitte:
 
 ## Lizenz
 
-Dieses Projekt ist lizenziert unter der **MIT-Lizenz**. Siehe [LICENSE](LICENSE) für Details.
+Dieses Projekt ist lizenziert unter der **MIT-Lizenz**. Siehe [LICENSE](https://choosealicense.com/licenses/mit/) für Details.
 
 ---
 
