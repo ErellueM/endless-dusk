@@ -15,7 +15,7 @@ A game for SWE lecture at DHBW Stuttgart Informatik 2025/26
 - Tillmann Felix - Sh4d0wnight
 
 [![Godot Version](https://img.shields.io/badge/godot-4.5%2B-blue)](https://godotengine.org/)
-[![License](https://img.shields.io/badge/license-MIT-green)](https://choosealicense.com/licenses/mit/)
+[![License](https://img.shields.io/badge/license-Proprietary-red)](LICENSE)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](https://github.com/ErellueM/endless-dusk)
 
 **Ein roguelike 2D-Auto-Battler im Pixelstil. Überlebe endlose Gegnerwellen und verbessere deine Fähigkeiten.**
@@ -501,7 +501,7 @@ Wir freuen uns über Beiträge! Bitte:
 
 ## Lizenz
 
-Dieses Projekt ist lizenziert unter der **MIT-Lizenz**. Siehe [LICENSE](https://choosealicense.com/licenses/mit/) für Details.
+Dieses Projekt ist proprietär lizenziert — **Alle Rechte vorbehalten**. Siehe [LICENSE](LICENSE) für Details.
 
 ---
 
