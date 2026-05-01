@@ -5,7 +5,7 @@ var selected_character_scene: PackedScene = load(
 )
 const SAVE_PATH = "user://savegame.cfg"
 
-var unlocked_characters: Array = ["Soilder"]
+var unlocked_characters: Array = ["Soldier"]
 var discovered_weapons: Array = []
 var discovered_upgrades: Array = []
 var unlocked_items: Array = []
@@ -186,7 +186,7 @@ func load_game():
 		gold = config.get_value("Economy", "gold", 0)
 		total_gold_earned = config.get_value("Economy", "total_gold_earned", 0)
 		unlocked_characters = config.get_value("Economy", "unlocked_chars", ["Soilder"])
-		discovered_weapons = config.get_value("Economy", "discovered_weapons", ["knife"])
+		discovered_weapons = config.get_value("Economy", "discovered_weapons", ["Bow"])
 		discovered_upgrades = config.get_value("Economy", "discovered_upgrades", [])
 		unlocked_items = config.get_value("Economy", "unlocked_items", [])
 		unlocked_achievements = config.get_value("Economy", "unlocked_achievements", [])
