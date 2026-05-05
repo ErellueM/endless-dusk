@@ -106,7 +106,7 @@ func _on_pulse():
 		if is_instance_valid(target) and not target.get("is_dead"):
 			
 			if target.has_method("take_damage"):
-				var actual_dmg = target.take_damage(dmg, false)
+				var actual_dmg = target.take_damage(dmg)
 				add_damage_stat(actual_dmg)
 				
 			if player_ref:

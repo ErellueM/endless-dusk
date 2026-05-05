@@ -37,7 +37,7 @@ func _on_pulse():
 	for target in targets:
 		if target.is_in_group("Enemygroup") and target.has_method("take_damage"):
 			# Area-Schaden ohne Schadenszahlen (false)
-			var actual_damage = target.take_damage(damage, false) 
+			var actual_damage = target.take_damage(damage) 
 			
 			if weapon_ref and is_instance_valid(weapon_ref):
 				weapon_ref.add_damage_stat(actual_damage)

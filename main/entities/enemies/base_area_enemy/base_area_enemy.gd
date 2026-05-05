@@ -17,6 +17,7 @@ class_name BaseAreaEnemy
 var player: Node2D
 var is_dead: bool = false
 var can_attack: bool = true
+var spawn_generation: int = 0
 
 # AREA2D FIX: Wir müssen velocity selbst definieren!
 var velocity: Vector2 = Vector2.ZERO 
@@ -145,9 +146,12 @@ func add_status_effect(effect: StatusEffect):
 
 func _flash_hit():
 	is_flashing = true
-	anim.modulate = Color(1, 0.1, 0.1)
-	await get_tree().create_timer(0.2).timeout
-	is_flashing = false
+	anim.modulate = Color(1, 0.1, 0.1) # Sofort hart auf Rot setzen
+	
+	var tween = create_tween()
+	# Faded sanft in 0.15s zurück auf Weiß
+	tween.tween_property(anim, "modulate", Color(1, 1, 1), 0.15)
+	tween.tween_callback(func(): is_flashing = false)
 
 
 func _on_death():
@@ -163,6 +167,7 @@ func _on_death():
 
 # --- AUFWACHEN (Wird vom WaveManager gerufen) ---
 func revive(new_pos: Vector2, difficulty_multiplier: float):
+	spawn_generation += 1
 	is_dead = false
 	$CollisionShape2D.set_deferred("disabled", false)
 	

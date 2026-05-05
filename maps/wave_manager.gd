@@ -9,21 +9,25 @@ var current_state: State = State.NORMAL
 @export var miniboss_database: Array[SpawnData]
 
 @export_group("Spawning Limits")
-@export var max_swarm_enemies: int = 350  # Das Fleischwolf-Limit
-@export var max_elite_enemies: int = 50  # Das Taktik-Limit
+@export var max_swarm_enemies: int = 1000  # Das absolute Late-Game Fleischwolf-Limit
+@export var max_elite_enemies: int = 50  # Das absolute Taktik-Limit
 @export var base_spawn_interval: float = 0.5
+
+@export_group("Scaling Factors")
+@export var swarm_scaling_factor: float = 1.05 # Normale Gegner wachsen stetig
+@export var boss_scaling_factor: float = 1.25 # Bosse wachsen extrem aggressiv
 
 @export_group("Bosses")
 @export var boss_scenes: Array[PackedScene]
 @export var boss_interval_minutes: float = 10.0
-@export var miniboss_interval_minutes: float = 1.0
+@export var miniboss_interval_minutes: float = 2.5
 
 @export_group("Props (Fässer)")
 @export var prop_scene: PackedScene
 @export var prop_spawn_interval: float = 8.0
 @export var max_props: int = 10
 
-var map_bounds: Rect2 = Rect2(-181, -111, 1536, 916) #Rect2(-181, -171, 1536, 976)
+var map_bounds: Rect2 = Rect2(-181, -111, 1536, 916)
 
 var time_elapsed: float = 0.0
 var spawn_timer: float = 0.0
@@ -31,7 +35,6 @@ var prop_timer: float = 0.0
 
 var bosses_spawned: int = 0
 var minibosses_spawned: int = 0
-var scaling_factor: float = 1.05
 
 var player: Node2D
 var dark_arena: Node2D
@@ -39,12 +42,8 @@ var dark_arena: Node2D
 # --- DER SPAWN-PUFFER ---
 var pending_enemy_spawns: Array = []
 
-
 func set_player(p: Node2D) -> void:
 	player = p
-
-var cached_swarm_count: int = 0
-var cache_timer: float = 0.0
 
 func get_active_enemy_count(group_name: String) -> int:
 	var count = 0
@@ -58,7 +57,6 @@ func _process(delta: float):
 	if not player:
 		return
 
-	# Status-Ausgabe nutzt jetzt die schlaue Zählfunktion!
 	if int(time_elapsed) % 1 == 0 and not Engine.get_frames_drawn() % 60:
 		print(
 			"Swarm: ",
@@ -68,9 +66,10 @@ func _process(delta: float):
 		)
 
 	time_elapsed += delta
+	var current_minute = time_elapsed / 60.0
 
-	check_for_miniboss()
-	check_for_boss()
+	check_for_miniboss(current_minute)
+	check_for_boss(current_minute)
 
 	if current_state == State.PRE_BOSS:
 		return
@@ -95,24 +94,32 @@ func _process(delta: float):
 	spawn_timer += delta
 	if spawn_timer >= get_current_spawn_rate():
 		spawn_timer = 0.0
-
 		recycle_distant_enemies()
 
-		# --- ELITE GEGNER PRÜFEN (Mit schlauer Zählung!) ---
+		# --- DYNAMISCHE LIMITS BERECHNEN ---
+		# Swarm: Startet bei 30, erreicht max_swarm_enemies nach ca. 15 Minuten (65 * 15 = 975)
+		var current_swarm_cap = min(max_swarm_enemies, 5 + int(current_minute * 40.0))
+		# Elite: Startet bei 2, erreicht max_elite_enemies nach ca. 15 Minuten
+		var current_elite_cap = min(max_elite_enemies, 2 + int(current_minute * 3.0))
+
+		# --- ELITE GEGNER PRÜFEN ---
 		var current_elites = get_active_enemy_count("EliteEnemies")
-		if current_elites < max_elite_enemies and elite_database.size() > 0:
-			var elite_deficit = max_elite_enemies - current_elites
-			var batch = min(1 + int(time_elapsed / 40.0), elite_deficit)
+		if current_elites < current_elite_cap and elite_database.size() > 0:
+			var elite_deficit = current_elite_cap - current_elites
+			var batch = min(1 + int(current_minute / 2.0), elite_deficit)
 			queue_spawn_from_array(elite_database, batch, false)
 
-		# --- SCHWARM GEGNER PRÜFEN (Mit schlauer Zählung!) ---
+		# --- SCHWARM GEGNER PRÜFEN ---
 		var current_swarms = get_active_enemy_count("SwarmEnemies")
-		if current_swarms < max_swarm_enemies and swarm_database.size() > 0:
-			var swarm_deficit = max_swarm_enemies - current_swarms
-			var batch = 3 + int(time_elapsed / 15.0)
+		if current_swarms < current_swarm_cap and swarm_database.size() > 0:
+			var swarm_deficit = current_swarm_cap - current_swarms
+			
+			# Sanftes Ansteigen der Spawn-Menge pro Tick
+			var batch = 2 + int(current_minute * 1.5)
 
-			if swarm_deficit > max_swarm_enemies * 0.4:
-				batch *= 4
+			# Wenn mehr als 50% zum aktuellen (!) Cap fehlen, leicht beschleunigen
+			if swarm_deficit > current_swarm_cap * 0.5 and current_minute > 1.0:
+				batch *= 2
 
 			batch = min(batch, swarm_deficit)
 			queue_spawn_from_array(swarm_database, batch, true)
@@ -130,7 +137,6 @@ func queue_spawn_from_array(database: Array, amount: int, is_swarm: bool):
 				current_minute >= data.spawn_start_minute
 				and current_minute <= data.spawn_end_minute
 			):
-				# WICHTIG: Nutzt jetzt auch die aktive Zählung für die individuellen Limits!
 				if not is_swarm and data.max_active_count > 0:
 					if get_active_enemy_count(data.enemy_id) >= data.max_active_count:
 						continue
@@ -173,13 +179,13 @@ func spawn_single_enemy(data: SpawnData, current_minute: float, angle: float, is
 	else:
 		enemy.add_to_group("EliteEnemies")
 
+	# HIER DAS SCALING FÜR NORMALE GEGNER
 	var current_multiplier = 1.0
 	if current_minute >= 1.0:
-		current_multiplier = pow(scaling_factor, current_minute)
+		current_multiplier = pow(swarm_scaling_factor, current_minute)
 
 	var spawn_pos = get_offscreen_position(angle)
 
-	# 1. REVIVE RUFEN: Das setzt beim Gegner scale = base_scale!
 	if enemy.has_method("revive"):
 		enemy.revive(spawn_pos, current_multiplier)
 	else:
@@ -188,10 +194,8 @@ func spawn_single_enemy(data: SpawnData, current_minute: float, angle: float, is
 		enemy.set_process(true)
 		enemy.set_physics_process(true)
 
-	# 2. TARGET SCALE ABGREIFEN: Jetzt ist enemy.scale sicher nicht mehr Zero
 	var target_scale = enemy.scale
 	
-	# 3. FÜR ANIMATION AUF NULL SETZEN
 	enemy.scale = Vector2.ZERO
 	enemy.modulate.a = 0.0
 
@@ -214,7 +218,6 @@ func recycle_distant_enemies():
 	var despawned = 0
 
 	for e in all_enemies:
-		# NEU: Überspringe alle Gegner, die im Pool schlafen!
 		if not e.visible or e.get("is_dead"):
 			continue
 
@@ -292,10 +295,9 @@ func get_offscreen_position(base_angle: float) -> Vector2:
 	return raw_pos
 
 
-func check_for_miniboss():
+func check_for_miniboss(current_minute: float):
 	if current_state != State.NORMAL:
 		return
-	var current_minute = time_elapsed / 60.0
 	var expected_minibosses = int(current_minute / miniboss_interval_minutes)
 
 	if expected_minibosses > minibosses_spawned:
@@ -309,8 +311,7 @@ func spawn_random_miniboss(current_minute: float):
 	queue_spawn_from_array(miniboss_database, 1, false)
 
 
-func check_for_boss():
-	var current_minute = time_elapsed / 60.0
+func check_for_boss(current_minute: float):
 	var expected_boss_count = int(current_minute / boss_interval_minutes)
 
 	if expected_boss_count > bosses_spawned and current_state == State.NORMAL:
@@ -324,7 +325,7 @@ func start_pre_boss_warning():
 	var all_enemies = get_tree().get_nodes_in_group("Enemygroup")
 	for e in all_enemies:
 		if not e.visible:
-			continue  # Tote im Pool nicht nochmal animieren!
+			continue
 		var tween = create_tween()
 		tween.tween_property(e, "scale", Vector2.ZERO, 0.5).set_trans(Tween.TRANS_BACK).set_ease(
 			Tween.EASE_IN
@@ -514,8 +515,10 @@ func spawn_actual_boss(arena_center: Vector2, spawn_pos: Vector2):
 	var boss_idx = min(bosses_spawned - 1, boss_scenes.size() - 1)
 	var boss = boss_scenes[boss_idx].instantiate()
 
+	# HIER DAS NEUE SCALING FÜR BOSSE (Nutzt boss_scaling_factor!)
 	var current_minute = time_elapsed / 60.0
-	var boss_mult = pow(scaling_factor, current_minute)
+	var boss_mult = pow(boss_scaling_factor, current_minute)
+	
 	if "max_health" in boss:
 		boss.max_health *= boss_mult
 	if "damage" in boss:

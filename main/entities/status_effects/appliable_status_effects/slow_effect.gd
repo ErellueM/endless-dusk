@@ -5,7 +5,7 @@ var ice_color: Color
 
 
 func _init(_duration: float, _slow: float, _color: Color):
-	super("ice_slow", _duration, null, false)
+	super("slow", _duration, null, false)
 	slow_amount = _slow
 	ice_color = _color
 

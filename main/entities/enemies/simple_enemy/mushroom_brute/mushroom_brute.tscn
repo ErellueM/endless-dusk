@@ -47,7 +47,7 @@ enemy_name = "Mushroom Brute"
 max_health = 500.0
 speed = 15.0
 damage = 50.0
-xp_reward = 10.0
+xp_reward = 20.0
 immune_to_all_status = true
 
 [node name="AnimatedSprite2D" parent="." index="2"]

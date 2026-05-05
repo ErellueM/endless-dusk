@@ -47,6 +47,9 @@ func wipe_enemies(damage_amount: float, enemies_per_frame: int = 20):
 	for enemy in enemies:
 		if is_instance_valid(enemy) and not enemy.is_dead and enemy.has_method("take_damage"):
 			# Fügt Schaden zu und sagt: show_number = false!
+			if enemy.get("is_miniboss") == true or enemy.is_in_group("boss") or enemy.is_in_group("miniboss"):
+				continue
+			
 			enemy.take_damage(damage_amount, false)
 			count += 1
 

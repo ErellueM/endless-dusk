@@ -2652,9 +2652,7 @@ script = ExtResource("9_jkpbc")
 elite_database = Array[ExtResource("10_tiqm4")]([ExtResource("16_ylxxr"), ExtResource("13_tdbau"), ExtResource("12_y5lha"), ExtResource("14_5da34")])
 swarm_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_5da34"), ExtResource("16_m0juc"), ExtResource("17_ylxxr")])
 miniboss_database = Array[ExtResource("10_tiqm4")]([ExtResource("17_5da34"), ExtResource("19_gks6h"), ExtResource("20_72bmq")])
-max_swarm_enemies = 1000
 boss_scenes = Array[PackedScene]([ExtResource("19_ylxxr"), ExtResource("20_nljlp")])
-miniboss_interval_minutes = 2.5
 prop_scene = ExtResource("19_m0juc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

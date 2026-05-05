@@ -23,11 +23,13 @@ func _physics_process(delta):
 	rotation = velocity.angle()
 
 func _on_hit(target: Node2D):
-	if target in hit_targets:
-		return
+	var unique_id = str(target.get_instance_id()) + "_" + str(target.get("spawn_generation"))
+
+	if unique_id in hit_targets:
+		return 
 		
 	if (target.is_in_group("Enemygroup") or target.is_in_group("Props")) and target.has_method("take_damage"):
-		hit_targets.append(target)
+		hit_targets.append(unique_id)
 		
 		# Schaden zufügen
 		var actual_damage = target.take_damage(damage, true)

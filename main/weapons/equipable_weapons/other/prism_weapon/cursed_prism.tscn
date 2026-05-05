@@ -9,4 +9,5 @@ script = ExtResource("1_thpwe")
 prism_scene = ExtResource("2_kjrqx")
 weapon_id = "cursed_prism"
 weapon_icon = ExtResource("2_l8wit")
+base_damage = 6.0
 base_fire_rate = 6.0

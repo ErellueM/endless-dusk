@@ -10,6 +10,8 @@ radius = 30.0
 script = ExtResource("1_0g7xa")
 weapon_id = "holy_radiance"
 weapon_icon = ExtResource("2_04qfi")
+base_damage = 3.0
+base_fire_rate = 1.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_04qfi")

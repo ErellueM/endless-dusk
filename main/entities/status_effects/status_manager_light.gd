@@ -4,6 +4,7 @@ extends RefCounted
 # Wir brauchen Variablen für die Multiplikatoren
 var speed_mult: float = 1.0
 var dmg_taken_mult: float = 1.0
+var dmg_dealt_mult: float = 1.0 # <--- DER FIX: Die fehlende Variable!
 var color_mod: Color = Color(1, 1, 1)
 
 var effects: Array = []
@@ -32,10 +33,17 @@ func add_effect(new_effect: StatusEffect):
 	new_effect.apply(parent)
 	effects.append(new_effect)
 
+func remove_effect_by_id(effect_id: String):
+	for i in range(effects.size() - 1, -1, -1):
+		if effects[i].id == effect_id:
+			effects[i].remove()
+			effects.remove_at(i)
+
 func process_logic(delta: float):
 	# Standardwerte für jeden Frame zurücksetzen
 	speed_mult = 1.0
 	dmg_taken_mult = 1.0
+	dmg_dealt_mult = 1.0 # <--- DER FIX: Jeden Frame auf 100% zurücksetzen
 	color_mod = Color(1, 1, 1)
 
 	if effects.is_empty():
@@ -48,6 +56,11 @@ func process_logic(delta: float):
 		# Werte kombinieren
 		speed_mult *= eff.get_speed_mult()
 		dmg_taken_mult *= eff.get_dmg_taken_mult()
+		
+		# Prüfen ob der Effekt den ausgehenden Schaden verändert (für Weakness-Effekte etc.)
+		if eff.has_method("get_dmg_dealt_mult"):
+			dmg_dealt_mult *= eff.get_dmg_dealt_mult()
+			
 		color_mod *= eff.get_color()
 
 		if eff.duration <= 0:

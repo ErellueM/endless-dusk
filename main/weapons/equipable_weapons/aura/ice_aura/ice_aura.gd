@@ -58,18 +58,23 @@ func apply_tick_effect(target: Node2D):
 	# Neue Funktion, die das Frostbite auf Level 5 handhabt!
 	if applies_frostbite and target.has_method("take_damage"):
 		# Macht 5 Schaden pro Tick (tötet rote Slimes sofort, Standard-Slimes nach 3 Ticks)
-		var actual_dmg = target.take_damage(get_actual_damage(), false) 
+		var actual_dmg = target.take_damage(get_actual_damage()) 
 		add_damage_stat(actual_dmg)
 
 func apply_exit_effect(target: Node2D):
-	var status_manager = target.get_node_or_null("StatusManager")
-
-	if status_manager and status_manager.has_method("remove_effect_by_id"):
-		status_manager.remove_effect_by_id("ice_slow")
+	# 1. UNIVERSAL-FIX: Wir prüfen, ob die Eigenschaft existiert, anstatt nach einem Node zu suchen!
+	if "status_manager" in target and target.status_manager != null:
+		if target.status_manager.has_method("remove_effect_by_id"):
+			# WICHTIG: Schau in deinem SlowEffect-Skript nach, wie die ID genau heißt! 
+			# Wahrscheinlich "slow" oder "ice_slow". Trage das exakte Wort hier ein:
+			target.status_manager.remove_effect_by_id("slow")
+			
+	# 2. Fallback für alte Skripte
 	elif "is_iced" in target:
 		target.is_iced = false
 		target.speed_modifier /= slowness_factor
-		target._update_visual_state()
+		if target.has_method("_update_visual_state"):
+			target._update_visual_state()
 
 
 func _draw():

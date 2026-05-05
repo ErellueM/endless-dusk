@@ -15,6 +15,7 @@ fill_to = Vector2(0.6, 0)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r7rq7"]
 
 [node name="VoidMagnet" type="Area2D"]
+z_index = 1
 collision_layer = 64
 script = ExtResource("1_r7rq7")
 

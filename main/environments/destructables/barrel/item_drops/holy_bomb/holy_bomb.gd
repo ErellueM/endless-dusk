@@ -1,6 +1,6 @@
 extends BasePickup
 
-@export var damage: float = 9999.0
+@export var damage: float = 999999.0
 @export var enemies_per_frame: int = 10
 
 

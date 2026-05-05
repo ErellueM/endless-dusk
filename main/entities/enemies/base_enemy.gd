@@ -17,6 +17,7 @@ class_name BaseEnemy
 var player: Node2D
 var is_dead: bool = false
 var can_attack: bool = true
+var spawn_generation: int = 0
 
 @onready var health = $Health
 @onready var anim = $AnimatedSprite2D
@@ -159,6 +160,7 @@ func _on_death():
 
 # --- AUFWACHEN (Wird vom WaveManager gerufen) ---
 func revive(new_pos: Vector2, difficulty_multiplier: float):
+	spawn_generation += 1
 	is_dead = false
 	$CollisionShape2D.set_deferred("disabled", false)
 	
