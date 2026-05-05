@@ -37,4 +37,5 @@ func _on_hit(target: Node2D):
 			
 		# Optional: Auch hier könntest du den Burn-Effekt drauflegen!
 		if target.has_method("add_status_effect"):
-			target.add_status_effect(BurnEffect.new(2.0, 1.0, 0.25, weapon_ref))
+			var burn_tick_damage = damage * 0.3
+			target.add_status_effect(BurnEffect.new(2.0, burn_tick_damage, 1.0, weapon_ref))

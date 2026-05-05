@@ -27,9 +27,8 @@ color_ramp = SubResource("GradientTexture1D_26n3t")
 script = ExtResource("1_4r1xc")
 weapon_id = "ice_aura"
 weapon_icon = ExtResource("2_46bcq")
-is_utility = true
-max_level = 3
 base_damage = 0.0
+base_range = 80.0
 
 [node name="AuraArea" type="Area2D" parent="."]
 collision_layer = 0

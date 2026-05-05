@@ -28,6 +28,7 @@ func _on_hit(target: Node2D):
 
 		if weapon_ref and weapon_ref.get("applies_poison") == true:
 			if target.has_method("add_status_effect"):
-				target.add_status_effect(PoisonEffect.new(3, 3, 0.5))
+				var burn_tick_damage = damage * 0.2
+				target.add_status_effect(PoisonEffect.new(3, burn_tick_damage, 0.5, weapon_ref))
 
 		queue_free()

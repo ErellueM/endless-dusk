@@ -2,7 +2,6 @@ extends Weapon
 
 var last_drop_pos: Vector2 = Vector2.INF
 
-
 func attack() -> bool:
 	if global_position.distance_to(last_drop_pos) < 40.0:
 		return false
@@ -42,25 +41,25 @@ func attack() -> bool:
 		func():
 			if is_instance_valid(puddle):
 				var dmg = get_actual_damage()
-				# --- DER FIX: Beide Arrays zusammenfassen! ---
 				var all_targets = puddle.get_overlapping_bodies() + puddle.get_overlapping_areas()
 				for target in all_targets:
 					if (
 						(target.is_in_group("Enemygroup") or target.is_in_group("Props"))
 						and target.has_method("take_damage")
 					):
-						# false = Keine Lag-Zahlen bei AoE!
-						var true_damage = target.take_damage(dmg, true)
+						var true_damage = target.take_damage(dmg, false) # false = keine Lag-Zahlen!
 						add_damage_stat(true_damage)
 	)
 
+	# Lvl 5 Upgrade lässt die Pfützen länger liegen! (6.0s statt 4.0s)
+	var puddle_lifetime = 6.0 if level >= 5 else 4.0
+
 	var tween = create_tween()
-	tween.tween_property(dark_blood, "color:a", 0.0, 4.0)
-	tween.parallel().tween_property(bright_blood, "color:a", 0.0, 4.0)
+	tween.tween_property(dark_blood, "color:a", 0.0, puddle_lifetime)
+	tween.parallel().tween_property(bright_blood, "color:a", 0.0, puddle_lifetime)
 	tween.tween_callback(puddle.queue_free)
 
 	return true
-
 
 func _create_splat(base_rad: float) -> PackedVector2Array:
 	var pts = PackedVector2Array()
@@ -71,34 +70,22 @@ func _create_splat(base_rad: float) -> PackedVector2Array:
 		pts.append(Vector2(cos(a), sin(a)) * r)
 	return pts
 
-
+# --- UPGRADES ---
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
 		2:
-			return {
-				"desc": "[color=green]+10 Base Damage[/color]\nThicker blood.", "rarity": "Common"
-			}
+			return {"desc": "[color=green]+2 Base Damage[/color]\nThicker blood.", "rarity": "Common"}
 		3:
 			return {"desc": "[color=green]+40% Area Size[/color]\nHuge puddles.", "rarity": "Rare"}
 		4:
-			return {
-				"desc": "[color=green]-0.3s Drop Cooldown[/color]\nLeaves a solid trail.",
-				"rarity": "Common"
-			}
+			return {"desc": "[color=green]-0.3s Drop Cooldown[/color]\nLeaves a solid trail.", "rarity": "Common"}
 		5:
-			return {
-				"desc": "[color=green]+20 Base Damage[/color]\nLethal curse.", "rarity": "Legendary"
-			}
+			return {"desc": "[color=green]+4 Base Damage[/color]\n[color=orange]Puddles last 2 seconds longer![/color]", "rarity": "Legendary"}
 	return {"desc": "MAX", "rarity": "Common"}
-
 
 func _apply_stats_for_current_level():
 	match level:
-		2:
-			base_damage += 10.0
-		3:
-			base_area += 0.40
-		4:
-			base_fire_rate *= 0.7
-		5:
-			base_damage += 20.0
+		2: base_damage += 2.0
+		3: base_area += 0.40
+		4: base_fire_rate -= 0.3
+		5: base_damage += 4.0

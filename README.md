@@ -134,13 +134,6 @@ Nachdem die Map geladen ist:
 3. Gehe näher an Gegner heran für schnellere Kills
 4. Sammle die Items auf, die Gegner hinterlassen
 
-**Währenddessen passiert im Spiel:**
-```
-#überarbeiten
-```
-
----
-
 ### Schritt 3: Power-Ups erkennen und sammeln (1 Min)
 
 Besiegte Gegner lassen diese Items fallen:

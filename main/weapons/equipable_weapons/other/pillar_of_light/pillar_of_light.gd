@@ -71,12 +71,12 @@ func get_upgrade_info(next_level: int) -> Dictionary:
 			}
 		3:
 			return {
-				"desc": "[color=green]+20 Blast Radius[/color]\nBlinding holy explosion.",
+				"desc": "[color=green]+20% Area[/color]\nBlinding holy explosion.",
 				"rarity": "Rare"
 			}
 		4:
 			return {
-				"desc": "[color=green]+20 Holy Damage[/color]\nPurge the darkness.",
+				"desc": "[color=green]+12 Base Damage[/color]\nPurge the darkness.",
 				"rarity": "Common"
 			}
 		5:
@@ -86,14 +86,13 @@ func get_upgrade_info(next_level: int) -> Dictionary:
 			}
 	return {"desc": "MAX", "rarity": "Common"}
 
-
 func _apply_stats_for_current_level():
 	match level:
 		2:
 			strike_count += 1
 		3:
-			strike_radius += 20.0
+			base_area += 0.20
 		4:
-			base_damage += 20.0
+			base_damage += 12.0
 		5:
 			strike_count += 2

@@ -48,6 +48,7 @@ static var weapons_db = {
 		"name": "Blood Trail",
 		"desc": "[color=green]New Weapon[/color]\nLeaves a damaging path of blood behind.",
 		"rarity": "Uncommon",
+		"unlock_req": "kills_1k",
 		"scene": preload("res://main/weapons/equipable_weapons/other/blood_trail/blood_trail.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/blood_trail.png")
 	},
@@ -55,7 +56,7 @@ static var weapons_db = {
 	{
 		"name": "Phantom Glaive",
 		"desc": "[color=green]New Weapon[/color]\nHurls a returning spectral blade.",
-		"rarity": "Rare",
+		"rarity": "Uncommon",
 		"scene": preload("res://main/weapons/equipable_weapons/range/phantom_glaive/phantom_glaive.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/phantom_glaive.png")
 	},
@@ -64,6 +65,7 @@ static var weapons_db = {
 		"name": "Abyssal Impale",
 		"desc": "[color=green]New Weapon[/color]\nErupts lethal spikes from the ground.",
 		"rarity": "Epic",
+		"unlock_req": "survive_10_min",
 		"scene": preload("res://main/weapons/equipable_weapons/other/abyssal_impale/abyssal_impale.tscn"),
 		"icon": preload("res://assets/art/icons/weapon_icon/abyssal_impale.png")
 	},
@@ -114,7 +116,7 @@ static var weapons_db = {
 	{
 		"name": "Dragon's Breath",
 		"desc": "[color=green]New Weapon[/color]\nUnleashes a devastating burst of flame in the direction you are moving.",
-		"rarity": "Epic",
+		"rarity": "Legendary",
 		"scene": preload("res://main/weapons/equipable_weapons/range/dragons_breath/dragons_breath.tscn"),
 		"icon": preload("res://assets/art/weapons/dragons_breath/dragons_breath.png")
 	},
@@ -122,9 +124,17 @@ static var weapons_db = {
 	{
 		"name": "Cursed Prism",
 		"desc": "[color=green]New Weapon[/color]\nDrops a stationary crystal that periodically shocks nearby enemies.",
-		"rarity": "Rare",
+		"rarity": "Uncommon",
 		"scene": preload("res://main/weapons/equipable_weapons/other/prism_weapon/cursed_prism.tscn"),
 		"icon": preload("res://assets/art/weapons/cursed_prism/prism_icon.png")
+	},
+	"holy_radiance":
+	{
+		"name": "Holy Radiance",
+		"desc": "[color=green]New Weapon[/color]\nA pulsing ring of light that pushes enemies away.",
+		"rarity": "Uncommon",
+		"scene": preload("res://main/weapons/equipable_weapons/aura/holy_radiance/holy_radiance.tscn"),
+		"icon": preload("res://assets/art/icons/weapon_icon/holy_radiance.png")
 	},
 }
 

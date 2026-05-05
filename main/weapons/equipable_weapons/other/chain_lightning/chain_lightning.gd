@@ -9,20 +9,17 @@ extends Weapon
 func _ready():
 	if lightning_line:
 		lightning_line.clear_points()
-		# top_level macht die Linie unabhängig von der Bewegung des Spielers
 		lightning_line.top_level = true
 		lightning_line.global_position = Vector2.ZERO
 		lightning_line.z_index = 100
 
 func attack() -> bool:
-	# 1. Wir holen uns die "Snapshots" der Positionen
 	var target_positions = get_chain_target_positions()
 
 	if target_positions.size() == 0:
 		if lightning_line: lightning_line.clear_points()
 		return false
 
-	# 2. Zeichnen (nutzt die gespeicherten Vector2 Koordinaten)
 	draw_lightning(target_positions)
 	return true
 
@@ -31,11 +28,9 @@ func get_chain_target_positions() -> Array:
 	var hits_objects = []
 	var current_pos = global_position
 
-	# Alle potenziellen Ziele holen
 	var raw_targets = get_tree().get_nodes_in_group("Enemygroup") + get_tree().get_nodes_in_group("Props")
 	var active_targets = []
 
-	# Nur lebende/sichtbare Ziele filtern
 	for t in raw_targets:
 		if is_instance_valid(t) and t.visible and not t.get("is_dead"):
 			active_targets.append(t)
@@ -45,10 +40,10 @@ func get_chain_target_positions() -> Array:
 
 	var dmg = get_actual_damage()
 
-	# Kettenreaktion berechnen
 	for i in range(max_bounces + 1):
 		var closest_target = null
-		var min_dist = get_actual_range() if i == 0 else bounce_range
+		# WICHTIG: Das Area-Upgrade beeinflusst jetzt auch den Kettenblitz-Sprung!
+		var min_dist = get_actual_range() if i == 0 else (bounce_range * get_actual_area())
 
 		for target in active_targets:
 			if target in hits_objects:
@@ -60,15 +55,17 @@ func get_chain_target_positions() -> Array:
 				closest_target = target
 
 		if closest_target:
-			# WICHTIG: Sofort die Position speichern, bevor der Pool den Gegner bewegt!
 			positions.append(closest_target.global_position)
 			hits_objects.append(closest_target)
 			current_pos = closest_target.global_position
 			
-			# Schaden direkt hier verursachen
 			if closest_target.has_method("take_damage"):
-				var actual_dmg = closest_target.take_damage(dmg)
+				var actual_dmg = closest_target.take_damage(dmg, true)
 				add_damage_stat(actual_dmg)
+				
+				# (Optional) Level 5 Spezial-Effekt: Stun!
+				if level >= 5 and closest_target.has_method("add_status_effect"):
+					closest_target.add_status_effect(StunEffect.new(0.5))
 		else:
 			break
 
@@ -80,7 +77,6 @@ func draw_lightning(target_positions: Array):
 
 	lightning_line.clear_points()
 	
-	# Da top_level = true, entspricht die lokale Koordinate der globalen
 	var start_pos = global_position
 	lightning_line.add_point(start_pos)
 
@@ -89,7 +85,6 @@ func draw_lightning(target_positions: Array):
 		add_jagged_segments(last_pos, pos)
 		last_pos = pos
 
-	# Blitz-Animation
 	lightning_line.modulate.a = 1.0
 	var tween = create_tween()
 	tween.tween_property(lightning_line, "modulate:a", 0.0, 0.25).set_trans(Tween.TRANS_BOUNCE)
@@ -109,7 +104,6 @@ func add_jagged_segments(start: Vector2, end: Vector2):
 	lightning_line.add_point(end)
 
 # --- UPGRADES ---
-
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
 		2:
@@ -118,14 +112,14 @@ func get_upgrade_info(next_level: int) -> Dictionary:
 				"rarity": "Common"
 			}
 		3:
-			return {"desc": "[color=green]+10 Base Damage[/color]", "rarity": "Rare"}
+			return {"desc": "[color=green]+8 Base Damage[/color]", "rarity": "Rare"}
 		4:
 			return {
-				"desc": "[color=green]+50 Bounce Range[/color]\nJumps further.", "rarity": "Common"
+				"desc": "[color=green]+20% Area[/color]\nJumps further.", "rarity": "Common"
 			}
 		5:
 			return {
-				"desc": "[color=green]+2 Max Bounces[/color]\nChain lightning storm!",
+				"desc": "[color=green]+2 Max Bounces[/color]\n[color=orange]Zaps slightly stun enemies![/color]",
 				"rarity": "Legendary"
 			}
 	return {"desc": "MAX", "rarity": "Common"}
@@ -135,8 +129,9 @@ func _apply_stats_for_current_level():
 		2:
 			max_bounces += 1
 		3:
-			base_damage += 10.0
+			base_damage += 8.0
 		4:
-			bounce_range += 50.0
+			base_area += 0.20
 		5:
 			max_bounces += 2
+			# Stun-Logik ist oben in attack() eingebaut

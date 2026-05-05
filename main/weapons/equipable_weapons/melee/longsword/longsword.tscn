@@ -13,6 +13,7 @@ hitbox_width = 6.0
 distance_from_center = 5.0
 weapon_id = "longsword"
 weapon_icon = ExtResource("2_g6ws0")
+base_damage = 16.0
 base_fire_rate = 2.0
 base_range = 100.0
 base_area = 1.5

@@ -22,7 +22,7 @@ size = Vector2(14, 13)
 
 [node name="GolemBlop" instance=ExtResource("1_8cs4d")]
 enemy_name = "Golem Blop"
-max_health = 200.0
+max_health = 800.0
 speed = 60.0
 damage = 5.0
 xp_reward = 15.0

@@ -10,6 +10,6 @@ projectile_scene = ExtResource("2_gvsk7")
 projectile_speed = 200.0
 weapon_id = "dragons_breath"
 weapon_icon = ExtResource("3_gvsk7")
-base_damage = 5.0
+base_damage = 9.0
 base_fire_rate = 1.7
 base_range = 40.0

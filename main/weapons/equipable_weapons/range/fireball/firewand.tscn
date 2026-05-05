@@ -10,6 +10,7 @@ fireball_scene = ExtResource("2_ch6vi")
 projectile_speed = 100.0
 weapon_id = "fireball"
 weapon_icon = ExtResource("3_ji8oj")
+base_damage = 12.0
 base_fire_rate = 2.5
 base_range = 300.0
 base_area = 0.7

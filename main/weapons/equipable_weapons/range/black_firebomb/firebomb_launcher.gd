@@ -24,15 +24,15 @@ func _spawn_bomb():
 # --- UPGRADES ---
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
-		2: return {"desc": "[color=green]+15% Damage[/color]", "rarity": "Common"}
+		2: return {"desc": "[color=green]+6 Base Damage[/color]\nDevastating impact.", "rarity": "Common"}
 		3: return {"desc": "[color=green]+20% Explosion Radius[/color]", "rarity": "Uncommon"}
 		4: return {"desc": "[color=green]-25% Cooldown[/color]", "rarity": "Rare"}
-		5: return {"desc": "[color=orange]Chaos Fire[/color]\nExplosions now ignite enemies!", "rarity": "Legendary"}
+		5: return {"desc": "[color=orange]Chaos Fire[/color]\n[color=green]Explosions now ignite enemies![/color]", "rarity": "Legendary"}
 	return {"desc": "MAX", "rarity": "Common"}
 
 func _apply_stats_for_current_level():
 	match level:
-		2: base_damage += 10.0
-		3: base_area += 0.2
+		2: base_damage += 6.0
+		3: base_area += 0.20
 		4: base_fire_rate *= 0.75
-		5: pass # Logik ist im Projektil (level >= 5)
+		5: pass # Logik ist im Projektil

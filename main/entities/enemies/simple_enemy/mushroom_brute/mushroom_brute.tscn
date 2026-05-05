@@ -45,7 +45,7 @@ size = Vector2(12, 17)
 [node name="MushroomBrute" instance=ExtResource("1_nnorj")]
 enemy_name = "Mushroom Brute"
 max_health = 500.0
-speed = 10.0
+speed = 15.0
 damage = 50.0
 xp_reward = 10.0
 immune_to_all_status = true

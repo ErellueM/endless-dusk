@@ -88,27 +88,29 @@ func _create_circle_points(radius: float) -> PackedVector2Array:
 		pts.append(Vector2(cos(a), sin(a)) * radius)
 	return pts
 
+# Ersetze die Upgrades in void_orbs.gd hiermit:
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
-		2:
-			return {"desc": "[color=green]+1 Orb[/color]\nDouble the trouble.", "rarity": "Common"}
-		3:
-			return {"desc": "[color=green]-0.2s Hit Cooldown[/color]\nZaps faster.", "rarity": "Rare"}
-		4:
-			return {"desc": "[color=green]+2 Orbs[/color]\nA proper swarm.", "rarity": "Legendary"}
-		5:
-			return {"desc": "[color=green]+15 Base Damage, +1 Orb[/color]\nVoid mastery.", "rarity": "Legendary"}
+		2: return {"desc": "[color=green]+1 Orb[/color]", "rarity": "Common"}
+		3: return {"desc": "[color=green]+15% Orbit Speed[/color]\n[color=green]+2 Base Damage[/color]", "rarity": "Uncommon"}
+		4: return {"desc": "[color=green]+1 Orb[/color]", "rarity": "Common"}
+		5: return {"desc": "[color=green]+20% Area[/color]\nOrbs fly further out.", "rarity": "Rare"}
+		6: return {"desc": "[color=green]+2 Orbs[/color]\nA proper swarm.", "rarity": "Epic"}
+		7: return {"desc": "[color=green]-0.2s Hit Cooldown[/color]\nZaps enemies much faster.", "rarity": "Rare"}
+		8: return {"desc": "[color=purple]Void Mastery[/color]\n[color=green]+2 Orbs & +10 Base Damage![/color]", "rarity": "Legendary"}
 	return {"desc": "MAX", "rarity": "Common"}
 
 func _apply_stats_for_current_level():
 	match level:
-		2:
-			orb_count += 1
-		3:
-			base_fire_rate *= 0.8
-		4:
+		2: orb_count += 1
+		3: 
+			orbit_speed *= 1.15
+			base_damage += 2.0
+		4: orb_count += 1
+		5: base_area += 0.20
+		6: orb_count += 2
+		7: base_fire_rate -= 0.2
+		8: 
 			orb_count += 2
-		5:
-			base_damage += 15.0
-			orb_count += 1
+			base_damage += 10.0
 	_rebuild_orbs()

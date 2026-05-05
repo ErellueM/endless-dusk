@@ -184,24 +184,24 @@ func _get_closest_enemy() -> Node2D:
 				closest = t
 	return closest
 
-# --- UPGRADES ---
+# --- UPGRADES EXECUTIONER AXE ---
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
-		2: return {"desc": "[color=green]+20 Base Damage[/color]\nHeavier swings.", "rarity": "Common"}
+		2: return {"desc": "[color=green]+10 Base Damage[/color]\nHeavier swings.", "rarity": "Common"}
 		3: return {"desc": "[color=green]+20% Chop Width[/color]\nCleave through more enemies.", "rarity": "Uncommon"}
 		4: return {"desc": "[color=green]-15% Cooldown[/color]\nFaster strikes.", "rarity": "Rare"}
-		5: return {"desc": "[color=purple]Armor Breaker[/color]\nEnemies hit become Vulnerable, taking +50% damage from all sources!", "rarity": "Epic"}
-		6: return {"desc": "[color=green]+30 Base Damage[/color]\nRuthless power.", "rarity": "Uncommon"}
+		5: return {"desc": "[color=purple]Armor Breaker[/color]\nEnemies hit become Vulnerable (+50% dmg taken).", "rarity": "Epic"}
+		6: return {"desc": "[color=green]+15 Base Damage[/color]\nRuthless power.", "rarity": "Uncommon"}
 		7: return {"desc": "[color=green]+25% Area[/color]\nMassive axes.", "rarity": "Rare"}
 		8: return {"desc": "[color=orange]Twin Execution[/color]\nStrikes forward and backward simultaneously!", "rarity": "Legendary"}
 	return {"desc": "MAX", "rarity": "Common"}
 
 func _apply_stats_for_current_level():
 	match level:
-		2: base_damage += 20.0
+		2: base_damage += 10.0 # Von 15 auf 25 (tötet selbst Tank-Slimes fast sofort)
 		3: base_area += 0.20
 		4: base_fire_rate *= 0.85
 		5: pass # Der Vulnerable Effect
-		6: base_damage += 30.0
+		6: base_damage += 15.0 # Von 25 auf 40
 		7: base_area += 0.25
-		8: pass # Die Logik für den Doppelschlag ist direkt in attack()
+		8: pass # Doppelschlag in attack()

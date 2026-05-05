@@ -3,7 +3,6 @@ extends Weapon
 @export var spike_count: int = 4
 @export var erupt_delay: float = 0.5
 
-
 func attack() -> bool:
 	var vp_size = get_viewport_rect().size
 	var dmg = get_actual_damage()
@@ -16,7 +15,6 @@ func attack() -> bool:
 		_spawn_crystal_spike(random_pos, dmg)
 
 	return true
-
 
 func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 	var area = Area2D.new()
@@ -66,7 +64,6 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 	get_tree().current_scene.add_child(area)
 
 	var tween = create_tween()
-
 	tween.tween_property(shadow, "color:a", 0.7, erupt_delay)
 
 	tween.tween_callback(
@@ -80,16 +77,11 @@ func _spawn_crystal_spike(spawn_pos: Vector2, dmg: float):
 					var true_damage = target.take_damage(dmg, true)
 					add_damage_stat(true_damage)
 	)
-	tween.tween_property(spike_visual, "scale:y", 1.0, 0.15).set_trans(Tween.TRANS_BACK).set_ease(
-		Tween.EASE_OUT
-	)
+	tween.tween_property(spike_visual, "scale:y", 1.0, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_interval(0.25)
-	tween.tween_property(spike_visual, "scale:y", 0.0, 0.1).set_trans(Tween.TRANS_CUBIC).set_ease(
-		Tween.EASE_IN
-	)
+	tween.tween_property(spike_visual, "scale:y", 0.0, 0.1).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_property(shadow, "scale", Vector2.ZERO, 0.15)
 	tween.tween_callback(area.queue_free)
-
 
 func _create_ground_shadow(radius: float) -> PackedVector2Array:
 	var pts = PackedVector2Array()
@@ -98,35 +90,22 @@ func _create_ground_shadow(radius: float) -> PackedVector2Array:
 		pts.append(Vector2(cos(a), sin(a)) * radius * Vector2(1.0, 0.4))
 	return pts
 
-
+# --- UPGRADES ---
 func get_upgrade_info(next_level: int) -> Dictionary:
 	match next_level:
 		2:
 			return {"desc": "[color=green]+2 Spikes[/color]\nMore eruptions.", "rarity": "Common"}
 		3:
-			return {
-				"desc": "[color=green]+15 Base Damage[/color]\nLethal abyssal crystals.",
-				"rarity": "Rare"
-			}
+			return {"desc": "[color=green]+8 Base Damage[/color]\nLethal abyssal crystals.", "rarity": "Rare"}
 		4:
-			return {
-				"desc": "[color=green]+20% Area Size[/color]\nWider eruption radius.",
-				"rarity": "Common"
-			}
+			return {"desc": "[color=green]+25% Area Size[/color]\nWider eruption radius.", "rarity": "Common"}
 		5:
-			return {
-				"desc": "[color=green]+4 Spikes[/color]\nGravelord's wrath.", "rarity": "Legendary"
-			}
+			return {"desc": "[color=green]+4 Spikes[/color]\nGravelord's wrath.", "rarity": "Legendary"}
 	return {"desc": "MAX", "rarity": "Common"}
-
 
 func _apply_stats_for_current_level():
 	match level:
-		2:
-			spike_count += 2
-		3:
-			base_damage += 15.0
-		4:
-			base_area += 0.20
-		5:
-			spike_count += 4
+		2: spike_count += 2
+		3: base_damage += 8.0
+		4: base_area += 0.25
+		5: spike_count += 4

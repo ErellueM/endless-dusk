@@ -8,8 +8,8 @@ size = Vector2(11, 9)
 
 [node name="TankSlime" instance=ExtResource("1_oejie")]
 enemy_name = "Tank Slime"
-max_health = 40.0
-speed = 10.0
+max_health = 80.0
+speed = 20.0
 damage = 3.0
 xp_reward = 2.0
 base_color = Color(0.3527787, 0.28843683, 0.36812547, 1)
