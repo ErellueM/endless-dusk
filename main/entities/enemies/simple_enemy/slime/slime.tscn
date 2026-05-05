@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://cchjvuaeh07ew" path="res://main/effects/shader/red_outline.gdshader" id="2_3q5em"]
 [ext_resource type="Texture2D" uid="uid://dw5u26h62ro5s" path="res://assets/art/enemys/Sprite-slime-up-down.png" id="3_w37c1"]
 
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iqmjv"]
 resource_local_to_scene = true
 shader = ExtResource("2_3q5em")

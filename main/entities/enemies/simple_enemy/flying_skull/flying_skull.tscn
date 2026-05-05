@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_bowxd"]
 [ext_resource type="Texture2D" uid="uid://bk1gw84wduijb" path="res://assets/art/enemys/flyingSkull.png" id="2_pu1pv"]
 
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_eecif"]
 atlas = ExtResource("2_pu1pv")
 region = Rect2(0, 0, 16, 16)

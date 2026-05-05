@@ -115,7 +115,6 @@ buff_multiplier = 1.5
 enemy_name = "Tollkeeper"
 max_health = 200.0
 speed = 15.0
-damage = 4.0
 xp_reward = 25.0
 
 [node name="AnimatedSprite2D" parent="." index="2"]

@@ -10,7 +10,7 @@ size = Vector2(11, 9)
 enemy_name = "Tank Slime"
 max_health = 80.0
 speed = 20.0
-damage = 3.0
+damage = 8.0
 xp_reward = 4.0
 base_color = Color(0.3527787, 0.28843683, 0.36812547, 1)
 

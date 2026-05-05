@@ -600,6 +600,14 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 theme_override_constants/separation = 15
 
+[node name="Label" type="Label" parent="TabContainer/Ladder/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6706895, 0.6706895, 0.6706895, 1)
+text = "comming soon
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="StartRunButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 3

@@ -1,8 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://b65tcnwtedixj"]
 
 [ext_resource type="PackedScene" uid="uid://cfvgtxf0e1xcw" path="res://main/entities/enemies/base_enemy.tscn" id="1_f4erp"]
-[ext_resource type="Script" uid="uid://cn53exgualfxt" path="res://main/entities/enemies/charger_enemy/charger_enemy.gd" id="2_qpr3c"]
+[ext_resource type="Script" path="res://main/entities/enemies/charger_enemy/charger_enemy.gd" id="2_qpr3c"]
 [ext_resource type="Texture2D" uid="uid://bvxen5gtchmft" path="res://assets/art/enemys/Charger_enemy.png" id="3_r26b1"]
+
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c6kfc"]
 atlas = ExtResource("3_r26b1")

@@ -37,6 +37,9 @@ func _ready():
 	Global.check_achievements()
 	update_gold_display()
 	
+	var ladder_index = $TabContainer/Ladder.get_index()
+	$TabContainer.set_tab_hidden(ladder_index, true)
+	
 	btn_buy_yes.pressed.connect(_on_buy_yes_pressed)
 	btn_buy_no.pressed.connect(_on_buy_no_pressed)
 	

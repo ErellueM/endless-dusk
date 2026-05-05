@@ -9,7 +9,6 @@ size = Vector2(11, 9)
 [node name="GreenSlime" instance=ExtResource("1_rm0os")]
 max_health = 15.0
 speed = 45.0
-damage = 1.0
 xp_reward = 1.0
 base_color = Color(0.49803922, 1, 0.47058824, 1)
 
