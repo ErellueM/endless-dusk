@@ -212,6 +212,11 @@ text = "120"
 layout_mode = 2
 texture = ExtResource("9_iwkmk")
 
+[node name="BossUI" parent="." instance=ExtResource("12_sbcx4")]
+layer = 5
+offset = Vector2(160, 325)
+transform = Transform2D(1, 0, 0, 1, 160, 325)
+
 [node name="LevelUpScreen" parent="." instance=ExtResource("3_727k7")]
 layer = 4
 visible = false
@@ -219,8 +224,3 @@ visible = false
 [node name="PauseMenu" parent="." instance=ExtResource("8_7k6wb")]
 layer = 10
 visible = false
-
-[node name="BossUI" parent="." instance=ExtResource("12_sbcx4")]
-layer = 3
-offset = Vector2(0, 330)
-transform = Transform2D(1, 0, 0, 1, 0, 330)

@@ -29,7 +29,6 @@ max_bounces = 4
 enemy_name = "The Cursed Grave"
 max_health = 10000.0
 speed = 30.0
-damage = 30.0
 xp_reward = 0.0
 chest_scene = ExtResource("3_r1o1e")
 

@@ -37,14 +37,14 @@ height = 62.0
 
 [node name="Eye" instance=ExtResource("1_ek5mq")]
 script = ExtResource("2_fqetb")
-laser_dps = 70.0
 laser_duration = 4.0
-sweep_arc_degrees = 180.0
-rotation_smoothing = 3.0
+sweep_arc_degrees = 200.0
+rotation_smoothing = 2.5
 enemy_name = "Eye"
 is_miniboss = true
-max_health = 8000.0
-speed = 20.0
+max_health = 7000.0
+speed = 45.0
+damage = 15.0
 xp_reward = 0.0
 chest_scene = ExtResource("3_av68v")
 

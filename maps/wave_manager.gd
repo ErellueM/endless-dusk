@@ -16,6 +16,7 @@ var current_state: State = State.NORMAL
 @export_group("Scaling Factors")
 @export var swarm_scaling_factor: float = 1.05 # Normale Gegner wachsen stetig
 @export var boss_scaling_factor: float = 1.25 # Bosse wachsen extrem aggressiv
+@export var boss_damage_scaling_factor: float = 1.02
 
 @export_group("Bosses")
 @export var boss_scenes: Array[PackedScene]
@@ -75,9 +76,7 @@ func _process(delta: float):
 		return
 
 	if current_state == State.BOSS:
-		var time_since_boss_spawn = time_elapsed - (bosses_spawned * boss_interval_minutes * 60.0)
-		if time_since_boss_spawn < 60.0:
-			return
+		return
 
 	prop_timer += delta
 	if prop_timer >= prop_spawn_interval and prop_scene:
@@ -512,17 +511,18 @@ func spawn_actual_boss(arena_center: Vector2, spawn_pos: Vector2):
 		_on_boss_defeated()
 		return
 
-	var boss_idx = min(bosses_spawned - 1, boss_scenes.size() - 1)
-	var boss = boss_scenes[boss_idx].instantiate()
+	var random_boss_scene = boss_scenes.pick_random()
+	var boss = random_boss_scene.instantiate()
 
 	# HIER DAS NEUE SCALING FÜR BOSSE (Nutzt boss_scaling_factor!)
 	var current_minute = time_elapsed / 60.0
 	var boss_mult = pow(boss_scaling_factor, current_minute)
+	var boss_dmg_mult = pow(boss_damage_scaling_factor, current_minute)
 	
 	if "max_health" in boss:
 		boss.max_health *= boss_mult
 	if "damage" in boss:
-		boss.damage *= boss_mult
+		boss.damage *= boss_dmg_mult
 
 	boss.global_position = spawn_pos
 

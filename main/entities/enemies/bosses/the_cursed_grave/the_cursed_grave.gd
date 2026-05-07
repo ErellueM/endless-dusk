@@ -10,16 +10,17 @@ var current_state: State = State.REST
 
 var state_timer: float = 0.0
 var bounces_left: int = 0
-var base_boss_damage: float = 15.0
+var base_boss_damage: float = 20.0
 
 # Eine einfache Line2D als Kind-Node (für die Ziel-Linie)
 @onready var aim_line = $AimLine 
 
 func _ready():
 	super._ready()
-	max_health = 2000.0
+	#max_health = 2000.0
 	base_boss_damage = damage
-	
+	print(max_health)
+	print(damage)
 	if aim_line:
 		aim_line.hide()
 		aim_line.width = 3.0
@@ -82,6 +83,7 @@ func process_movement(delta: float):
 
 func _start_rest():
 	current_state = State.REST
+	anim.modulate = Color.WHITE
 	state_timer = 2.0 # Boss muss sich 2 Sekunden ausruhen
 	damage = base_boss_damage
 	
