@@ -2631,10 +2631,10 @@ position = Vector2(597, 322)
 
 [node name="GameUI" parent="." instance=ExtResource("8_063jp")]
 
-[node name="LevelUpScreen" parent="GameUI" index="1"]
+[node name="LevelUpScreen" parent="GameUI" index="2"]
 visible = true
 
-[node name="PauseMenu" parent="GameUI" index="2"]
+[node name="PauseMenu" parent="GameUI" index="3"]
 process_mode = 2
 visible = true
 
@@ -2653,7 +2653,6 @@ elite_database = Array[ExtResource("10_tiqm4")]([ExtResource("16_ylxxr"), ExtRes
 swarm_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_5da34"), ExtResource("16_m0juc"), ExtResource("17_ylxxr")])
 miniboss_database = Array[ExtResource("10_tiqm4")]([ExtResource("17_5da34"), ExtResource("19_gks6h"), ExtResource("20_72bmq")])
 boss_scenes = Array[PackedScene]([ExtResource("19_ylxxr"), ExtResource("20_nljlp")])
-boss_interval_minutes = 0.05
 prop_scene = ExtResource("19_m0juc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
