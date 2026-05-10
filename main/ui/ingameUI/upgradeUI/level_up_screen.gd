@@ -50,18 +50,23 @@ func get_weight(item: Dictionary, player_luck: float) -> float:
 	var rarity = item.get("rarity", "Common")
 	var item_type = item.get("type", "stat")
 	var weight = 10.0
+	var safe_luck = max(0.1, player_luck)
 
 	match rarity:
 		"Common":
-			weight = weight_common
+			weight = weight_common / safe_luck
+			
 		"Uncommon":
-			weight = weight_uncommon
+			weight = weight_uncommon / sqrt(safe_luck)
+			
 		"Rare":
-			weight = weight_rare * player_luck
+			weight = weight_rare * safe_luck
+			
 		"Epic":
-			weight = weight_epic * (player_luck * 1.2)
+			weight = weight_epic * (safe_luck * 1.2)
+			
 		"Legendary":
-			weight = weight_legendary * (player_luck * 1.5)
+			weight = weight_legendary * (safe_luck * 1.5)
 
 	if debug_force_weapons and (item_type == "weapon_upgrade" or item_type == "new_weapon"):
 		return 99999.0
@@ -235,23 +240,37 @@ func apply_stat_upgrade(player, data):
 		match key:
 			"luck":
 				player.luck += amount
+				
 			"speed":
-				if (player.speed + amount) <= 0:
-					player.speed = 0
-				else:
-					player.speed += amount
+				player.speed = max(20.0, player.speed + amount)
+				
 			"armor":
 				player.armor += amount
+				
 			"might":
-				player.might += amount
+				player.might = max(0.1, player.might + amount)
+				
 			"recovery":
 				player.recovery += amount
+				
 			"area":
-				player.area += amount
+				player.area = max(0.1, player.area + amount)
+				
 			"attack_speed_bonus":
 				player.attack_speed_bonus += amount
+				
 			"growth":
-				player.growth += amount
+				player.growth = max(0.1, player.growth + amount)
+				
+			"magnet_mult":
+				player.magnet_mult = max(0.0, player.magnet_mult + amount)
+				if player.has_method("update_magnet"):
+					player.update_magnet()
+					
+			"max_health":
+				player.max_health = max(1.0, player.max_health + amount)
+				if amount > 0:
+					player.heal(amount, true)
 			"magnet_mult":
 				player.magnet_mult += amount
 				if player.has_method("update_magnet"):

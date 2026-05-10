@@ -10,6 +10,17 @@ const SCENE_MAIN = "res://main/ui/general_menu/main_menu/main_menu.tscn"
 func _ready():
 	MusicManager.play_music(preload("res://assets/audio/soundtracks/Endless_Dusk_Main_Theme.ogg"))
 
+func _input(event):
+	if event.is_action_pressed("ui_screenshot"):
+		var img = get_viewport().get_texture().get_image()
+		var scale_factor = 1.5 
+		var new_width = img.get_width() * scale_factor
+		var new_height = img.get_height() * scale_factor
+		img.resize(new_width, new_height, Image.INTERPOLATE_NEAREST)
+		var time_string = Time.get_datetime_string_from_system().replace(":", "-")
+		var file_path = "user://screenshot_%s.png" % time_string
+		img.save_png(file_path)
+		print("Screenshot gespeichert unter: ", file_path)
 
 # wenn  Start-Button geklickt wird.
 func _on_button_start_game_pressed():

@@ -7,8 +7,13 @@ var current_state = GameState.PLAYING
 @export var level_up_screen: CanvasLayer
 @export var game_over_screen: CanvasLayer
 
+@export var debug = false
 
 func _ready():
+	if(SettingsManager.mouse_movement):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	reset_game()
 	if pause_menu:
 		pause_menu.hide()
@@ -25,12 +30,12 @@ func _input(event):
 			change_state(GameState.PAUSED)
 		elif current_state == GameState.PAUSED:
 			change_state(GameState.PLAYING)
-
-	if event.is_action_pressed("test"):  #t
-		if current_state == GameState.PLAYING:
-			change_state(GameState.LEVEL_UP)
-		elif current_state == GameState.LEVEL_UP:
-			change_state(GameState.PLAYING)
+	if debug:
+		if event.is_action_pressed("test"):  #t
+			if current_state == GameState.PLAYING:
+				change_state(GameState.LEVEL_UP)
+			elif current_state == GameState.LEVEL_UP:
+				change_state(GameState.PLAYING)
 
 
 func change_state(new_state):
@@ -41,18 +46,22 @@ func change_state(new_state):
 			get_tree().paused = false
 			pause_menu.hide()
 			level_up_screen.hide()
-			#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			if(SettingsManager.mouse_movement):
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			else:
+				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			
 
 		GameState.PAUSED:
 			get_tree().paused = true
 			pause_menu.show()
-			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 		GameState.LEVEL_UP:
 			get_tree().paused = true
 			level_up_screen.open_for_levelup()
 			pause_menu.hide()
-			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 		GameState.CHEST:
 					get_tree().paused = true
@@ -64,7 +73,7 @@ func change_state(new_state):
 			level_up_screen.hide()
 			if game_over_screen:
 				game_over_screen.show_game_over()
-			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func reset_game():
 	XpPool.reset_pool()

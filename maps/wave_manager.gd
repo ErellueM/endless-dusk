@@ -3,6 +3,8 @@ extends Node
 enum State { NORMAL, PRE_BOSS, BOSS }
 var current_state: State = State.NORMAL
 
+@export var debug = false
+
 @export_group("Enemy Databases")
 @export var elite_database: Array[SpawnData]
 @export var swarm_database: Array[SpawnData]
@@ -57,14 +59,14 @@ func get_active_enemy_count(group_name: String) -> int:
 func _process(delta: float):
 	if not player:
 		return
-
-	if int(time_elapsed) % 1 == 0 and not Engine.get_frames_drawn() % 60:
-		print(
-			"Swarm: ",
-			get_active_enemy_count("SwarmEnemies"),
-			" | Elite: ",
-			get_active_enemy_count("EliteEnemies")
-		)
+	if debug:
+		if int(time_elapsed) % 1 == 0 and not Engine.get_frames_drawn() % 60:
+			print(
+				"Swarm: ",
+				get_active_enemy_count("SwarmEnemies"),
+				" | Elite: ",
+				get_active_enemy_count("EliteEnemies")
+			)
 
 	time_elapsed += delta
 	var current_minute = time_elapsed / 60.0

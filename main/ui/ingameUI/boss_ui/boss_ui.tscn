@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://0bd8y7ndqugy"]
 
-[ext_resource type="Script" uid="uid://b4yiulnr37sqk" path="res://main/ui/ingameUI/boss_ui/boss_ui.gd" id="1_xxnyo"]
+[ext_resource type="Script" uid="uid://dn7hks1c2qc" path="res://main/ui/ingameUI/boss_ui/boss_ui.gd" id="1_xxnyo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01abi"]
 bg_color = Color(0, 0, 0, 0.8117647)

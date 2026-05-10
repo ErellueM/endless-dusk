@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://ic3hmfvhlxmq" path="res://main/ui/ingameUI/game_ui.tscn" id="8_063jp"]
 [ext_resource type="Script" uid="uid://dociaqow5vvrf" path="res://game_manager.gd" id="8_jkpbc"]
 [ext_resource type="PackedScene" uid="uid://d3xmyau8tlvsb" path="res://main/ui/ingameUI/gameOverScreen/you_died_screen.tscn" id="8_nljlp"]
-[ext_resource type="Script" uid="uid://cyyf8w4p782il" path="res://maps/wave_manager.gd" id="9_jkpbc"]
-[ext_resource type="Script" uid="uid://cbh7ils05gocm" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
+[ext_resource type="Script" uid="uid://dh28lijjw7q1w" path="res://maps/wave_manager.gd" id="9_jkpbc"]
+[ext_resource type="Script" uid="uid://3g4hjl2knida" path="res://main/entities/enemies/spawn_data.gd" id="10_tiqm4"]
 [ext_resource type="Resource" uid="uid://d0vpqum71sxt3" path="res://main/data/spawns/swarm/green_slime_data.tres" id="11_5da34"]
 [ext_resource type="Resource" uid="uid://byoll1n8dn5vm" path="res://main/data/spawns/elite/wheel_data.tres" id="12_y5lha"]
 [ext_resource type="Resource" uid="uid://ce0d75rgxkpuv" path="res://main/data/spawns/elite/tollkeeper_data.tres" id="13_tdbau"]
@@ -2569,7 +2569,6 @@ background_mode = 3
 glow_enabled = true
 
 [node name="Map1" type="Node2D"]
-position = Vector2(-37, 5)
 script = ExtResource("1_hm8ck")
 
 [node name="GroundLayer32" type="TileMapLayer" parent="." groups=["Map"]]
@@ -2631,10 +2630,10 @@ position = Vector2(597, 322)
 
 [node name="GameUI" parent="." instance=ExtResource("8_063jp")]
 
-[node name="LevelUpScreen" parent="GameUI" index="2"]
+[node name="LevelUpScreen" parent="GameUI" index="1"]
 visible = true
 
-[node name="PauseMenu" parent="GameUI" index="3"]
+[node name="PauseMenu" parent="GameUI" index="2"]
 process_mode = 2
 visible = true
 
@@ -2654,6 +2653,8 @@ swarm_database = Array[ExtResource("10_tiqm4")]([ExtResource("11_5da34"), ExtRes
 miniboss_database = Array[ExtResource("10_tiqm4")]([ExtResource("17_5da34"), ExtResource("19_gks6h"), ExtResource("20_72bmq")])
 boss_scenes = Array[PackedScene]([ExtResource("19_ylxxr"), ExtResource("20_nljlp")])
 prop_scene = ExtResource("19_m0juc")
+prop_spawn_interval = 25.0
+max_props = 8
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gdq6d")

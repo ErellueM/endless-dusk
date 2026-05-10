@@ -383,7 +383,7 @@ func _ready():
       # Give the player to the spawner
       wave_handler.set_player(player)
    else:
-      push_warning("⚠️ Kein Charakter ausgewählt – lade Default Player!")
+	  push_warning("⚠️ Kein Charakter ausgewählt – lade Default Player!")
 ```
 
 ```gdscript

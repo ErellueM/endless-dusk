@@ -47,7 +47,7 @@ func _ready():
 	for char_card in char_grid.get_children():
 		char_card.setup()
 		char_card.character_clicked.connect(_on_character_card_clicked)
-		if char_card.character_name == "Soilder":
+		if char_card.character_name == "Soldier":
 			start_card = char_card
 	if start_card:
 		_on_character_card_clicked(start_card)

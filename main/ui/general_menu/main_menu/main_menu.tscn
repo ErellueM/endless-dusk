@@ -13,6 +13,7 @@
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="MainMenu" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_hehni")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -32,6 +33,7 @@ alignment = 1
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 size_flags_vertical = 3
+focus_mode = 0
 theme_override_colors/font_color = Color(0.5686275, 0.09019608, 0.1764706, 1)
 theme_override_fonts/font = ExtResource("2_vnv5u")
 theme_override_font_sizes/font_size = 32
@@ -62,6 +64,7 @@ vertical_alignment = 1
 [node name="Button_settings" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
+focus_mode = 0
 theme_override_colors/font_color = Color(0.5686275, 0.09019608, 0.1764706, 1)
 theme_override_fonts/font = ExtResource("2_vnv5u")
 theme_override_font_sizes/font_size = 32
@@ -92,6 +95,7 @@ vertical_alignment = 1
 [node name="Button_credits" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
+focus_mode = 0
 theme_override_colors/font_color = Color(0.5686275, 0.09019608, 0.1764706, 1)
 theme_override_fonts/font = ExtResource("2_vnv5u")
 theme_override_font_sizes/font_size = 32
@@ -121,6 +125,7 @@ vertical_alignment = 1
 [node name="Button_credits2" type="Button" parent="CanvasLayer/CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
+focus_mode = 0
 theme_override_colors/font_color = Color(0.5686275, 0.09019608, 0.1764706, 1)
 theme_override_fonts/font = ExtResource("2_vnv5u")
 theme_override_font_sizes/font_size = 32

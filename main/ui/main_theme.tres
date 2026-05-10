@@ -1,7 +1,7 @@
 [gd_resource type="Theme" load_steps=22 format=3 uid="uid://b8pphsuclay7a"]
 
 [ext_resource type="Texture2D" uid="uid://dl14ytnld1n1p" path="res://assets/art/ui/x_checkbox.png" id="1_tttxp"]
-[ext_resource type="Texture2D" uid="uid://cmhpijjhb2y6c" path="res://assets/art/ui/radio_unchecked.png" id="2_vgcga"]
+[ext_resource type="Texture2D" uid="uid://chqo0vfskaciv" path="res://assets/art/ui/radio_unchecked.png" id="2_vgcga"]
 [ext_resource type="Texture2D" uid="uid://ojiv0cp0nnsa" path="res://assets/art/ui/slider.png" id="3_va3da"]
 [ext_resource type="Texture2D" uid="uid://ddw20k3wafa5u" path="res://assets/art/ui/arrow_down.png" id="4_g4b4m"]
 [ext_resource type="Texture2D" uid="uid://bjb71533alhyt" path="res://assets/art/ui/radio_checked.png" id="5_358ut"]

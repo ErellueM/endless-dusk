@@ -185,8 +185,8 @@ func load_game():
 		
 		gold = config.get_value("Economy", "gold", 0)
 		total_gold_earned = config.get_value("Economy", "total_gold_earned", 0)
-		unlocked_characters = config.get_value("Economy", "unlocked_chars", ["Soilder"])
-		discovered_weapons = config.get_value("Economy", "discovered_weapons", ["Bow"])
+		unlocked_characters = config.get_value("Economy", "unlocked_chars", ["Soldier"])
+		discovered_weapons = config.get_value("Economy", "discovered_weapons", ["bow"])
 		discovered_upgrades = config.get_value("Economy", "discovered_upgrades", [])
 		unlocked_items = config.get_value("Economy", "unlocked_items", [])
 		unlocked_achievements = config.get_value("Economy", "unlocked_achievements", [])
