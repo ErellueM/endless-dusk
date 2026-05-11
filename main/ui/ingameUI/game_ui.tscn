@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ce1r4wbv1y2jc" path="res://main/ui/ingameUI/exp_bar.gd" id="2_c6rn7"]
 [ext_resource type="PackedScene" uid="uid://mwaha8q4dlkd" path="res://main/ui/ingameUI/upgradeUI/LevelUpScreen.tscn" id="3_727k7"]
 [ext_resource type="Script" uid="uid://dpdkdoekm1u27" path="res://main/ui/ingameUI/progress.gd" id="5_abjjk"]
-[ext_resource type="Texture2D" path="res://assets/art/progressbar/Unbenannt.png" id="5_h3nmv"]
+[ext_resource type="Texture2D" uid="uid://cywe8fr8cp8k3" path="res://assets/art/progressbar/ProgBar.png" id="5_sbcx4"]
 [ext_resource type="PackedScene" uid="uid://bbc8dgjm6omy7" path="res://main/ui/ingameUI/pauseMenu.tscn" id="8_7k6wb"]
 [ext_resource type="Texture2D" uid="uid://tq0eql2ynnij" path="res://assets/art/HUD/flask2.png" id="8_c6rn7"]
 [ext_resource type="Shader" uid="uid://duitpm02107wg" path="res://main/effects/shader/bubbles.gdshader" id="8_sbcx4"]
@@ -126,11 +126,11 @@ texture = SubResource("GradientTexture2D_iwkmk")
 stretch_mode = 1
 script = ExtResource("5_abjjk")
 
-[node name="Over" type="NinePatchRect" parent="HUD"]
+[node name="Over2" type="NinePatchRect" parent="HUD"]
 layout_mode = 0
 offset_right = 640.0
 offset_bottom = 21.0
-texture = ExtResource("5_h3nmv")
+texture = ExtResource("5_sbcx4")
 patch_margin_left = 5
 patch_margin_top = 5
 patch_margin_right = 5
