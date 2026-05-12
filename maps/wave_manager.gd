@@ -30,7 +30,7 @@ var current_state: State = State.NORMAL
 @export var prop_spawn_interval: float = 8.0
 @export var max_props: int = 10
 
-var map_bounds: Rect2 = Rect2(-181, -111, 1536, 916)
+var map_bounds: Rect2 = Rect2(-144, -103.0, 1536, 887.0)
 
 var time_elapsed: float = 0.0
 var spawn_timer: float = 0.0

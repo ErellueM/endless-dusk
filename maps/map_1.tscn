@@ -2617,10 +2617,10 @@ position = Vector2(40, 353)
 [node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
 position = Vector2(597, 321)
 process_callback = 0
-limit_left = -181
-limit_top = -171
-limit_right = 1355
-limit_bottom = 805
+limit_left = -144
+limit_top = -176
+limit_right = 1392
+limit_bottom = 800
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 script = ExtResource("5_hm8ck")
