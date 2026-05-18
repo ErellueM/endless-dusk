@@ -276,21 +276,4 @@ func apply_stat_upgrade(player, data):
 				if player.has_method("update_magnet"):
 					player.update_magnet()
 			"max_health":
-				if player.health_component:
-					var old_max = player.health_component.max_health
-					player.health_component.max_health = max(1.0, old_max + amount)
-
-					if amount > 0:
-						player.health_component.current_health += amount
-
-					if player.health_component.current_health > player.health_component.max_health:
-						player.health_component.current_health = player.health_component.max_health
-
-					if player.health_component.current_health < 1.0:
-						player.health_component.current_health = 1.0
-
-					if player.has_signal("health_changed"):
-						player.health_changed.emit(
-							player.health_component.current_health,
-							player.health_component.max_health
-						)
+				player.max_health += amount

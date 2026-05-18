@@ -20,9 +20,21 @@ var max_xp: float = 10.0
 @export_group("Survival Stats")
 @export var max_health: float = 100.0:
 	set(new_value):
+		var difference = new_value - max_health # Berechnet, ob wir HP dazu bekommen oder verlieren
 		max_health = new_value
+		
 		if is_node_ready() and health_component:
 			health_component.max_health = max_health
+			
+			# 1. Wenn wir Max-Leben dazubekommen, heilen wir den Spieler auch um diesen Wert
+			if difference > 0:
+				health_component.current_health += difference
+				
+			# 2. Das Abcutten (Clamp): current_health darf nie größer als max_health sein!
+			if health_component.current_health > health_component.max_health:
+				health_component.current_health = health_component.max_health
+				
+			# 3. Jetzt erst das UI updaten
 			health_changed.emit(health_component.current_health, health_component.max_health)
 @export var armor: float = 0.0
 @export var recovery: float = 0.0
